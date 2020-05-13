@@ -1,0 +1,200 @@
+Datacode,Rectype,RecYear,RecMonth,RecDay,Watershed,Repsite,Spcode,Species,FirstInstar,SecondInstar,ThirdInstar,FourthInstar,FifthInstar,Female,Male,Total
+cgr05,3,1983,8,8,001d,a,9,phoetaliot nebrascen,,,23,58,,,,81
+cgr05,3,1983,8,8,001d,a,10,melanoplus scudderi,,,,1,2,,,3
+cgr05,3,1983,8,8,001d,a,12,melanoplus femurrubr,,,,2,,,,2
+cgr05,3,1983,8,8,001d,a,15,melanoplus keel luri,,,,3,4,,1,8
+cgr05,3,1983,8,8,001d,a,17,melanoplus confusus,,,,,,1,1,2
+cgr05,3,1983,8,8,001d,a,27,orphulella speciosa,,,2,7,106,92,167,374
+cgr05,3,1983,8,8,001d,a,45,chortophag viridifas,,2,,,,,,2
+cgr05,3,1983,8,8,001d,a,95,total,,2,25,71,112,93,169,472
+cgr05,3,1983,8,5,001d,b,9,phoetaliot nebrascen,,,3,38,,,,41
+cgr05,3,1983,8,5,001d,b,10,melanoplus scudderi,,,,2,6,,,8
+cgr05,3,1983,8,5,001d,b,15,melanoplus keel luri,,,,5,2,,,7
+cgr05,3,1983,8,5,001d,b,25,eritettix  simplex,,1,,,,,,1
+cgr05,3,1983,8,5,001d,b,27,orphulella speciosa,,,,2,31,45,54,129
+cgr05,3,1983,8,5,001d,b,29,mermiria   bivittata,,,,,,,1,1
+cgr05,3,1983,8,5,001d,b,95,total,,1,3,47,39,45,55,187
+cgr05,3,1983,8,9,002d,a,9,phoetaliot nebrascen,,1,45,11,,,,57
+cgr05,3,1983,8,9,002d,a,10,melanoplus scudderi,,,1,6,3,,,10
+cgr05,3,1983,8,9,002d,a,15,melanoplus keel luri,,,7,,,,,7
+cgr05,3,1983,8,9,002d,a,8,hesperotet species,,,1,,,,,1
+cgr05,3,1983,8,9,002d,a,27,orphulella speciosa,,,12,45,105,1,17,180
+cgr05,3,1983,8,9,002d,a,95,total,,1,66,62,108,1,17,255
+cgr05,3,1983,8,9,002d,b,9,phoetaliot nebrascen,,1,72,30,,,,103
+cgr05,3,1983,8,9,002d,b,10,melanoplus scudderi,,,3,6,,,,9
+cgr05,3,1983,8,9,002d,b,15,melanoplus keel luri,,,4,1,,,,5
+cgr05,3,1983,8,9,002d,b,27,orphulella speciosa,,,7,71,126,2,19,225
+cgr05,3,1983,8,9,002d,b,29,mermiria   bivittata,,,1,1,1,,,3
+cgr05,3,1983,8,9,002d,b,95,total,,1,87,109,127,2,19,345
+cgr05,3,1983,8,10,002c,a,1,brachystol magna,,,,,,1,,1
+cgr05,3,1983,8,10,002c,a,9,phoetaliot nebrascen,,,15,132,18,,,165
+cgr05,3,1983,8,10,002c,a,10,melanoplus scudderi,,,2,4,3,,,9
+cgr05,3,1983,8,10,002c,a,15,melanoplus keel luri,,,1,1,1,,,3
+cgr05,3,1983,8,10,002c,a,16,melanoplus bivittatu,,,,,,,1,1
+cgr05,3,1983,8,10,002c,a,17,melanoplus confusus,,,,,,,1,1
+cgr05,3,1983,8,10,002c,a,8,hesperotet species,,,,6,2,,,8
+cgr05,3,1983,8,10,002c,a,27,orphulella speciosa,,,,1,9,47,63,120
+cgr05,3,1983,8,10,002c,a,32,boopedon   auriventr,,,,,,,1,1
+cgr05,3,1983,8,10,002c,a,45,chortophag viridifas,,,1,,,,,1
+cgr05,3,1983,8,10,002c,a,95,total,,,19,144,33,48,66,310
+cgr05,3,1983,8,10,002c,b,4,hypochlora alba,,,,1,1,8,12,22
+cgr05,3,1983,8,10,002c,b,9,phoetaliot nebrascen,,,11,148,19,,1,179
+cgr05,3,1983,8,10,002c,b,10,melanoplus scudderi,,,,10,15,,1,26
+cgr05,3,1983,8,10,002c,b,15,melanoplus keel luri,,,11,22,19,,,52
+cgr05,3,1983,8,10,002c,b,8,hesperotet species,,,5,4,,1,,10
+cgr05,3,1983,8,10,002c,b,25,eritettix  simplex,,2,,,,,,2
+cgr05,3,1983,8,10,002c,b,27,orphulella speciosa,,,,2,27,57,100,186
+cgr05,3,1983,8,10,002c,b,29,mermiria   bivittata,,,,1,1,,1,3
+cgr05,3,1983,8,10,002c,b,32,boopedon   auriventr,,,,,,,1,1
+cgr05,3,1983,8,10,002c,b,95,total,,2,27,188,82,66,116,481
+cgr05,3,1983,8,10,004a,a,4,hypochlora alba,,,5,17,10,6,10,48
+cgr05,3,1983,8,10,004a,a,9,phoetaliot nebrascen,,,10,6,,,,16
+cgr05,3,1983,8,10,004a,a,10,melanoplus scudderi,,,8,,5,,,13
+cgr05,3,1983,8,10,004a,a,15,melanoplus keel luri,,,3,1,,,,4
+cgr05,3,1983,8,10,004a,a,8,hesperotet species,,1,,1,,1,,3
+cgr05,3,1983,8,10,004a,a,27,orphulella speciosa,,,1,,,3,2,6
+cgr05,3,1983,8,10,004a,a,32,boopedon   auriventr,,,,,,,1,1
+cgr05,3,1983,8,10,004a,a,95,total,,1,27,25,15,9,13,91
+cgr05,3,1983,8,10,004a,b,3,paratylotr brunneri,,,,,,1,,1
+cgr05,3,1983,8,10,004a,b,4,hypochlora alba,,,3,12,12,12,11,40
+cgr05,3,1983,8,10,004a,b,9,phoetaliot nebrascen,,1,20,11,,,,32
+cgr05,3,1983,8,10,004a,b,10,melanoplus scudderi,,,3,4,3,,,10
+cgr05,3,1983,8,10,004a,b,15,melanoplus keel luri,,,14,5,1,,,20
+cgr05,3,1983,8,10,004a,b,16,melanoplus bivittatu,,,,,,1,,1
+cgr05,3,1983,8,10,004a,b,8,hesperotet species,,,,1,1,,,2
+cgr05,3,1983,8,10,004a,b,27,orphulella speciosa,,,,4,4,1,3,12
+cgr05,3,1983,8,10,004a,b,32,boopedon   auriventr,,,,,,1,,1
+cgr05,3,1983,8,10,004a,b,95,total,,1,40,37,21,15,14,119
+cgr05,3,1983,8,5,004b,a,4,hypochlora alba,,,1,5,11,25,31,73
+cgr05,3,1983,8,5,004b,a,9,phoetaliot nebrascen,,4,32,198,17,,,251
+cgr05,3,1983,8,5,004b,a,10,melanoplus scudderi,,,7,20,22,,,49
+cgr05,3,1983,8,5,004b,a,12,melanoplus femurrubr,,,2,1,,,,3
+cgr05,3,1983,8,5,004b,a,15,melanoplus keel luri,,,20,21,3,,,44
+cgr05,3,1983,8,5,004b,a,17,melanoplus confusus,,,,,,,1,1
+cgr05,3,1983,8,5,004b,a,8,hesperotet species,,,6,9,,,,15
+cgr05,3,1983,8,5,004b,a,26,syrbula    admirabil,,,1,,,,,1
+cgr05,3,1983,8,5,004b,a,27,orphulella speciosa,,,,3,9,7,10,29
+cgr05,3,1983,8,5,004b,a,45,chortophag viridifas,,10,,,,,,10
+cgr05,3,1983,8,5,004b,a,47,arphia     xanthopte,,,,,,1,,1
+cgr05,3,1983,8,5,004b,a,95,total,,14,67,257,62,32,42,477
+cgr05,3,1983,8,5,004b,b,4,hypochlora alba,,,,1,12,6,15,34
+cgr05,3,1983,8,5,004b,b,9,phoetaliot nebrascen,,1,34,148,8,,,191
+cgr05,3,1983,8,5,004b,b,10,melanoplus scudderi,,1,30,26,,1,,58
+cgr05,3,1983,8,5,004b,b,12,melanoplus femurrubr,,,1,2,,,,3
+cgr05,3,1983,8,5,004b,b,15,melanoplus keel luri,,,1,5,7,,,13
+cgr05,3,1983,8,5,004b,b,17,melanoplus confusus,,,,,,,1,1
+cgr05,3,1983,8,5,004b,b,8,hesperotet species,,,2,1,1,,,4
+cgr05,3,1983,8,5,004b,b,25,eritettix  simplex,,1,,,,,,1
+cgr05,3,1983,8,5,004b,b,27,orphulella speciosa,,,,3,8,2,5,18
+cgr05,3,1983,8,5,004b,b,29,mermiria   bivittata,,,,1,,,,1
+cgr05,3,1983,8,5,004b,b,32,boopedon   auriventr,,,,,,,1,1
+cgr05,3,1983,8,5,004b,b,45,chortophag viridifas,,1,,,,,,1
+cgr05,3,1983,8,5,004b,b,95,total,,4,68,187,36,9,22,326
+cgr05,3,1983,8,9,004d,a,4,hypochlora alba,,,,1,,6,3,10
+cgr05,3,1983,8,9,004d,a,9,phoetaliot nebrascen,,,192,233,4,,,429
+cgr05,3,1983,8,9,004d,a,10,melanoplus scudderi,,1,19,54,24,,,98
+cgr05,3,1983,8,9,004d,a,12,melanoplus femurrubr,,1,1,,,,,2
+cgr05,3,1983,8,9,004d,a,15,melanoplus keel luri,,,16,12,,,,28
+cgr05,3,1983,8,9,004d,a,8,hesperotet species,,,4,2,,,1,7
+cgr05,3,1983,8,9,004d,a,27,orphulella speciosa,,,1,10,49,6,18,84
+cgr05,3,1983,8,9,004d,a,29,mermiria   bivittata,,,,1,1,,1,3
+cgr05,3,1983,8,9,004d,a,32,boopedon   auriventr,,,,,,,1,1
+cgr05,3,1983,8,9,004d,a,95,total,,2,233,313,78,12,24,662
+cgr05,3,1983,8,9,004d,b,4,hypochlora alba,,,2,6,8,3,5,24
+cgr05,3,1983,8,9,004d,b,9,phoetaliot nebrascen,,,142,55,,,,197
+cgr05,3,1983,8,9,004d,b,10,melanoplus scudderi,,,7,16,2,,,25
+cgr05,3,1983,8,9,004d,b,12,melanoplus femurrubr,,,1,,,,,1
+cgr05,3,1983,8,9,004d,b,15,melanoplus keel luri,,,,2,,,,2
+cgr05,3,1983,8,9,004d,b,8,hesperotet species,,,3,7,,,,10
+cgr05,3,1983,8,9,004d,b,27,orphulella speciosa,,,1,19,32,4,9,65
+cgr05,3,1983,8,9,004d,b,29,mermiria   bivittata,,,,,1,1,,2
+cgr05,3,1983,8,9,004d,b,95,total,,,156,105,43,8,14,326
+cgr05,3,1983,8,9,004f,a,4,hypochlora alba,,,,2,3,1,,6
+cgr05,3,1983,8,9,004f,a,9,phoetaliot nebrascen,,4,272,32,1,,,309
+cgr05,3,1983,8,9,004f,a,10,melanoplus scudderi,,,21,14,,,,35
+cgr05,3,1983,8,9,004f,a,12,melanoplus femurrubr,,1,2,,,,,3
+cgr05,3,1983,8,39,004f,a,15,melanoplus keel luri,,1,12,2,,,,15
+cgr05,3,1983,8,9,004f,a,17,melanoplus confusus,,,,,,,1,1
+cgr05,3,1983,8,9,004f,a,8,hesperotet species,,1,9,2,2,,,14
+cgr05,3,1983,8,9,004f,a,25,eritettix  simplex,,1,,,,,,1
+cgr05,3,1983,8,9,004f,a,27,orphulella speciosa,,,8,29,21,6,7,71
+cgr05,3,1983,8,9,004f,a,29,mermiria   bivittata,,,,,,,1,1
+cgr05,3,1983,8,9,004f,a,32,boopedon   auriventr,,,,,,,1,1
+cgr05,3,1983,8,9,004f,a,95,total,,8,324,81,27,7,10,457
+cgr05,3,1983,8,9,004f,b,4,hypochlora alba,,1,6,13,11,7,5,43
+cgr05,3,1983,8,9,004f,b,9,phoetaliot nebrascen,,5,321,47,4,,,377
+cgr05,3,1983,8,9,004f,b,10,melanoplus scudderi,,,41,10,1,,,52
+cgr05,3,1983,8,9,004f,b,12,melanoplus femurrubr,,9,42,6,,,,57
+cgr05,3,1983,8,9,004f,b,15,melanoplus keel luri,,,34,16,5,,,55
+cgr05,3,1983,8,9,004f,b,16,melanoplus bivittatu,,,1,,,1,1,3
+cgr05,3,1983,8,9,004f,b,8,hesperotet species,,4,11,6,1,1,,23
+cgr05,3,1983,8,9,004f,b,27,orphulella speciosa,,,7,21,11,4,4,47
+cgr05,3,1983,8,9,004f,b,29,mermiria   bivittata,,,,,,,2,2
+cgr05,3,1983,8,9,004f,b,31,pseudopoma brachypte,,,,,,,1,1
+cgr05,3,1983,8,9,004f,b,45,chortophag viridifas,,,,1,,,,1
+cgr05,3,1983,8,9,004f,b,47,arphia     xanthopte,,,,1,,,,1
+cgr05,3,1983,8,9,004f,b,95,total,,19,463,121,33,13,13,662
+cgr05,3,1983,8,10,004g,a,4,hypochlora alba,,,3,10,7,4,4,28
+cgr05,3,1983,8,10,004g,a,9,phoetaliot nebrascen,1,3,111,20,,,,135
+cgr05,3,1983,8,10,004g,a,10,melanoplus scudderi,,1,30,18,2,,,51
+cgr05,3,1983,8,10,004g,a,12,melanoplus femurrubr,,1,6,,,,,7
+cgr05,3,1983,8,10,004g,a,15,melanoplus keel luri,,1,16,5,,,,22
+cgr05,3,1983,8,10,004g,a,16,melanoplus bivittatu,,,,,,1,,1
+cgr05,3,1983,8,10,004g,a,8,hesperotet species,,1,4,,1,,,6
+cgr05,3,1983,8,10,004g,a,25,eritettix  simplex,,1,,,,,,1
+cgr05,3,1983,8,10,004g,a,27,orphulella speciosa,,,1,3,3,6,3,16
+cgr05,3,1983,8,10,004g,a,29,mermiria   bivittata,,,,,,,2,2
+cgr05,3,1983,8,10,004g,a,95,total,1,8,171,56,13,11,9,269
+cgr05,3,1983,8,10,004g,b,3,paratylotr brunneri,,,,,,1,,1
+cgr05,3,1983,8,10,004g,b,4,hypochlora alba,,,1,3,10,6,7,27
+cgr05,3,1983,8,10,004g,b,9,phoetaliot nebrascen,,3,101,15,,,,119
+cgr05,3,1983,8,10,004g,b,10,melanoplus scudderi,,,23,15,,,,38
+cgr05,3,1983,8,10,004g,b,12,melanoplus femurrubr,,1,2,,,,,3
+cgr05,3,1983,8,10,004g,b,15,melanoplus keel luri,,,18,4,3,,,25
+cgr05,3,1983,8,10,004g,b,8,hesperotet species,,,1,,,1,,2
+cgr05,3,1983,8,10,004g,b,25,eritettix  simplex,,,1,,,,,1
+cgr05,3,1983,8,10,004g,b,27,orphulella speciosa,,,1,5,2,5,2,15
+cgr05,3,1983,8,10,004g,b,29,mermiria   bivittata,,,,,,,1,1
+cgr05,3,1983,8,10,004g,b,31,pseudopoma brachypte,,,,,,1,,1
+cgr05,3,1983,8,10,004g,b,45,chortophag viridifas,,,1,,,,,1
+cgr05,3,1983,8,10,004g,b,95,total,,4,149,42,15,14,10,238
+cgr05,3,1983,8,10,010d,a,4,hypochlora alba,,,5,5,4,1,2,17
+cgr05,3,1983,8,10,010d,a,9,phoetaliot nebrascen,,1,91,8,,,,100
+cgr05,3,1983,8,10,010d,a,10,melanoplus scudderi,,1,4,,2,,,7
+cgr05,3,1983,8,10,010d,a,12,melanoplus femurrubr,,,2,,1,,,3
+cgr05,3,1983,8,10,010d,a,15,melanoplus keel luri,,,1,1,,,,2
+cgr05,3,1983,8,10,010d,a,16,melanoplus bivittatu,,,,,,,2,2
+cgr05,3,1983,8,10,010d,a,8,hesperotet species,,1,2,1,,,,4
+cgr05,3,1983,8,10,010d,a,27,orphulella speciosa,,,1,1,,3,2,7
+cgr05,3,1983,8,10,010d,a,29,mermiria   bivittata,,,,,,1,,1
+cgr05,3,1983,8,10,010d,a,95,total,,3,106,16,7,5,6,143
+cgr05,3,1983,8,10,010d,b,4,hypochlora alba,,,,5,5,2,2,14
+cgr05,3,1983,8,10,010d,b,9,phoetaliot nebrascen,,5,236,46,2,,,289
+cgr05,3,1983,8,10,010d,b,10,melanoplus scudderi,,,20,20,1,,,41
+cgr05,3,1983,8,10,010d,b,15,melanoplus keel luri,,,5,3,1,,,9
+cgr05,3,1983,8,10,010d,b,16,melanoplus bivittatu,,,,,,1,,1
+cgr05,3,1983,8,10,010d,b,8,hesperotet species,,,11,9,,,,20
+cgr05,3,1983,8,10,010d,b,27,orphulella speciosa,,,1,6,3,3,3,16
+cgr05,3,1983,8,10,010d,b,95,total,,5,273,89,12,5,6,390
+cgr05,3,1983,8,9,000b,a,3,paratylotr brunneri,,,,,1,,,1
+cgr05,3,1983,8,9,000b,a,4,hypochlora alba,,,,,1,2,1,4
+cgr05,3,1983,8,9,000b,a,9,phoetaliot nebrascen,,26,386,48,4,,,464
+cgr05,3,1983,8,9,000b,a,10,melanoplus scudderi,,1,35,24,7,,,67
+cgr05,3,1983,8,9,000b,a,12,melanoplus femurrubr,,,2,,,,,2
+cgr05,3,1983,8,9,000b,a,15,melanoplus keel luri,,1,28,13,9,,,51
+cgr05,3,1983,8,9,000b,a,16,melanoplus bivittatu,,,,,,,2,2
+cgr05,3,1983,8,9,000b,a,8,hesperotet species,,1,9,4,,4,1,19
+cgr05,3,1983,8,9,000b,a,27,orphulella speciosa,,,8,5,5,8,3,29
+cgr05,3,1983,8,9,000b,a,29,mermiria   bivittata,,,,,1,,1,2
+cgr05,3,1983,8,9,000b,a,31,pseudopoma brachypte,,,,,,,1,1
+cgr05,3,1983,8,9,000b,a,47,arphia     xanthopte,,,,,1,,,1
+cgr05,3,1983,8,9,000b,a,95,total,,29,468,94,29,14,9,643
+cgr05,3,1983,8,9,000b,b,4,hypochlora alba,,,1,3,1,,,5
+cgr05,3,1983,8,9,000b,b,9,phoetaliot nebrascen,,18,286,18,2,,,324
+cgr05,3,1983,8,9,000b,b,10,melanoplus scudderi,,,37,13,1,,,51
+cgr05,3,1983,8,9,000b,b,12,melanoplus femurrubr,,,1,,,,,1
+cgr05,3,1983,8,9,000b,b,15,melanoplus keel luri,,,21,2,,,,23
+cgr05,3,1983,8,9,000b,b,8,hesperotet species,,,6,2,,,,8
+cgr05,3,1983,8,9,000b,b,27,orphulella speciosa,,,4,7,7,5,5,28
+cgr05,3,1983,8,9,000b,b,31,pseudopoma brachypte,,,,,1,,,1
+cgr05,3,1983,8,9,000b,b,95,total,,18,356,45,12,5,5,441
