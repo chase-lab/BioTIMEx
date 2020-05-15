@@ -1,0 +1,49 @@
+treatment,block,plot,subplot,subplot.t,x.m,y.m,elevation
+girdled,2,1,A,control,141087.5,913755.5,227
+girdled,2,1,A,disturbed,141113,913764,227
+girdled,2,1,A,exclosure,141101,913756,227
+girdled,2,1,B,control,141077.2,913775.5,227
+girdled,2,1,B,disturbed,141087,913812,227
+girdled,2,1,B,exclosure,141102,913803,227
+log,2,2,A,control,141055.5,913688.5,230
+log,2,2,A,disturbed,141070,913691,230
+log,2,2,A,exclosure,141066,913686,230
+log,2,2,B,control,141030.5,913683.5,230
+log,2,2,B,disturbed,141052,913654,230
+log,2,2,B,exclosure,141035,913652,230
+hemlock control,2,3,A,control,140967.5,913693.5,228
+hemlock control,2,3,A,disturbed,140978,913676,228
+hemlock control,2,3,A,exclosure,140972,913680,228
+hemlock control,2,3,B,control,140972.5,913718.5,228
+hemlock control,2,3,B,disturbed,140955,913729,228
+hemlock control,2,3,B,exclosure,140957,913731,228
+log,1,4,A,control,141370.5,913975.5,246
+log,1,4,A,disturbed,141378,913950,246
+log,1,4,A,exclosure,141377,913954,246
+log,1,4,B,control,141381,913986,246
+log,1,4,B,disturbed,141390,914000,246
+log,1,4,B,exclosure,141391,914010,246
+girdled,1,5,A,control,141363.5,914087.5,244
+girdled,1,5,A,disturbed,141401,914084,244
+girdled,1,5,A,exclosure,141400,914080,244
+girdled,1,5,B,control,141363.5,914082.5,244
+girdled,1,5,B,disturbed,141394,914066,244
+girdled,1,5,B,exclosure,141380,914068,244
+hemlock control,1,6,A,control,141436.5,914157.5,249
+hemlock control,1,6,A,disturbed,141403,914140,249
+hemlock control,1,6,A,exclosure,141407,914146,249
+hemlock control,1,6,B,control,141441.5,914182.5,249
+hemlock control,1,6,B,disturbed,141456,914153,249
+hemlock control,1,6,B,exclosure,141467,914183,249
+hardwood control,1,7,A,control,141460,914532,246
+hardwood control,1,7,A,disturbed,141451,914541,246
+hardwood control,1,7,A,exclosure,141451,914538,246
+hardwood control,1,7,B,control,141485,914531,246
+hardwood control,1,7,B,disturbed,141492,914529,246
+hardwood control,1,7,B,exclosure,141492,914524,246
+hardwood control,2,8,A,control,140952,913032,227
+hardwood control,2,8,A,disturbed,140943,913037,227
+hardwood control,2,8,A,exclosure,140949,913038,227
+hardwood control,2,8,B,control,140979,913057,227
+hardwood control,2,8,B,disturbed,140963,913055,227
+hardwood control,2,8,B,exclosure,140980,913053,227
