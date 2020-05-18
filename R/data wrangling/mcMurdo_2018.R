@@ -3,40 +3,40 @@
 dataset_id <- 'mcMurdo_2018'
 load(file=paste0('data/raw data/', dataset_id, '/ddata'))
 
-dat <- data.frame(dataset_id = rep(dataset_id, nrow(ddata)))
+# First experiment <- moat
+ddata_moat <- ddata[ddata$SAMPLE_TYPE == 'moat',]
+dat <- data.frame(dataset_id = rep(paste0(dataset_id,'a'), nrow(ddata_moat)))
 
-dat$year <- format(ddata$COLLECTION_DATE, "%Y")
-dat$month <- format(ddata$COLLECTION_DATE, "%m")
-dat$day <- format(ddata$COLLECTION_DATE, "%d")
+dat$year <- format(ddata_moat$COLLECTION_DATE, "%Y")
+dat$month <- format(ddata_moat$COLLECTION_DATE, "%m")
+dat$day <- format(ddata_moat$COLLECTION_DATE, "%d")
 
-dat$site <- ddata$LOCATION
-dat$block <- ddata$SAMPLE_TYPE
-dat$plot <- ddata$REPLICATE
-dat$subplot <- ddata$DEPTH_M
+dat$site <- ddata_moat$LOCATION
+dat$block <- ddata_moat$SAMPLE_TYPE
+dat$plot <- ddata_moat$REPLICATE
+dat$subplot <- ddata_moat$DEPTH_M
 
-dat$treatment <- ifelse(ddata$TREATMENT == 'control', 'control',
-                        paste(ddata$TREATMENT, ddata$DEPTH, sep='_')
-)
+dat$treatment <- ddata_moat$TREATMENT
 dat$treatment_type <- "water level"
 
-dat$design
-ifelse()
-dat$timepoint <- ddata$TIMEPOINT
-dat$time_since_disturbance_days
-aggregate(COLLECTION_DATE ~ REPLICATE + SAMPLE_TYPE + DEPTH_M + TIMEPOINT + TREATMENT, data = ddata, c)
+dat$design <- paste0(
+   ifelse(ddata_moat$TIMEPOINT == 'T0', 'B', 'A'),
+   ifelse(ddata_moat$TREATMENT == 'control', 'C', 'I')
+)
 
+dat$timepoint <- ddata_moat$TIMEPOINT
+dat$time_since_disturbance_days <- as.numeric(ddata_moat$COLLECTION_DATE - as.Date(ddata_moat$COLLECTION_DATE[1]))
 
-
-
-dat$species <- ddata$spec.code
+dat$species <- ddata_moat$spec.code
 dat$metric <- 'count'
-dat$value <- ddata$count
+dat$value <- ddata_moat$count
+dat$unit <- 'count'
 
-
+dat$comment <- 'Two experiments in one. In "moat" treatment, samples are moved up (5m to surface). In "water column treatment", sampled are moved 3 meter deeper.'
 
 
 dat <- dat[!is.na(dat$value), ]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
+write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, 'a.csv'),
           row.names=FALSE)

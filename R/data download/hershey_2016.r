@@ -1,5 +1,6 @@
 ## hershey_2016
 
+
 # Package ID: knb-lter-arc.1125.3 Cataloging System:https://pasta.lternet.edu.
 # Data set title: Total numbers and species of insects taken from rock scrubbings during the summer of 1984-1988, 1993-1994, 1996-1998, in the Kuparuk River experimental reach near Toolik Field Station, North Slope Alaska...
 # Data set creator:  Ann Hershey -
@@ -9,7 +10,7 @@
 # Metadata Link: https://portal.lternet.edu/nis/metadataviewer?packageid=knb-lter-arc.1125.3
 # Stylesheet v2.10 for metadata conversion into program: John H. Porter, Univ. Virginia, jporter@virginia.edu
 
-
+dataset_id <- 'hershey_2016'
 infile1 <- 'data/raw data/hershey_2016/84-98hektot.csv'
 if(!dir.exists('data/raw data/hershey_2016/') || !file.exists(infile1))   {
    dir.create('data/raw data/hershey_2016/',  showWarnings = FALSE)
@@ -27,7 +28,7 @@ dt1 <-read.csv(infile1,header=F
                   "Stream.Type",
                   "Sample.Type",
                   "Date",
-                  "station..paren.m.paren.",
+                  "station.m",   # modified
                   "Trial",
                   "RHYAC",
                   "BRACHY",
@@ -51,7 +52,7 @@ dt1 <-read.csv(infile1,header=F
 if (class(dt1$Site)!="factor") dt1$Site<- as.factor(dt1$Site)
 if (class(dt1$Stream.Type)!="factor") dt1$Stream.Type<- as.factor(dt1$Stream.Type)
 if (class(dt1$Sample.Type)!="factor") dt1$Sample.Type<- as.factor(dt1$Sample.Type)
-if (class(dt1$station..paren.m.paren.)!="factor") dt1$station..paren.m.paren.<- as.factor(dt1$station..paren.m.paren.)
+if (class(dt1$station.m)!="factor") dt1$station.m<- as.factor(dt1$station.m)
 if (class(dt1$Trial)!="factor") dt1$Trial<- as.factor(dt1$Trial)
 if (class(dt1$RHYAC)=="factor") dt1$RHYAC <-as.numeric(levels(dt1$RHYAC))[as.integer(dt1$RHYAC) ]
 if (class(dt1$RHYAC)=="character") dt1$RHYAC <-as.numeric(dt1$RHYAC)
@@ -87,36 +88,8 @@ if (class(dt1$SNAILS)=="character") dt1$SNAILS <-as.numeric(dt1$SNAILS)
 # Convert Missing Values to NA for non-dates
 
 
-
-# Here is the structure of the input data frame:
-str(dt1)
-attach(dt1)
-# The analyses below are basic descriptions of the variables. After testing, they should be replaced.
-
-summary(Site)
-summary(Stream.Type)
-summary(Sample.Type)
-summary(Date)
-summary(station..paren.m.paren.)
-summary(Trial)
-summary(RHYAC)
-summary(BRACHY)
-summary(NATARSIA)
-summary(ORTHO)
-summary(OTHCHIR)
-summary(CHIPUPA)
-summary(BLACK)
-summary(BLKPUPA)
-summary(BAETIS)
-summary(BAETSP3)
-summary(EPHEM)
-summary(CINYG)
-summary(NEMOURA)
-summary(TIPULA)
-summary(SNAILS)
-detach(dt1)
-
-
+ddata <- dt1
+save(ddata, file=paste0('data/raw data/', dataset_id,'/ddata'))
 
 
 
