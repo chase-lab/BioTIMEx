@@ -170,22 +170,5 @@ if (class(dt3$Comments)!="factor") dt3$Comments<- as.factor(dt3$Comments)
 
 
 
-# Here is the structure of the input data frame:
-str(dt3)
-attach(dt3)
-# The analyses below are basic descriptions of the variables. After testing, they should be replaced.
-
-summary(Transect)
-summary(Plot)
-summary(Tag.Number)
-summary(Height)
-summary(Diameter)
-summary(Species)
-summary(Comments)
-summary(Start.date)
-detach(dt3)
-
-
-
 
 
