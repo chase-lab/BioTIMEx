@@ -233,30 +233,9 @@ dt4$daily.nh4 <- ifelse((trimws(as.character(dt4$daily.nh4))==trimws("NA")),NA,d
 dt4$daily.no3 <- ifelse((trimws(as.character(dt4$daily.no3))==trimws("NA")),NA,dt4$daily.no3)
 dt4$daily.n <- ifelse((trimws(as.character(dt4$daily.n))==trimws("NA")),NA,dt4$daily.n)
 
-
-# Here is the structure of the input data frame:
-str(dt4)
-attach(dt4)
-# The analyses below are basic descriptions of the variables. After testing, they should be replaced.
-
-summary(year)
-summary(quarter)
-summary(treatment)
-summary(block)
-summary(plot)
-summary(subplot)
-summary(subplot.t)
-summary(res.mass)
-summary(tot.nh4)
-summary(tot.no3)
-summary(res.nh4)
-summary(res.no3)
-summary(tot.n)
-summary(res.n)
-summary(daily.nh4)
-summary(daily.no3)
-summary(daily.n)
-detach(dt4)
-
+# Other environmental variable tables not loaded.
+t4$daily.no3 <- ifelse((trimws(as.character(dt4$daily.no3))==trimws("NA")),NA,dt4$daily.no3)
+dt4$daily.n <- ifelse((trimws(as.character(dt4$daily.n))==trimws("NA")),NA,dt4$daily.n)
 
 # Other environmental variable tables not loaded.
+d.

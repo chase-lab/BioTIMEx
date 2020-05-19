@@ -96,3 +96,8 @@ if (class(dt6$SAPCOUNT)=="character") dt6$SAPCOUNT <-as.numeric(dt6$SAPCOUNT)
 if (class(dt6$SEEDLCNT)=="factor") dt6$SEEDLCNT <-as.numeric(levels(dt6$SEEDLCNT))[as.integer(dt6$SEEDLCNT) ]
 if (class(dt6$SEEDLCNT)=="character") dt6$SEEDLCNT <-as.numeric(dt6$SEEDLCNT)
 
+dt6$SEEDLCNT) ]
+if (class(dt6$SEEDLCNT)=="character") dt6$SEEDLCNT <-as.numeric(dt6$SEEDLCNT)
+
+
+

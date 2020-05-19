@@ -53,7 +53,7 @@ if (class(dt1$Comments)!="factor") dt1$Comments<- as.factor(dt1$Comments)
 
 
 # Here is the structure of the input data frame:
-str(dt1)
+##str(dt1)
 attach(dt1)
 # The analyses below are basic descriptions of the variables. After testing, they should be replaced.
 
@@ -115,7 +115,7 @@ if (class(dt2$Comments)!="factor") dt2$Comments<- as.factor(dt2$Comments)
 
 
 # Here is the structure of the input data frame:
-str(dt2)
+##str(dt2)
 attach(dt2)
 # The analyses below are basic descriptions of the variables. After testing, they should be replaced.
 
@@ -167,6 +167,19 @@ if (class(dt3$Species)!="factor") dt3$Species<- as.factor(dt3$Species)
 if (class(dt3$Comments)!="factor") dt3$Comments<- as.factor(dt3$Comments)
 
 # Convert Missing Values to NA for non-dates
+
+
+
+
+
+ dt3$Species<- as.factor(dt3$Species)
+if (class(dt3$Comments)!="factor") dt3$Comments<- as.factor(dt3$Comments)
+
+# Convert Missing Values to NA for non-dates
+
+
+
+
 
 
 

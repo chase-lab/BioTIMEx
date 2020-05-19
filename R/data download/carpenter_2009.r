@@ -68,32 +68,9 @@ if (class(dt1$total_biovol)=="factor") dt1$total_biovol <-as.numeric(levels(dt1$
 
 # Convert Missing Values to NA for non-dates
 
+t1$total_biovol) ]
 
-
-# Here is the structure of the input data frame:
-str(dt1)
-attach(dt1)
-# The analyses below are basic descriptions of the variables. After testing, they should be replaced.
-
-summary(lakeid)
-summary(lakename)
-summary(year4)
-summary(daynum)
-summary(sampledate)
-summary(old_taxon_code)
-summary(taxon_code)
-summary(division)
-summary(taxon_name)
-summary(concentration)
-summary(class)
-summary(gal_dimension)
-summary(mean_individ_vol)
-summary(mean_individ_biovol)
-summary(total_vol)
-summary(total_biovol)
-detach(dt1)
-
-
+# Convert Missing Values to NA for non-dates
 
 
 

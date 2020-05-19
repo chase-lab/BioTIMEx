@@ -65,7 +65,7 @@ if(!dir.exists('data/raw data/joern_2016/') || !file.exists(infile1))   {
 
 
    # Here is the structure of the input data frame:
-   str(dt1)
+   ##str(dt1)
    attach(dt1)
    # The analyses below are basic descriptions of the variables. After testing, they should be replaced.
 
@@ -150,7 +150,7 @@ if(!file.exists(infile2)){
 
 
    # Here is the structure of the input data frame:
-   str(dt2)
+   ##str(dt2)
    attach(dt2)
    # The analyses below are basic descriptions of the variables. After testing, they should be replaced.
 
@@ -229,7 +229,7 @@ if(!file.exists(infile2)){
 
 
    # Here is the structure of the input data frame:
-   str(dt3)
+   ##str(dt3)
    attach(dt3)
    # The analyses below are basic descriptions of the variables. After testing, they should be replaced.
 
@@ -251,6 +251,29 @@ if(!file.exists(infile2)){
    summary(Male)
    summary(Total)
    detach(dt3)
+
+
+
+
+
+e)
+   summary(Spcode)
+   summary(Species)
+   summary(FirstInstar)
+   summary(SecondInstar)
+   summary(ThirdInstar)
+   summary(FourthInstar)
+   summary(FifthInstar)
+   summary(Female)
+   summary(Male)
+   summary(Total)
+   detach(dt3)
+
+
+
+
+
+3)
 
 
 

@@ -54,7 +54,7 @@ if (class(dt1$number_per_liter)=="character") dt1$number_per_liter <-as.numeric(
 
 
 # Here is the structure of the input data frame:
-str(dt1)
+##str(dt1)
 attach(dt1)
 # The analyses below are basic descriptions of the variables. After testing, they should be replaced.
 
@@ -71,6 +71,16 @@ detach(dt1)
 
 ddata <- dt1
 save(ddata, file='data/raw data/kratz_2019/ddata')
+
+
+
+
+
+ddata <- dt1
+save(ddata, file='data/raw data/kratz_2019/ddata')
+
+
+
 
 
 

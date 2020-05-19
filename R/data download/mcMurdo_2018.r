@@ -163,3 +163,14 @@ if (class(dt2$COMMENTS)!="factor") dt2$COMMENTS<- as.factor(dt2$COMMENTS)
 
 
 
+))[as.integer(dt2$PAR_UMOL_M2_S) ]
+if (class(dt2$COMMENTS)!="factor") dt2$COMMENTS<- as.factor(dt2$COMMENTS)
+
+# Convert Missing Values to NA for non-dates
+
+
+
+
+
+
+

@@ -9,9 +9,9 @@ dat$month <- format(ddata$date, "%m")
 dat$day <- format(ddata$date, "%d")
 
 dat$site <- ddata$block
-dat$block <- NA
-dat$plot <- ddata$treatment
-dat$subplot <- ddata$subplot
+dat$block <- ddata$treatment
+dat$plot <- ddata$subplot
+dat$subplot <- NA
 
 dat$treatment <- paste(ddata$treatment, ddata$subplot.t, sep='_')
 dat$treatment_type <- "manipulated community"

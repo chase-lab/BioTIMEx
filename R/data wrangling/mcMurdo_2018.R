@@ -37,6 +37,6 @@ dat$comment <- 'Two experiments in one. In "moat" treatment, samples are moved u
 
 dat <- dat[!is.na(dat$value), ]
 
-dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, 'a.csv'),
-          row.names=FALSE)
+# dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
+# write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, 'a.csv'),
+#           row.names=FALSE)
