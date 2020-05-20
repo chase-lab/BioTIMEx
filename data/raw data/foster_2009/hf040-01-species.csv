@@ -1,0 +1,135 @@
+tree.herb,species,code
+Tree,Acer pensylvanicum,ACPE
+Tree,Acer rubrum,ACRU
+Tree,Acer saccharum,ACSA
+Tree,Betula alleghaniensis,BEAL
+Tree,Betula lenta,BELE
+Tree,Betula papyrifera,BEPA
+Tree,Betula populifolia,BEPO
+Tree,Carpinus caroliniana,CACA
+Tree,Castanea dentata,CADE
+Tree,Carya ovata,CAOV
+Tree,Fagus grandifolia,FAGR
+Tree,Fraxus americana,FRAM
+Tree,Pinus strobus,PIST
+Tree,Populus species,POSSP
+Tree,Prunus pensylvanica,PRPE
+Tree,Prunus serotina,PRSE
+Tree,Quercus alba,QUAL
+Tree,Quercus rubra,QUBO
+Tree,Salix species,SALIX
+Tree,Tilia americana,TIAM
+Tree,Tsuga canadensis,TSCA
+Tree,Ulmus americana,ULAM
+Herb,Achillea millefolium,ACMI
+Herb,Actaea alba (pachypodia),ACPA
+Herb,Amelanchier spp,AMSPP
+Herb,Amphicarpaea bracteata,AMBR
+Herb,Anemone quinquefolia,ANQU
+Herb,Antennaria spp,ANSPP
+Herb,Aralia hispida,ARHI
+Herb,Aralia nudicaulis,ARNU
+Herb,Arisaema triphyllum (Pyrus),ARAT
+Herb,Aronia spp,PYSPP
+Herb,Asclepias spp,ACSPP
+Herb,Aster spp,ASSPP
+Herb,Athyrium felix-femina,ATFE
+Herb,Berberis thunbergii,BETH
+Herb,Brachelytrum erectum,BRER
+Herb,Carex spp,CASPP
+Herb,Chimaphila spp,CHSPP
+Herb,Cirsium spp,CISPP
+Herb,Clematis virginiana,CLVI
+Herb,Clintonia borealis,CLBO
+Herb,Comptonia peregrina,COSPP
+Herb,Coptis trifolia,COGR
+Herb,Cornus alternifolia,COAL
+Herb,Cornus canadensis,COCA
+Herb,Corylus cornuta,COCO
+Herb,Crataegus spp,CRSPP
+Herb,Cypripedium acaule,CYAC
+Herb,Dennstaedtia punctilobula,DEPU
+Herb,Dicentra cucullaria,DICU
+Herb,Diervilla lonicera,DILO
+Herb,Dryopteris cristata,DRCR
+Herb,Dryopteris marginalis,DRMA
+Herb,Dryopteris spinulosa,DRSP
+Herb,Epigaea repens,EPRE
+Herb,Epilobium angustifolium,EPAN
+Herb,Fragaria spp,FRSPP
+Herb,Galium spp,GASPP
+Herb,Gaultheria procumbens,GAPR
+Herb,Goodyera spp (Epipactis),EPSPP
+Herb,Habenaria ciliaris,HACI
+Herb,Hamamelis virginiana,HAVI
+Herb,Hedyotis caerulea (Houstonia),HOSPP
+Herb,Hypericum spp,HYSPP
+Herb,Ilex verticillata,ILSPP
+Herb,Juniperus communis,JUCO
+Herb,Kalmia angustifolia,KAAN
+Herb,Lamiaceae (not included in analysis),LASPP
+Herb,Lindera benzoin,LIBE
+Herb,Lobelia spp,LOSPP
+Herb,Lonicera canadensis,LOCA
+Herb,Lycopodium spp,LYSPP
+Herb,Lycopus spp,LCSPP
+Herb,Lysimachia quadrifolia,LSSPP
+Herb,Maianthemum canadense,MACA
+Herb,Medeola virginiana,MEVI
+Herb,Melampyrum lineare,MELI
+Herb,Mitchella repens,MIRE
+Herb,Mitella diphylla,MIDI
+Herb,Monotropa uniflora,MOUN
+Herb,Nemopanthus mucronatus,NEMU
+Herb,Oenothera fruticosa,OEFR
+Herb,Onoclea sensibilis,ONSE
+Herb,Osmunda cinnamomea,OSCI
+Herb,Osmunda claytoniana,OSCL
+Herb,Oxalis stricta (Europaea),OXEU
+Herb,Plantago spp,PLSPP
+Herb,Polygala paucifolia,POPA
+Herb,Polygonatum pubescens,POPU
+Herb,Polygonum spp,POSPP
+Herb,Polypodium virginianum (vulgare),POVU
+Herb,Polystichum acrostichoides,POAC
+Herb,Potentilla spp,PTSPP
+Herb,Prenanthes spp,PRSPP
+Herb,Prunella vulgaris,PRVU
+Herb,Pteridium aquilinum,PTAQ
+Herb,Pyrola elliptica,PYEL
+Herb,Pyrola rotundifolia,PYRO
+Herb,Ranunculus spp,RASPP
+Herb,Rhododendron spp,RHSPP
+Herb,Rhus spp,RSSPP
+Herb,Rubus allegheniensis,RUAL
+Herb,Rubus hispidus,RUHI
+Herb,Rumex acetosella,RUAC
+Herb,Sambucus canadensis,SACA
+Herb,Sambucus racemosa (pubens),SAPU
+Herb,Sicyos angulatus,SIAN
+Herb,Sisyrinchium spp,SISPP
+Herb,Smilacina racemosa,SMRA
+Herb,Smilacina stellata,SMST
+Herb,Smilax herbacea,SMHE
+Herb,Solidago spp,SOSPP
+Herb,Sorbus americana,SOAM
+Herb,Spiraea latifolia,SPSPP
+Herb,Stellaria spp,STSPP
+Herb,Streptopus amplexifolius,STAM
+Herb,Taraxacum offinale,TESPP
+Herb,Taxus canadensis,TACA
+Herb,Thalictrum pubescens (polygamum),THPO
+Herb,Thelypteris noveboracensis,THNO
+Herb,Tiarella cordifolia,TICO
+Herb,Toxicodendron radicans (Rhus),RHRA
+Herb,Trientalis borealis,TRBO
+Herb,Trillium erectum,TRER
+Herb,Uvularia sessilifolia,UVSE
+Herb,Vaccinium spp,VASPP
+Herb,Verbascum spp,VESPP
+Herb,Viburnum acerifolium,VIAC
+Herb,Viburnum alnifolium,VIAL
+Herb,Viburnum dentatum,VIDE
+Herb,Viburnum nudum (cassinoides),VICA
+Herb,Viola spp,VISPP
+Herb,Vitis spp,VTSPP

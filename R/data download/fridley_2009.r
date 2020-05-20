@@ -12,6 +12,4 @@ if(!dir.exists('data/raw data/fridley_2009/') || !file.exists(infile1csv)){
 ddata <- read.csv(infile1csv, h=T)
 save(ddata, file='data/raw data/fridley_2009/ddata')
 
-09/ddata')
-
 

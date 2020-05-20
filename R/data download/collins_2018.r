@@ -63,7 +63,7 @@
    # Convert Missing Values to NA for non-dates
 
 
-
+if(FALSE) {
    # Here is the structure of the input data frame:
    ##str(dt1)
    attach(dt1)
@@ -80,6 +80,9 @@
    summary(species)
    summary(relcover)
    detach(dt1)
+}
+
+
 
    infile2 <- 'data/raw data/collins_2018/dt2.csv'
 if(!file.exists(infile2))   {
@@ -166,7 +169,7 @@ if(!file.exists(infile2))   {
    dt2$dataset_length <- ifelse((trimws(as.character(dt2$dataset_length))==trimws("NA")),NA,dt2$dataset_length)
    dt2$time_step <- ifelse((trimws(as.character(dt2$time_step))==trimws("NA")),NA,dt2$time_step)
 
-
+if(FALSE){
    # Here is the structure of the input data frame:
    ##str(dt2)
    attach(dt2)
@@ -195,28 +198,6 @@ if(!file.exists(infile2))   {
    summary(dataset_length)
    summary(time_step)
    detach(dt2)
-
-
-
-
-
-c_level)
-   summary(taxa)
-   summary(ANPP)
-   summary(broad_ecosystem_type)
-   summary(num_plots)
-   summary(temp_C)
-   summary(dataset_length)
-   summary(time_step)
-   detach(dt2)
-
-
-
-
-
-
-
-
-
+}
 
 

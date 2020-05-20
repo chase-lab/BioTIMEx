@@ -1,2 +1,2 @@
-﻿variable name,dataset_id,year,month,day,site,block,plot,subplot,treatment,treatment_type,design,timepoint,time_since_disturbance_days,species,metric,value,unit,comment
-necessary,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE
+﻿variable name,dataset_id,year,month,day,site,block,plot,subplot,treatment,treatment_type,design,timepoint,time_since_disturbance_days,realm,taxon,species,metric,value,unit,comment
+necessary,TRUE,TRUE,FALSE,FALSE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE

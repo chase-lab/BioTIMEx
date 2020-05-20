@@ -24,6 +24,8 @@ timepoints <- paste0('T',timepoints[match(ddata$year, unique(ddata$year))])
 dat$timepoint <- timepoints
 dat$time_since_disturbance_days <- NA
 
+dat$realm <- 'terrestrial'
+dat$taxon <- 'plants'
 dat$species <- ddata$species
 dat$metric <- 'count'
 dat$value <- ddata$contacts

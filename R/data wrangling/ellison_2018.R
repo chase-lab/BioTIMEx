@@ -23,6 +23,8 @@ timepoints <- paste0('T',timepoints[match(ddata$date, unique(ddata$date))])
 dat$timepoint <- timepoints
 dat$time_since_disturbance_days <- NA
 
+dat$realm <- 'terrestrial'
+dat$taxon <- 'invertebrates'
 dat$species <- ddata$spec.code
 dat$metric <- 'count'
 dat$value <- ddata$count

@@ -36,13 +36,13 @@ dt1 <-read.csv(infile1,header=F
 tmpDateFormat<-"%Y-%m-%dT%H:%M"
 tmp1datetime<-as.POSIXct(dt1$datetime,format=tmpDateFormat)
 # Keep the new dates only if they all converted correctly
-if(length(tmp1datetime) == length(tmp1datetime[!is.na(tmp1datetime)])){dt1$datetime <- tmp1datetime } else {print("Date conversion failed for dt1$datetime. Please inspect the data and do the date conversion yourself.")}
+if(length(tmp1datetime) == length(tmp1datetime[!is.na(tmp1datetime)])){dt1$datetime <- tmp1datetime } else {print("Date conversion failed for dt1$datetime. Please inspect the data and do the date conversion yourself.\nIssue resolved at data wrangling step.")}
 rm(tmpDateFormat,tmp1datetime)
 # attempting to convert dt1$date dateTime string to R date structure (date or POSIXct)
 tmpDateFormat<-"%Y-%m-%d"
 tmp1date<-as.Date(dt1$date,format=tmpDateFormat)
 # Keep the new dates only if they all converted correctly
-if(length(tmp1date) == length(tmp1date[!is.na(tmp1date)])){dt1$date <- tmp1date } else {print("Date conversion failed for dt1$date. Please inspect the data and do the date conversion yourself.")}
+if(length(tmp1date) == length(tmp1date[!is.na(tmp1date)])){dt1$date <- tmp1date } else {print("Date conversion failed for dt1$date. Please inspect the data and do the date conversion yourself.\nIssue resolved at data wrangling step.")}
 rm(tmpDateFormat,tmp1date)
 if (class(dt1$soilt)=="factor") dt1$soilt <-as.numeric(levels(dt1$soilt))[as.integer(dt1$soilt) ]
 if (class(dt1$soilt)=="character") dt1$soilt <-as.numeric(dt1$soilt)
@@ -157,85 +157,80 @@ save(ddata, file='data/raw data/ellison_2018/ddata')
 
 
 
+if(FALSE) {
+   # Nitrogen data
 
-# Nitrogen data
+   infile4 <- 'data/raw data/ellison_2018/hf160-04-nitrogen.csv'
+   if(!dir.exists('data/raw data/ellison_2018/') || !file.exists(infile4))   {
+      dir.create('data/raw data/ellison_2018/',  showWarnings = FALSE)
+      inUrl4  <- "https://pasta.lternet.edu/package/data/eml/knb-lter-hfr/160/20/ae3924330258eef88d26f8abe7cdf4d1"
+      download.file(inUrl4, infile4, method="curl")
+   }
 
-infile4 <- 'data/raw data/ellison_2018/hf160-04-nitrogen.csv'
-if(!dir.exists('data/raw data/ellison_2018/') || !file.exists(infile4))   {
-   dir.create('data/raw data/ellison_2018/',  showWarnings = FALSE)
-   inUrl4  <- "https://pasta.lternet.edu/package/data/eml/knb-lter-hfr/160/20/ae3924330258eef88d26f8abe7cdf4d1"
-   download.file(inUrl4, infile4, method="curl")
+
+   dt4 <-read.csv(infile4, header=F
+                  ,skip=1
+                  ,sep=","
+                  , col.names=c(
+                     "year",
+                     "quarter",
+                     "treatment",
+                     "block",
+                     "plot",
+                     "subplot",
+                     "subplot.t",
+                     "res.mass",
+                     "tot.nh4",
+                     "tot.no3",
+                     "res.nh4",
+                     "res.no3",
+                     "tot.n",
+                     "res.n",
+                     "daily.nh4",
+                     "daily.no3",
+                     "daily.n"    ), check.names=TRUE)
+
+
+   # Fix any interval or ratio columns mistakenly read in as nominal and nominal columns read as numeric or dates read as strings
+
+   if (class(dt4$quarter)!="factor") dt4$quarter<- as.factor(dt4$quarter)
+   if (class(dt4$treatment)!="factor") dt4$treatment<- as.factor(dt4$treatment)
+   if (class(dt4$block)!="factor") dt4$block<- as.factor(dt4$block)
+   if (class(dt4$plot)!="factor") dt4$plot<- as.factor(dt4$plot)
+   if (class(dt4$subplot)!="factor") dt4$subplot<- as.factor(dt4$subplot)
+   if (class(dt4$subplot.t)!="factor") dt4$subplot.t<- as.factor(dt4$subplot.t)
+   if (class(dt4$res.mass)=="factor") dt4$res.mass <-as.numeric(levels(dt4$res.mass))[as.integer(dt4$res.mass) ]
+   if (class(dt4$res.mass)=="character") dt4$res.mass <-as.numeric(dt4$res.mass)
+   if (class(dt4$tot.nh4)=="factor") dt4$tot.nh4 <-as.numeric(levels(dt4$tot.nh4))[as.integer(dt4$tot.nh4) ]
+   if (class(dt4$tot.nh4)=="character") dt4$tot.nh4 <-as.numeric(dt4$tot.nh4)
+   if (class(dt4$tot.no3)=="factor") dt4$tot.no3 <-as.numeric(levels(dt4$tot.no3))[as.integer(dt4$tot.no3) ]
+   if (class(dt4$tot.no3)=="character") dt4$tot.no3 <-as.numeric(dt4$tot.no3)
+   if (class(dt4$res.nh4)=="factor") dt4$res.nh4 <-as.numeric(levels(dt4$res.nh4))[as.integer(dt4$res.nh4) ]
+   if (class(dt4$res.nh4)=="character") dt4$res.nh4 <-as.numeric(dt4$res.nh4)
+   if (class(dt4$res.no3)=="factor") dt4$res.no3 <-as.numeric(levels(dt4$res.no3))[as.integer(dt4$res.no3) ]
+   if (class(dt4$res.no3)=="character") dt4$res.no3 <-as.numeric(dt4$res.no3)
+   if (class(dt4$tot.n)=="factor") dt4$tot.n <-as.numeric(levels(dt4$tot.n))[as.integer(dt4$tot.n) ]
+   if (class(dt4$tot.n)=="character") dt4$tot.n <-as.numeric(dt4$tot.n)
+   if (class(dt4$res.n)=="factor") dt4$res.n <-as.numeric(levels(dt4$res.n))[as.integer(dt4$res.n) ]
+   if (class(dt4$res.n)=="character") dt4$res.n <-as.numeric(dt4$res.n)
+   if (class(dt4$daily.nh4)=="factor") dt4$daily.nh4 <-as.numeric(levels(dt4$daily.nh4))[as.integer(dt4$daily.nh4) ]
+   if (class(dt4$daily.nh4)=="character") dt4$daily.nh4 <-as.numeric(dt4$daily.nh4)
+   if (class(dt4$daily.no3)=="factor") dt4$daily.no3 <-as.numeric(levels(dt4$daily.no3))[as.integer(dt4$daily.no3) ]
+   if (class(dt4$daily.no3)=="character") dt4$daily.no3 <-as.numeric(dt4$daily.no3)
+   if (class(dt4$daily.n)=="factor") dt4$daily.n <-as.numeric(levels(dt4$daily.n))[as.integer(dt4$daily.n) ]
+   if (class(dt4$daily.n)=="character") dt4$daily.n <-as.numeric(dt4$daily.n)
+
+   # Convert Missing Values to NA for non-dates
+
+   dt4$res.mass <- ifelse((trimws(as.character(dt4$res.mass))==trimws("NA")),NA,dt4$res.mass)
+   dt4$tot.nh4 <- ifelse((trimws(as.character(dt4$tot.nh4))==trimws("NA")),NA,dt4$tot.nh4)
+   dt4$tot.no3 <- ifelse((trimws(as.character(dt4$tot.no3))==trimws("NA")),NA,dt4$tot.no3)
+   dt4$res.nh4 <- ifelse((trimws(as.character(dt4$res.nh4))==trimws("NA")),NA,dt4$res.nh4)
+   dt4$res.no3 <- ifelse((trimws(as.character(dt4$res.no3))==trimws("NA")),NA,dt4$res.no3)
+   dt4$tot.n <- ifelse((trimws(as.character(dt4$tot.n))==trimws("NA")),NA,dt4$tot.n)
+   dt4$res.n <- ifelse((trimws(as.character(dt4$res.n))==trimws("NA")),NA,dt4$res.n)
+   dt4$daily.nh4 <- ifelse((trimws(as.character(dt4$daily.nh4))==trimws("NA")),NA,dt4$daily.nh4)
+   dt4$daily.no3 <- ifelse((trimws(as.character(dt4$daily.no3))==trimws("NA")),NA,dt4$daily.no3)
+   dt4$daily.n <- ifelse((trimws(as.character(dt4$daily.n))==trimws("NA")),NA,dt4$daily.n)
 }
 
-
-dt4 <-read.csv(infile4, header=F
-               ,skip=1
-               ,sep=","
-               , col.names=c(
-                  "year",
-                  "quarter",
-                  "treatment",
-                  "block",
-                  "plot",
-                  "subplot",
-                  "subplot.t",
-                  "res.mass",
-                  "tot.nh4",
-                  "tot.no3",
-                  "res.nh4",
-                  "res.no3",
-                  "tot.n",
-                  "res.n",
-                  "daily.nh4",
-                  "daily.no3",
-                  "daily.n"    ), check.names=TRUE)
-
-
-# Fix any interval or ratio columns mistakenly read in as nominal and nominal columns read as numeric or dates read as strings
-
-if (class(dt4$quarter)!="factor") dt4$quarter<- as.factor(dt4$quarter)
-if (class(dt4$treatment)!="factor") dt4$treatment<- as.factor(dt4$treatment)
-if (class(dt4$block)!="factor") dt4$block<- as.factor(dt4$block)
-if (class(dt4$plot)!="factor") dt4$plot<- as.factor(dt4$plot)
-if (class(dt4$subplot)!="factor") dt4$subplot<- as.factor(dt4$subplot)
-if (class(dt4$subplot.t)!="factor") dt4$subplot.t<- as.factor(dt4$subplot.t)
-if (class(dt4$res.mass)=="factor") dt4$res.mass <-as.numeric(levels(dt4$res.mass))[as.integer(dt4$res.mass) ]
-if (class(dt4$res.mass)=="character") dt4$res.mass <-as.numeric(dt4$res.mass)
-if (class(dt4$tot.nh4)=="factor") dt4$tot.nh4 <-as.numeric(levels(dt4$tot.nh4))[as.integer(dt4$tot.nh4) ]
-if (class(dt4$tot.nh4)=="character") dt4$tot.nh4 <-as.numeric(dt4$tot.nh4)
-if (class(dt4$tot.no3)=="factor") dt4$tot.no3 <-as.numeric(levels(dt4$tot.no3))[as.integer(dt4$tot.no3) ]
-if (class(dt4$tot.no3)=="character") dt4$tot.no3 <-as.numeric(dt4$tot.no3)
-if (class(dt4$res.nh4)=="factor") dt4$res.nh4 <-as.numeric(levels(dt4$res.nh4))[as.integer(dt4$res.nh4) ]
-if (class(dt4$res.nh4)=="character") dt4$res.nh4 <-as.numeric(dt4$res.nh4)
-if (class(dt4$res.no3)=="factor") dt4$res.no3 <-as.numeric(levels(dt4$res.no3))[as.integer(dt4$res.no3) ]
-if (class(dt4$res.no3)=="character") dt4$res.no3 <-as.numeric(dt4$res.no3)
-if (class(dt4$tot.n)=="factor") dt4$tot.n <-as.numeric(levels(dt4$tot.n))[as.integer(dt4$tot.n) ]
-if (class(dt4$tot.n)=="character") dt4$tot.n <-as.numeric(dt4$tot.n)
-if (class(dt4$res.n)=="factor") dt4$res.n <-as.numeric(levels(dt4$res.n))[as.integer(dt4$res.n) ]
-if (class(dt4$res.n)=="character") dt4$res.n <-as.numeric(dt4$res.n)
-if (class(dt4$daily.nh4)=="factor") dt4$daily.nh4 <-as.numeric(levels(dt4$daily.nh4))[as.integer(dt4$daily.nh4) ]
-if (class(dt4$daily.nh4)=="character") dt4$daily.nh4 <-as.numeric(dt4$daily.nh4)
-if (class(dt4$daily.no3)=="factor") dt4$daily.no3 <-as.numeric(levels(dt4$daily.no3))[as.integer(dt4$daily.no3) ]
-if (class(dt4$daily.no3)=="character") dt4$daily.no3 <-as.numeric(dt4$daily.no3)
-if (class(dt4$daily.n)=="factor") dt4$daily.n <-as.numeric(levels(dt4$daily.n))[as.integer(dt4$daily.n) ]
-if (class(dt4$daily.n)=="character") dt4$daily.n <-as.numeric(dt4$daily.n)
-
-# Convert Missing Values to NA for non-dates
-
-dt4$res.mass <- ifelse((trimws(as.character(dt4$res.mass))==trimws("NA")),NA,dt4$res.mass)
-dt4$tot.nh4 <- ifelse((trimws(as.character(dt4$tot.nh4))==trimws("NA")),NA,dt4$tot.nh4)
-dt4$tot.no3 <- ifelse((trimws(as.character(dt4$tot.no3))==trimws("NA")),NA,dt4$tot.no3)
-dt4$res.nh4 <- ifelse((trimws(as.character(dt4$res.nh4))==trimws("NA")),NA,dt4$res.nh4)
-dt4$res.no3 <- ifelse((trimws(as.character(dt4$res.no3))==trimws("NA")),NA,dt4$res.no3)
-dt4$tot.n <- ifelse((trimws(as.character(dt4$tot.n))==trimws("NA")),NA,dt4$tot.n)
-dt4$res.n <- ifelse((trimws(as.character(dt4$res.n))==trimws("NA")),NA,dt4$res.n)
-dt4$daily.nh4 <- ifelse((trimws(as.character(dt4$daily.nh4))==trimws("NA")),NA,dt4$daily.nh4)
-dt4$daily.no3 <- ifelse((trimws(as.character(dt4$daily.no3))==trimws("NA")),NA,dt4$daily.no3)
-dt4$daily.n <- ifelse((trimws(as.character(dt4$daily.n))==trimws("NA")),NA,dt4$daily.n)
-
-# Other environmental variable tables not loaded.
-t4$daily.no3 <- ifelse((trimws(as.character(dt4$daily.no3))==trimws("NA")),NA,dt4$daily.no3)
-dt4$daily.n <- ifelse((trimws(as.character(dt4$daily.n))==trimws("NA")),NA,dt4$daily.n)
-
-# Other environmental variable tables not loaded.
-d.

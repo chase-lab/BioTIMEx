@@ -27,6 +27,8 @@ dat$design <- paste0(
 dat$timepoint <- ddata_moat$TIMEPOINT
 dat$time_since_disturbance_days <- as.numeric(ddata_moat$COLLECTION_DATE - as.Date(ddata_moat$COLLECTION_DATE[1]))
 
+dat$realm <- 'freshwater'
+dat$taxon <- 'plankton'
 dat$species <- ddata_moat$spec.code
 dat$metric <- 'count'
 dat$value <- ddata_moat$count

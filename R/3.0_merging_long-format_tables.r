@@ -35,9 +35,16 @@ if(any(is.na(long_table$site) & !is.na(long_table$block)) ||
 
 na_variables <- apply(long_table[, indispensable_variables], 2, function(variable) any(is.na(variable)))
 if(any(na_variables))   {
-   na_variables_names <- colnames(long_table)[na_variables]
-   warning(pasate('NA values in columns', collapse = ", "))
+
+   na_variables_names <- indispensable_variables[na_variables]
+   # warning(paste0('NA values in columns ', paste(na_variables_names, collapse = ", ")))
+
+   for(na_variable in na_variables_names) {
+      print(paste0('The variable -', na_variable, '- has missing values in the following datasets: ', paste(unique(long_table[is.na(long_table[, na_variable]), 'dataset_id']), collapse = ', ')))
+   }
+
 }
+
 
 
 

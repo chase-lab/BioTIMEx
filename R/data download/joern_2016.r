@@ -177,105 +177,85 @@ if(!file.exists(infile2)){
    detach(dt2)
 
 
-   infile3 <- 'data/raw data/joern_2016/dt3.csv'
-   if(!file.exists(infile3)){
-   inUrl3  <- "https://pasta.lternet.edu/package/data/eml/knb-lter-knz/32/7/67cd5fc63ad43160d8db1efe50fba7e2"
-   download.file(inUrl3,infile3,method="auto")
+
+
+if(FALSE) {
+         infile3 <- 'data/raw data/joern_2016/dt3.csv'
+         if(!file.exists(infile3)){
+         inUrl3  <- "https://pasta.lternet.edu/package/data/eml/knb-lter-knz/32/7/67cd5fc63ad43160d8db1efe50fba7e2"
+         download.file(inUrl3,infile3,method="auto")
+      }
+
+         dt3 <-read.csv(infile3,header=F
+                        ,skip=1
+                        ,sep=","
+                        ,quot='"'
+                        , col.names=c(
+                           "DataCode",
+                           "RecType",
+                           "RecYear",
+                           "RecMonth",
+                           "RecDay",
+                           "Watershed",
+                           "Repsite",
+                           "Spcode",
+                           "Species",
+                           "FirstInstar",
+                           "SecondInstar",
+                           "ThirdInstar",
+                           "FourthInstar",
+                           "FifthInstar",
+                           "Female",
+                           "Male",
+                           "Total"    ), check.names=TRUE)
+
+
+         # Fix any interval or ratio columns mistakenly read in as nominal and nominal columns read as numeric or dates read as strings
+
+         if (class(dt3$DataCode)!="factor") dt3$DataCode<- as.factor(dt3$DataCode)
+         if (class(dt3$RecType)!="factor") dt3$RecType<- as.factor(dt3$RecType)
+         if (class(dt3$Watershed)!="factor") dt3$Watershed<- as.factor(dt3$Watershed)
+         if (class(dt3$Repsite)!="factor") dt3$Repsite<- as.factor(dt3$Repsite)
+         if (class(dt3$Spcode)!="factor") dt3$Spcode<- as.factor(dt3$Spcode)
+         if (class(dt3$Species)!="factor") dt3$Species<- as.factor(dt3$Species)
+         if (class(dt3$FirstInstar)=="factor") dt3$FirstInstar <-as.numeric(levels(dt3$FirstInstar))[as.integer(dt3$FirstInstar) ]
+         if (class(dt3$SecondInstar)=="factor") dt3$SecondInstar <-as.numeric(levels(dt3$SecondInstar))[as.integer(dt3$SecondInstar) ]
+         if (class(dt3$ThirdInstar)=="factor") dt3$ThirdInstar <-as.numeric(levels(dt3$ThirdInstar))[as.integer(dt3$ThirdInstar) ]
+         if (class(dt3$FourthInstar)=="factor") dt3$FourthInstar <-as.numeric(levels(dt3$FourthInstar))[as.integer(dt3$FourthInstar) ]
+         if (class(dt3$FifthInstar)=="factor") dt3$FifthInstar <-as.numeric(levels(dt3$FifthInstar))[as.integer(dt3$FifthInstar) ]
+         if (class(dt3$Female)=="factor") dt3$Female <-as.numeric(levels(dt3$Female))[as.integer(dt3$Female) ]
+         if (class(dt3$Male)=="factor") dt3$Male <-as.numeric(levels(dt3$Male))[as.integer(dt3$Male) ]
+         if (class(dt3$Total)=="factor") dt3$Total <-as.numeric(levels(dt3$Total))[as.integer(dt3$Total) ]
+
+         # Convert Missing Values to NA for non-dates
+
+
+
+         # Here is the structure of the input data frame:
+         ##str(dt3)
+         attach(dt3)
+         # The analyses below are basic descriptions of the variables. After testing, they should be replaced.
+
+         summary(DataCode)
+         summary(RecType)
+         summary(RecYear)
+         summary(RecMonth)
+         summary(RecDay)
+         summary(Watershed)
+         summary(Repsite)
+         summary(Spcode)
+         summary(Species)
+         summary(FirstInstar)
+         summary(SecondInstar)
+         summary(ThirdInstar)
+         summary(FourthInstar)
+         summary(FifthInstar)
+         summary(Female)
+         summary(Male)
+         summary(Total)
+         detach(dt3)
+
 }
-
-   dt3 <-read.csv(infile3,header=F
-                  ,skip=1
-                  ,sep=","
-                  ,quot='"'
-                  , col.names=c(
-                     "DataCode",
-                     "RecType",
-                     "RecYear",
-                     "RecMonth",
-                     "RecDay",
-                     "Watershed",
-                     "Repsite",
-                     "Spcode",
-                     "Species",
-                     "FirstInstar",
-                     "SecondInstar",
-                     "ThirdInstar",
-                     "FourthInstar",
-                     "FifthInstar",
-                     "Female",
-                     "Male",
-                     "Total"    ), check.names=TRUE)
-
-
-   # Fix any interval or ratio columns mistakenly read in as nominal and nominal columns read as numeric or dates read as strings
-
-   if (class(dt3$DataCode)!="factor") dt3$DataCode<- as.factor(dt3$DataCode)
-   if (class(dt3$RecType)!="factor") dt3$RecType<- as.factor(dt3$RecType)
-   if (class(dt3$Watershed)!="factor") dt3$Watershed<- as.factor(dt3$Watershed)
-   if (class(dt3$Repsite)!="factor") dt3$Repsite<- as.factor(dt3$Repsite)
-   if (class(dt3$Spcode)!="factor") dt3$Spcode<- as.factor(dt3$Spcode)
-   if (class(dt3$Species)!="factor") dt3$Species<- as.factor(dt3$Species)
-   if (class(dt3$FirstInstar)=="factor") dt3$FirstInstar <-as.numeric(levels(dt3$FirstInstar))[as.integer(dt3$FirstInstar) ]
-   if (class(dt3$SecondInstar)=="factor") dt3$SecondInstar <-as.numeric(levels(dt3$SecondInstar))[as.integer(dt3$SecondInstar) ]
-   if (class(dt3$ThirdInstar)=="factor") dt3$ThirdInstar <-as.numeric(levels(dt3$ThirdInstar))[as.integer(dt3$ThirdInstar) ]
-   if (class(dt3$FourthInstar)=="factor") dt3$FourthInstar <-as.numeric(levels(dt3$FourthInstar))[as.integer(dt3$FourthInstar) ]
-   if (class(dt3$FifthInstar)=="factor") dt3$FifthInstar <-as.numeric(levels(dt3$FifthInstar))[as.integer(dt3$FifthInstar) ]
-   if (class(dt3$Female)=="factor") dt3$Female <-as.numeric(levels(dt3$Female))[as.integer(dt3$Female) ]
-   if (class(dt3$Male)=="factor") dt3$Male <-as.numeric(levels(dt3$Male))[as.integer(dt3$Male) ]
-   if (class(dt3$Total)=="factor") dt3$Total <-as.numeric(levels(dt3$Total))[as.integer(dt3$Total) ]
-
-   # Convert Missing Values to NA for non-dates
-
-
-
-   # Here is the structure of the input data frame:
-   ##str(dt3)
-   attach(dt3)
-   # The analyses below are basic descriptions of the variables. After testing, they should be replaced.
-
-   summary(DataCode)
-   summary(RecType)
-   summary(RecYear)
-   summary(RecMonth)
-   summary(RecDay)
-   summary(Watershed)
-   summary(Repsite)
-   summary(Spcode)
-   summary(Species)
-   summary(FirstInstar)
-   summary(SecondInstar)
-   summary(ThirdInstar)
-   summary(FourthInstar)
-   summary(FifthInstar)
-   summary(Female)
-   summary(Male)
-   summary(Total)
-   detach(dt3)
-
-
-
-
-
-e)
-   summary(Spcode)
-   summary(Species)
-   summary(FirstInstar)
-   summary(SecondInstar)
-   summary(ThirdInstar)
-   summary(FourthInstar)
-   summary(FifthInstar)
-   summary(Female)
-   summary(Male)
-   summary(Total)
-   detach(dt3)
-
-
-
-
-
-3)
-
-
 
 
 

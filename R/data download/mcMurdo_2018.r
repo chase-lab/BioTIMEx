@@ -117,60 +117,48 @@ ddata <- dt1
 save(ddata, file = 'data/raw data/mcMurdo_2018/ddata')
 
 
+extra_downloads <- FALSE
+if(extra_downloads) {
+
+         infile2 <- 'data/raw data/mcMurdo_2018/LIMNO_TLICE_CTP.csv'
+         if(!file.exists(infile2))   {
+            inUrl2  <- "https://pasta.lternet.edu/package/data/eml/knb-lter-mcm/3004/1/6b7f0a3d9c6deb0877ecfaaa3a4008ed"
+            download.file(inUrl2,infile2,method="auto")
+         }
+
+         dt2 <-read.csv(infile2,header=F
+                        ,skip=1
+                        ,sep=","
+                        ,quot='"'
+                        , col.names=c(
+                           "DATASET_CODE",
+                           "Collection.Date",
+                           "LOCATION",
+                           "SAMPLE_TYPE",
+                           "DEPTH_M",
+                           "CONDUCTIVITY_MS_CM",
+                           "TEMPERATURE_C",
+                           "PAR_UMOL_M2_S",
+                           "COMMENTS"    ), check.names=TRUE)
 
 
+         # Fix any interval or ratio columns mistakenly read in as nominal and nominal columns read as numeric or dates read as strings
 
-infile2 <- 'data/raw data/mcMurdo_2018/LIMNO_TLICE_CTP.csv'
-if(!file.exists(infile2))   {
-   inUrl2  <- "https://pasta.lternet.edu/package/data/eml/knb-lter-mcm/3004/1/6b7f0a3d9c6deb0877ecfaaa3a4008ed"
-   download.file(inUrl2,infile2,method="auto")
+         if (class(dt2$DATASET_CODE)!="factor") dt2$DATASET_CODE<- as.factor(dt2$DATASET_CODE)
+         # attempting to convert dt2$Collection.Date dateTime string to R date structure (date or POSIXct)
+         tmpDateFormat<-"%m/%d/%Y"
+         tmp2Collection.Date<-as.Date(dt2$Collection.Date,format=tmpDateFormat)
+         # Keep the new dates only if they all converted correctly
+         if(length(tmp2Collection.Date) == length(tmp2Collection.Date[!is.na(tmp2Collection.Date)])){dt2$Collection.Date <- tmp2Collection.Date } else {print("Date conversion failed for dt2$Collection.Date. Please inspect the data and do the date conversion yourself.")}
+         rm(tmpDateFormat,tmp2Collection.Date)
+         if (class(dt2$LOCATION)!="factor") dt2$LOCATION<- as.factor(dt2$LOCATION)
+         if (class(dt2$SAMPLE_TYPE)!="factor") dt2$SAMPLE_TYPE<- as.factor(dt2$SAMPLE_TYPE)
+         if (class(dt2$DEPTH_M)=="factor") dt2$DEPTH_M <-as.numeric(levels(dt2$DEPTH_M))[as.integer(dt2$DEPTH_M) ]
+         if (class(dt2$CONDUCTIVITY_MS_CM)=="factor") dt2$CONDUCTIVITY_MS_CM <-as.numeric(levels(dt2$CONDUCTIVITY_MS_CM))[as.integer(dt2$CONDUCTIVITY_MS_CM) ]
+         if (class(dt2$TEMPERATURE_C)=="factor") dt2$TEMPERATURE_C <-as.numeric(levels(dt2$TEMPERATURE_C))[as.integer(dt2$TEMPERATURE_C) ]
+         if (class(dt2$PAR_UMOL_M2_S)=="factor") dt2$PAR_UMOL_M2_S <-as.numeric(levels(dt2$PAR_UMOL_M2_S))[as.integer(dt2$PAR_UMOL_M2_S) ]
+         if (class(dt2$COMMENTS)!="factor") dt2$COMMENTS<- as.factor(dt2$COMMENTS)
+
+         # Convert Missing Values to NA for non-dates
 }
-
-dt2 <-read.csv(infile2,header=F
-               ,skip=1
-               ,sep=","
-               ,quot='"'
-               , col.names=c(
-                  "DATASET_CODE",
-                  "Collection.Date",
-                  "LOCATION",
-                  "SAMPLE_TYPE",
-                  "DEPTH_M",
-                  "CONDUCTIVITY_MS_CM",
-                  "TEMPERATURE_C",
-                  "PAR_UMOL_M2_S",
-                  "COMMENTS"    ), check.names=TRUE)
-
-
-# Fix any interval or ratio columns mistakenly read in as nominal and nominal columns read as numeric or dates read as strings
-
-if (class(dt2$DATASET_CODE)!="factor") dt2$DATASET_CODE<- as.factor(dt2$DATASET_CODE)
-# attempting to convert dt2$Collection.Date dateTime string to R date structure (date or POSIXct)
-tmpDateFormat<-"%m/%d/%Y"
-tmp2Collection.Date<-as.Date(dt2$Collection.Date,format=tmpDateFormat)
-# Keep the new dates only if they all converted correctly
-if(length(tmp2Collection.Date) == length(tmp2Collection.Date[!is.na(tmp2Collection.Date)])){dt2$Collection.Date <- tmp2Collection.Date } else {print("Date conversion failed for dt2$Collection.Date. Please inspect the data and do the date conversion yourself.")}
-rm(tmpDateFormat,tmp2Collection.Date)
-if (class(dt2$LOCATION)!="factor") dt2$LOCATION<- as.factor(dt2$LOCATION)
-if (class(dt2$SAMPLE_TYPE)!="factor") dt2$SAMPLE_TYPE<- as.factor(dt2$SAMPLE_TYPE)
-if (class(dt2$DEPTH_M)=="factor") dt2$DEPTH_M <-as.numeric(levels(dt2$DEPTH_M))[as.integer(dt2$DEPTH_M) ]
-if (class(dt2$CONDUCTIVITY_MS_CM)=="factor") dt2$CONDUCTIVITY_MS_CM <-as.numeric(levels(dt2$CONDUCTIVITY_MS_CM))[as.integer(dt2$CONDUCTIVITY_MS_CM) ]
-if (class(dt2$TEMPERATURE_C)=="factor") dt2$TEMPERATURE_C <-as.numeric(levels(dt2$TEMPERATURE_C))[as.integer(dt2$TEMPERATURE_C) ]
-if (class(dt2$PAR_UMOL_M2_S)=="factor") dt2$PAR_UMOL_M2_S <-as.numeric(levels(dt2$PAR_UMOL_M2_S))[as.integer(dt2$PAR_UMOL_M2_S) ]
-if (class(dt2$COMMENTS)!="factor") dt2$COMMENTS<- as.factor(dt2$COMMENTS)
-
-# Convert Missing Values to NA for non-dates
-
-
-
-))[as.integer(dt2$PAR_UMOL_M2_S) ]
-if (class(dt2$COMMENTS)!="factor") dt2$COMMENTS<- as.factor(dt2$COMMENTS)
-
-# Convert Missing Values to NA for non-dates
-
-
-
-
-
-
 
