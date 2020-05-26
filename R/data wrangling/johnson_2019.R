@@ -34,8 +34,9 @@ controlimpact <- ifelse(ddata$Nutrient == 'Reference', 'C',
                         ifelse(ddata$Nutrient == 'Fertilized', 'I', NA))
 dat$design <- paste0(beforeafter, controlimpact)
 
-timepoints <- seq_along(unique(ddata$sampledate))
-timepoints <- paste0('T',timepoints[match(ddata$sampledate, unique(ddata$sampledate))])
+sampledate <- paste(ddata$Year, ddata$Month, sep = '-')
+timepoints <- seq_along(unique(sampledate))
+timepoints <- paste0('T',timepoints[match(sampledate, unique(sampledate))])
 dat$timepoint <- timepoints
 
 first_disturbance_date <- as.Date(ifelse(ddata$Period == 'After' & ddata$Fish == 'Low' | (ddata$Period == 'After'  & ddata$Creek == 'Sweeney' & ddata$Nutrient == 'Fertilized'), '2004-05-01',

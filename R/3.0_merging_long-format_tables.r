@@ -27,10 +27,10 @@ if(any(is.na(long_table$site) & !is.na(long_table$block)) ||
    any(is.na(long_table$block) & !is.na(long_table$plot)) ||
    any(is.na(long_table$plot) & !is.na(long_table$subplot))
 ) {
-   datasets <- unique(long_table[is.na(long_table$site) & !is.na(long_table$block) |
+   problematic_datasets <- unique(long_table[is.na(long_table$site) & !is.na(long_table$block) |
                  is.na(long_table$block) & !is.na(long_table$plot) |
                  is.na(long_table$plot) & !is.na(long_table$subplot), "dataset_id"])
-   warning(paste('Review hierarchical structure in', datasets, collapse = ", "))
+   warning(paste0('Review hierarchical structure in: ', paste(problematic_datasets, collapse = ", ")))
 }
 
 na_variables <- apply(long_table[, indispensable_variables], 2, function(variable) any(is.na(variable)))
@@ -40,13 +40,20 @@ if(any(na_variables))   {
    # warning(paste0('NA values in columns ', paste(na_variables_names, collapse = ", ")))
 
    for(na_variable in na_variables_names) {
-      print(paste0('The variable -', na_variable, '- has missing values in the following datasets: ', paste(unique(long_table[is.na(long_table[, na_variable]), 'dataset_id']), collapse = ', ')))
+      warning(paste0('The variable -', na_variable, '- has missing values in the following datasets: ', paste(unique(long_table[is.na(long_table[, na_variable]), 'dataset_id']), collapse = ', ')))
    }
 
 }
+if( any(!is.na(long_table$time_since_disturbance_days) & long_table$time_since_disturbance_days < 0) ) {
+   problematic_studies <- unique(long_table[!is.na(long_table$time_since_disturbance_days) & long_table$time_since_disturbance_days < 0, 'dataset_id'])
+   warning(paste0('Negative values in "time_since_disturbance_days" in: ', paste(problematic_studies, collapse = ', ')))
+}
 
 
-
+## Counting the study cases
+study_cases <- unique(long_table[long_table$treatment != 'control', c('dataset_id','treatment')])
+nrow(study_cases)
+sort(table(study_cases$dataset_id), decreasing=T)
 
 
 # Saving

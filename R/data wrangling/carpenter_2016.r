@@ -18,7 +18,7 @@ dat$treatment <- ifelse(ddata$lakename %in% c("Paul Lake", 'Crampton Lake'), 'co
                                ifelse(ddata$lakename %in% c('Peter Lake','Tuesday Lake'), 'community manipulation', NA)
                         )
 )
-dat$treatment_type <- dat$treatment
+dat$treatment_type <- 'eutrophication + fish community manipulation'
 
 beforeafter <- ifelse(ddata$lakename %in% c("Paul Lake", 'Crampton Lake'), '',
                       ifelse(
@@ -32,9 +32,9 @@ timepoints <- seq_along(unique(ddata$sampledate))
 timepoints <- paste0('T',timepoints[match(ddata$sampledate, unique(ddata$sampledate))])
 dat$timepoint <- timepoints
 dat$time_since_disturbance_days <- ifelse(ddata$lakename %in% c('East Long Lake', 'West Long Lake') & beforeafter == 'A',
-                                          as.numeric(as.Date('1991-05-01', format = '%Y-%m-%d') - ddata$sampledate),
+                                          as.numeric(ddata$sampledate - as.Date('1991-05-01', format = '%Y-%m-%d')),
                                           ifelse(ddata$lakename %in% c('Peter Lake','Tuesday Lake') & beforeafter == 'A',
-                                                 as.numeric(as.Date('1985-01-01', format = '%Y-%m-%d') - ddata$sampledate), NA)
+                                                 as.numeric(ddata$sampledate - as.Date('1985-01-01', format = '%Y-%m-%d')), NA)
 )
 
 dat$realm <- 'freshwater'
