@@ -1,4 +1,4 @@
-# reed_2020
+# reed_2020a
 
 
 
@@ -13,9 +13,9 @@
 
 
 
-infile1 <- 'data/raw data/reed_2020/LTE_All_Fish_All_Years_20200224.csv'
-if(!dir.exists('data/raw data/reed_2020/') || !file.exists(infile1))   {
-   dir.create('data/raw data/reed_2020/', showWarnings = FALSE)
+infile1 <- 'data/raw data/reed_2020a/LTE_All_Fish_All_Years_20200224.csv'
+if(!dir.exists('data/raw data/reed_2020a/') || !file.exists(infile1))   {
+   dir.create('data/raw data/reed_2020a/', showWarnings = FALSE)
    inUrl1  <- "https://pasta.lternet.edu/package/data/eml/knb-lter-sbc/30/18/4587fe81c6d2eabf530c70e53b302132"
    download.file(inUrl1, infile1, method="curl")
 }

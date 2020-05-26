@@ -1,8 +1,8 @@
-## reed_2020
+## reed_2020a
 
 
-dataset_id <- 'reed_2020'
-load(file='data/raw data/reed_2020/ddata')
+dataset_id <- 'reed_2020a'
+load(file='data/raw data/reed_2020a/ddata')
 
 # keeping only useful rows
 ddata <- ddata[ddata$COUNT >0, ]
@@ -11,7 +11,7 @@ dat <- data.frame(dataset_id = rep(dataset_id, nrow(ddata)))
 
 dat$year <- ddata$YEAR
 dat$month <- ddata$MONTH
-dat$day <- format(ddata$DATE, format = '%m')
+dat$day <- format(ddata$DATE, format = '%d')
 
 dat$site <- ddata$SITE
 dat$block <- ddata$TREATMENT
