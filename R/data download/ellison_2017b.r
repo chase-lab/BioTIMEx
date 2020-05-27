@@ -67,21 +67,26 @@ if (class(dt32$n)=="character") dt32$n <-as.numeric(dt32$n)
 dt32$warming <- ifelse((trimws(as.character(dt32$warming))==trimws("NA")),NA,dt32$warming)
 dt32$n <- ifelse((trimws(as.character(dt32$n))==trimws("NA")),NA,dt32$n)
 
+ddata <- dt32
+save(ddata, file = 'data/raw data/ellison_2017b/ddata')
 
-# Here is the structure of the input data frame:
-str(dt32)
-attach(dt32)
-# The analyses below are basic descriptions of the variables. After testing, they should be replaced.
 
-summary(date)
-summary(cham)
-summary(subs)
-summary(treat)
-summary(warming)
-summary(method)
-summary(id)
-summary(genus)
-summary(species)
-summary(n)
-detach(dt32)
 
+if(FALSE) {
+      # Here is the structure of the input data frame:
+      str(dt32)
+      attach(dt32)
+      # The analyses below are basic descriptions of the variables. After testing, they should be replaced.
+
+      summary(date)
+      summary(cham)
+      summary(subs)
+      summary(treat)
+      summary(warming)
+      summary(method)
+      summary(id)
+      summary(genus)
+      summary(species)
+      summary(n)
+      detach(dt32)
+}

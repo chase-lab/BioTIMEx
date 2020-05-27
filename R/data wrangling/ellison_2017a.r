@@ -12,50 +12,54 @@ dat$day <- ddata$day
 
 dat$site <- ddata$site
 dat$block <- ddata$cham
-dat$plot <- ddata$subs
+dat$plot <- toupper (ddata$subs)
 dat$subplot <- NA
 
 
 warming_table <- na.omit(unique(ddata[, c('site','cham','warming','target.delta')]))
-warming <- ifelse(
+warming_table$warming <- gsub(warming_table$warming, pattern = ' c| C', replacement = '_c')
+
+dat$treatment <- ifelse(
    ddata$site == 'HF',
-   warming_table[match(ddata$cham, warming_table[warming_table$site == 'HF', 'cham']), c("warming",'target.delta')],
+   paste(warming_table[warming_table$site == 'HF',][match(ddata$cham, warming_table[warming_table$site == 'HF', 'cham']), "warming"],
+         warming_table[warming_table$site == 'HF',][match(ddata$cham, warming_table[warming_table$site == 'HF', 'cham']), "target.delta"], sep = '_'),
    ifelse(
       ddata$site == 'DF',
-      warming_table[match(ddata$cham, warming_table[warming_table$site == 'DF', 'cham']), c("warming",'target.delta')],
+      paste(warming_table[warming_table$site == 'DF',][match(ddata$cham, warming_table[warming_table$site == 'DF', 'cham']), "warming"],
+            warming_table[warming_table$site == 'DF',][match(ddata$cham, warming_table[warming_table$site == 'DF', 'cham']), "target.delta"], sep = '_'),
       NA)
 )
-faire la meme chose pour ddata$warming ou alors faire les deux a la fois dans le ifelse
 
-dat$treatment <-
 
-#
-# ifelse()
-# ( & ddata$cham %in% c(4, 6, 11, 14, 15)) |
-#    (ddata$site == 'DF' & ddata$cham %in% c(2, 5, 11, 14, 15)) , )
-
-dat$treatment_type <- 'kelp removal'
+dat$treatment_type <- 'warming'
 
 dat$design <- paste0(ifelse(ddata$treat == 'Pre-treat', 'B', "A"),
-                     ifelse(ddata$warning == 'Heated', 'I', "C"))
+                     ifelse(grepl(dat$treatment, pattern = 'control'), 'C', "I"))
 
-timepoints <- seq_along(unique(ddata$Date))
-timepoints <- paste0('T',timepoints[match(ddata$Date, unique(ddata$Date))])
+timepoints <- seq_along(unique(ddata$date))
+timepoints <- paste0('T',timepoints[match(ddata$date, unique(ddata$date))])
 dat$timepoint <- timepoints
-dat$time_since_disturbance_days <- ifelse(dat$treatment == 'control', NA,
-                                          as.numeric(ddata$Date - as.Date('2000/01/01'))
+fdd <- aggregate(date ~ cham + site, data = ddata, FUN=min, subset = ddata$treat == 'Treat') # first_disturbance_date
+dat$time_since_disturbance_days <- ifelse(ddata$treat == 'Pre-treat',
+                                          NA,
+                                          ifelse(ddata$site == 'HF',
+                                                 as.numeric(ddata$date - fdd[fdd$site == 'HF',][match(ddata$cham, fdd[fdd$site == 'HF', 'cham']), 'date']),
+                                                 ifelse(ddata$site == 'DF',
+                                                        as.numeric(ddata$date - fdd[fdd$site == 'DF',][match(ddata$cham, fdd[fdd$site == 'DF', 'cham']), 'date']),
+                                                        NA)
+                                          )
 )
 
 
 dat$realm <- 'terrestrial'
 dat$taxon <- 'invertebrates'
 
-dat$species <- paste(ddata$Genus, ddata$Specific.epithet)
+dat$species <- paste(ddata$genus, ddata$species)
 dat$metric <- 'count'
-dat$value <- ddata$nSpecimens
+dat$value <- ddata$n
 dat$unit <- 'count'
 
-dat$comment <- 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Life stage is also given (sometimes) so subadults could be excluded hence diminishing greatly the number of undeterminate species.'
+dat$comment <- 'Block design with treatments being ,no chamber, a chamber without warming, a chamber and warming with different warming intensities. Two sampling methods: pitfall traps and wrinklers.'
 
 dat <- dat[!is.na(dat$value), ]
 

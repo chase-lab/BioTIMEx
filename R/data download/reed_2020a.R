@@ -101,7 +101,7 @@ dt1$AREA <- ifelse((trimws(as.character(dt1$AREA))==trimws("-99999")),NA,dt1$ARE
 dt1$SCIENTIFIC_NAME <- as.factor(ifelse((trimws(as.character(dt1$SCIENTIFIC_NAME))==trimws("-99999")),NA,as.character(dt1$SCIENTIFIC_NAME)))
 
 ddata <- dt1
-save(ddata, file = 'data/raw data/reed_2020/ddata')
+save(ddata, file = 'data/raw data/reed_2020a/ddata')
 
 
 
