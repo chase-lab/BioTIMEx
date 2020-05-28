@@ -2,14 +2,6 @@
 # ANTS in CHAMBERS
 
 
-
-
-
-
-
-
-
-
 # Package ID: knb-lter-hfr.113.57 Cataloging System:https://pasta.edirepository.org.
 # Data set title: Ants Under Climate Change at Harvard Forest and Duke Forest 2009-2015.
 # Data set creator:  Aaron Ellison -
@@ -229,6 +221,8 @@ if(FALSE) {
       detach(dt21)
 }
 
+# Deleting Winkler samples
+dt18 <- subset(dt18, method != 'Winkler')
 
 # Merging and saving
 dt18 <- dt18[, colnames(dt18) != 'unique.id']

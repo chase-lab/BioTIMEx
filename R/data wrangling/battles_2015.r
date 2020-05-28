@@ -35,8 +35,15 @@ dat$taxon <- 'plants'
 
 dat$species <- ddata$Species
 dat$metric <- 'density'
-species_counts <- aggregate(Species ~ Plot, data = ddata, table)
-reshape2::melt(species_counts, grep(x=colnames(species_counts), 'Species'))
+#species_counts <- aggregate(Species ~ Plot, data = ddata, table)
+#reshape2::melt(species_counts, grep(x=colnames(species_counts), 'Species'))
+
+# Before running, the following changes have to be made
+#  - exclude dead trees
+#  - count individuals only once even if they have several stems
+
+
+
 dat$value <- ddata$n
 dat$unit <- 'ind per m2'
 
@@ -45,6 +52,6 @@ dat$comment <- 'The blocks represent pre-logging vegetation and are not necessar
 dat <- dat[!is.na(dat$value) & dat$value > 0, ]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names=FALSE)
+# write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
+#           row.names=FALSE)
 

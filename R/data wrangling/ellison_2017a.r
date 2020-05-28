@@ -1,5 +1,5 @@
 ## ellison_2017a
-# correct typos in subs, method
+# correct typos in subs
 
 dataset_id <- 'ellison_2017a'
 load(file='data/raw data/ellison_2017a/ddata')
@@ -13,7 +13,7 @@ dat$day <- ddata$day
 dat$site <- ddata$site
 dat$block <- ddata$cham
 dat$plot <- toupper (ddata$subs)
-dat$subplot <- NA
+dat$subplot <- NA         # SPLIT WINKLER AND PITFALLS
 
 
 warming_table <- na.omit(unique(ddata[, c('site','cham','warming','target.delta')]))
@@ -59,7 +59,7 @@ dat$metric <- 'count'
 dat$value <- ddata$n
 dat$unit <- 'count'
 
-dat$comment <- 'Block design with treatments being ,no chamber, a chamber without warming, a chamber and warming with different warming intensities. Two sampling methods: pitfall traps and wrinklers.'
+dat$comment <- 'Block design with treatments being ,no chamber, a chamber without warming, a chamber and warming with different warming intensities. Two sampling methods: pitfall traps and Winkler samples.'
 
 dat <- dat[!is.na(dat$value), ]
 
