@@ -2,6 +2,9 @@
 dataset_id <- 'carpenter_2016'
 load(file='data/raw data/carpenter_2016/ddata')
 
+# Exclusion of lakes with unknown disturbance history
+ddata <- ddata[!ddata$lakename %in% c('Ward Lake','Hummingbird Lake'),]
+
 dat <- data.frame(dataset_id = rep(dataset_id, nrow(ddata)))
 
 dat$year <- ddata$year4
@@ -45,6 +48,7 @@ dat$value <- ddata$abundance
 dat$unit <- 'count'
 
 dat$comment <- 'Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf'
+
 
 dat <- dat[!is.na(dat$value), ]
 

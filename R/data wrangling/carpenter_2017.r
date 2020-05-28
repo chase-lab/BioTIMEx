@@ -40,10 +40,15 @@ dat$time_since_disturbance_days <- ifelse(ddata$lakename %in% c('East Long Lake'
 
 dat$realm <- 'freshwater'
 dat$taxon <- 'phytoplankton'
-dat$species <- paste(ddata$genus, ddata$species, ddata$description, sep=' ')
+dat$species <- trimws( paste(
+   ifelse(is.na(ddata$genus), '', as.character(ddata$genus)),
+   ifelse(is.na(ddata$species), '', as.character(ddata$species)),
+   ifelse(!is.na(ddata$genus) | !is.na(ddata$species), '-', ''),
+   ifelse(is.na(ddata$description), '', as.character(ddata$description)),
+   sep=' ') )
 dat$metric <- 'concentration'
 dat$value <- ddata$concentration
-dat$unit <- NA
+dat$unit <- NA # cell/mL of water?
 
 dat$comment <- 'Samples from 1991 to 1995 were counted by the same person hence ensuring comparable counts. 2013 to 2015 should have consistent sampling and counting too. Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf'
 

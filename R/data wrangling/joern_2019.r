@@ -14,10 +14,13 @@ dat$block <- toupper( substr(ddata$Watershed, 4, 4) )
 dat$plot <- tolower( ddata$Repsite )
 dat$subplot <- NA
 
-grazing <- ifelse(substr(ddata$Watershed, 1, 1) %in% c('n','N'), 'Grazing', '')
-fire_treatment <- tolower( substr(ddata$Watershed, 2, 3) )
+grazing <- ifelse(substr(ddata$Watershed, 1, 1) %in% c('n','N'), 'Grazing', 'noGrazing')
+fire_treatment <- ifelse(substr(ddata$Watershed, 2, 3) == '00',
+                         'noFire',
+                         paste0('fire', toupper( substr(ddata$Watershed, 2, 3) ) )
+)
 
-dat$treatment <- paste0(grazing, ifelse(grazing == '', '', '_'), fire_treatment)
+dat$treatment <- paste(grazing, fire_treatment, sep = '_')
 dat$treatment_type <- "fire and grazing"
 
 dat$design <- paste0('A', ifelse(grazing == '' & fire_treatment == '00', 'C', 'I'))

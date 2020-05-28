@@ -51,7 +51,7 @@ if( any(!is.na(long_table$time_since_disturbance_days) & long_table$time_since_d
 
 
 ## Counting the study cases
-study_cases <- unique(long_table[grep('cont', long_table$treatment, invert = T), c('dataset_id','treatment')])
+study_cases <- unique(long_table[grep('C', long_table$design, invert = T), c('dataset_id','treatment')])
 nrow(study_cases)
 sort(table(study_cases$dataset_id), decreasing=T)
 

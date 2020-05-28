@@ -13,7 +13,9 @@ dat$block <- ddata$treatment
 dat$plot <- ddata$subplot
 dat$subplot <- NA
 
-dat$treatment <- paste(ddata$treatment, ddata$subplot.t, sep='_')
+dat$treatment <- paste(
+   gsub(' control', '_management',ddata$treatment),
+   ddata$subplot.t, sep='_')
 dat$treatment_type <- "manipulated community"
 
 dat$design <- paste0('A', ifelse(ddata$subplot.t == 'control', 'C', 'I'))
