@@ -7,7 +7,7 @@ listfiles <- list.files('data/wrangled data', pattern = '.csv',
 
 template <- read.csv('data/template long format.csv', h = FALSE, nrows = 2)[,-1]
 column_names_template <- unlist(template[1,])
-
+## REPLACE WITH DATA.TABLE::RBINDLIST
 long_table <- data.frame()
 for(path in listfiles) {
    tmp <- read.csv(path, header = TRUE)
