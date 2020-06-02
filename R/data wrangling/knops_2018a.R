@@ -1,52 +1,51 @@
 ## knops_2018a
-
+library(data.table)
 
 dataset_id <- 'knops_2018a'
 load(file='data/raw data/knops_2018a/ddata')
+setDT(ddata)
 
-dat <- data.frame(dataset_id = rep(dataset_id, nrow(ddata)))
+ddata[, ':='(Genus = gsub('undet', 'Unknown', Genus),
+          Specific.epithet = gsub('undet|under', 'sp.', Specific.epithet))]
 
-dat$year <- format(ddata$Date, format = '%Y')
-dat$month <- format(ddata$Date, format = '%m')
-dat$day <- format(ddata$Date, format = '%d')
-
-dat$site <- ddata$Location
-dat$block <- ddata$Plot
-dat$plot <- NA
-dat$subplot <- NA
-
-
-
-dat$treatment <- paste0(
-   ifelse(ddata$Exclosure == 'y', 'Ex', ''),
-   ifelse(ddata$Fertilized == 'y', 'Fe', ''),
-   ifelse(ddata$Burned == 'y', 'Bu', '')
+ddata[, ':='(year = format(Date, '%Y'),
+             treatment = paste0(
+                ifelse(Exclosure == 'y', 'Ex', ''),
+                ifelse(Fertilized == 'y', 'Fe', ''),
+                ifelse(Burned == 'y', 'Bu', '')
+             ),
+             species = paste(Genus, Specific.epithet)
 )
-dat$treatment[nchar(dat$treatment) == 0] <- 'control'
+             ]
 
-dat$treatment_type <- 'kelp removal'
-
-dat$design <- paste0('A', ifelse(dat$treatment == 'control', 'C', "I"))
-
-timepoints <- seq_along(unique(ddata$Date))
-timepoints <- paste0('T',timepoints[match(ddata$Date, unique(ddata$Date))])
-dat$timepoint <- timepoints
-dat$time_since_disturbance_days <- ifelse(dat$treatment == 'control', NA,
-                                          as.numeric(ddata$Date - as.Date('2000/01/01'))
-)
+dat <- ddata[, .(value = sum(nSpecimens)/c(1, 1, 3, 2)[match(year, c(2003:2006))]),
+    by = .(year, treatment, species)]
 
 
-dat$realm <- 'terrestrial'
-dat$taxon <- 'invertebrates'
+timepoints <- seq_along(unique(dat$year))
+timepoints <- paste0('T',timepoints[match(dat$year, unique(dat$year))])
 
-dat$species <- paste(ddata$Genus, ddata$Specific.epithet)
-dat$metric <- 'count'
-dat$value <- ddata$nSpecimens
-dat$unit <- 'count'
 
-dat$comment <- 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Life stage is also given (sometimes) so subadults could be excluded hence diminishing greatly the number of undeterminate species.'
 
-dat <- dat[!is.na(dat$value), ]
+dat <- dat[,
+             ':='(   dataset_id = dataset_id,
+                  site = 'Field.B',
+                  # block = Plot,
+                  year = year,
+                  treatment_type = 'prairie management',
+                  timepoints = timepoints,
+                  treatment = ifelse(treatment == '', 'control', treatment),
+                  design = paste0('A', ifelse(treatment == '', 'C', "I")),
+                  time_since_disturbance = ifelse(treatment == '', NA,
+                                                  as.numeric(year) - 2000),
+                  realm = 'terrestrial',
+                  taxon = 'invertebrates',
+                  metric = 'count',
+                  unit = 'ind per survey',
+                  comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Life stage is also given (sometimes) so subadults could be excluded hence diminishing greatly the number of undeterminate species.'
+                  )]
+
+dat <- dat[!is.na(value)]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
