@@ -1,36 +1,32 @@
 ## joern_2019
+library(data.table)
+
 
 dataset_id <- 'joern_2019'
 load(file='data/raw data/joern_2019/ddata')
+setDT(ddata)
 
-dat <- data.frame(dataset_id = rep(dataset_id, nrow(ddata)))
+# re remplacer watershed by site
 
-dat$year <- ddata$RecYear
-dat$month <- ddata$RecMonth
-dat$day <- ddata$RecDay
+setnames(ddata, old = c('RecYear', 'Species'),
+         new = c('year', 'species'))
 
-dat$site <- toupper( ddata$Watershed )
-dat$block <- toupper( substr(ddata$Watershed, 4, 4) )
-dat$plot <- tolower( ddata$Repsite )
-dat$subplot <- NA
+ddata[, ':='(
+   grazing = ifelse(substr(Watershed, 1, 1) %in% c('n','N'), 'Grazing', 'noGrazing'),
+   fire_treatment = ifelse(substr(Watershed, 2, 3) == '00',
+                            'noFire',
+                            paste0('fire', toupper( substr(Watershed, 2, 3) ))),
+   site = substr(Watershed, 1, 3),
+   Watershed = toupper(Watershed),
+   treatment_type = "fire and grazing",
+   timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))])
+)][,
+   ':='(
+      treatment = paste(grazing, fire_treatment, sep = '_'),
+      design = paste0('A', ifelse(grazing == '' & fire_treatment == '00', 'C', 'I'))
+   )]
 
-grazing <- ifelse(substr(ddata$Watershed, 1, 1) %in% c('n','N'), 'Grazing', 'noGrazing')
-fire_treatment <- ifelse(substr(ddata$Watershed, 2, 3) == '00',
-                         'noFire',
-                         paste0('fire', toupper( substr(ddata$Watershed, 2, 3) ) )
-)
-
-dat$treatment <- paste(grazing, fire_treatment, sep = '_')
-dat$treatment_type <- "fire and grazing"
-
-dat$design <- paste0('A', ifelse(grazing == '' & fire_treatment == '00', 'C', 'I'))
-
-ddata$Date <- as.Date(paste(ddata$RecYear, ddata$RecMonth, ddata$RecDay, sep = '-'))
-timepoints <- seq_along(unique(ddata$Date))
-timepoints <- paste0('T',timepoints[match(ddata$Date, unique(ddata$Date))])
-dat$timepoint <- timepoints
-
-
+# Disturbance calendar
 load('data/raw data/joern_2019/ddata_env')
 fd <- fd[nchar(fd$Watershed) <= 4,]
 
@@ -43,29 +39,57 @@ fd$Watershed <- toupper( paste0(
    sapply(max(nchar(fd$Watershed))-nchar(fd$Watershed), function(x) paste(rep(x = 0, times = x), collapse="")),
    fd$Watershed
 ) )
-ddata$Watershed <- toupper( ddata$Watershed )
 
 fd <- fd[fd$Watershed %in% ddata$Watershed, ]
 
-dat$time_since_disturbance_days <- rep(NA, nrow(dat))
+
+
+
+time_since_disturbance <- rep(NA, nrow(ddata))
 for (i in 1:nrow(ddata))  {
-   last_fire_date <- max(fd[fd$Watershed == ddata$Watershed[i] & fd$Date <=ddata$Date[i], 'Date'])
-   dat$time_since_disturbance_days[i] <- as.numeric( ddata$Date[i] - last_fire_date )
+   last_fire_date <- max(fd[fd$Watershed == ddata$Watershed[i] & fd$Year <=ddata$year[i], 'Year'])
+   time_since_disturbance[i] <- as.numeric( ddata$year[i] - last_fire_date )
 }
-dat[is.infinite(dat$time_since_disturbance_days),'time_since_disturbance_days'] <- NA
+time_since_disturbance[is.infinite(time_since_disturbance)] <- NA
+
+ddata[, ':='(
+   time_since_disturbance = time_since_disturbance,
+   realm = 'terrestrial',
+   taxon = 'invertebrates',
+   metric = 'count',
+   unit = 'count',
+   comment = 'Grasshopper sampling in fields burnt at various frequencies. Some fields are also grazed.'
+)]
+
+# Pooling abundances from different plots
+ddata[, value := sum(Total), by = .(site, year, treatment, species)]
+
+ddata[, ':='(Watershed = NULL,
+             DataCode = NULL,
+             RecType = NULL,
+             RecMonth = NULL,
+             RecDay = NULL,
+             Soiltype = NULL,
+             Repsite = NULL,
+             Spcode = NULL,
+             S1 = NULL,
+             S2 = NULL,
+             S3 = NULL,
+             S4 = NULL,
+             S5 = NULL,
+             S6 = NULL,
+             S7 = NULL,
+             S8 = NULL,
+             S9 = NULL,
+             S10 = NULL,
+             Total = NULL)
+      ]
+
+# Total abundance is different from the sum of the abundances in S1:S10 columns in a significant number of cases, Total values kept.
+# ddata[!c(apply(ddata[,S1:S10], 1, sum, na.rm=T) == ddata[,.(Total)])]
 
 
-dat$realm <- 'terrestrial'
-dat$taxon <- 'invertebrates'
-dat$species <- ddata$Species
-dat$metric <- 'count'
-dat$value <- ddata$Total
-dat$unit <- 'count'
-
-dat$comment <- 'Grasshopper sampling in fields burnt at various frequencies. Some fields are also grazed.'
-
-dat <- dat[!is.na(dat$value), ]
-
+ddata <- ddata[!is.na(ddata$value), ]
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
+write.csv(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '_dt.csv'),
           row.names=FALSE)
