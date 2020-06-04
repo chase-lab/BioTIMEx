@@ -27,9 +27,9 @@ ddata[, ':='(dataset_id = dataset_id,
              realm = 'terrestrial',
              taxon = 'invertebrates',
              metric = 'count',
-             value = value, #  / effort,
-             unit = 'count',
-             comment = 'Hierarchical experimental design. Treatment is one of 8 canopy manipulation treatments. Effort: is the number of times the pitfalls were sampled relevant for effort? Or should the time between first and last survey of each year be used as effort?'
+             value = value  / effort,
+             unit = 'ind per survey',
+             comment = 'Hierarchical experimental design. Treatment is one of 8 canopy manipulation treatments. Effort: each survey corresponds to traps being open/active for 48 hours (Ellison 2005).'
 )
 ][, effort := NULL]
 
