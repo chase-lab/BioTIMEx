@@ -16,9 +16,9 @@ column_names_template <- template[,1]
 #    dt <- rbind(dt, tmp)
 # }
 
-lst <- lapply(listfiles, fread)
-dt <- rbindlist(lst, fill = TRUE)
-setcolorder(dt, column_names_template)
+lst <- lapply(listfiles, data.table::fread)
+dt <- data.table::rbindlist(lst, fill = TRUE)
+data.table::setcolorder(dt, column_names_template)
 
 
 
@@ -61,4 +61,4 @@ sort(table(study_cases$dataset_id), decreasing=T)
 
 
 # Saving
-fwrite(dt, 'data/long_table.csv', row.names = F)
+data.table::fwrite(dt, 'data/long_table.csv', row.names = F)

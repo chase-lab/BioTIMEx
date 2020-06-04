@@ -49,7 +49,7 @@ ddata[, ':='(dataset_id = dataset_id,
              metric = 'count',
              value = value / effort,
              unit = 'ind per survey',
-             comment = "Block design with treatments being, no chamber, a chamber without warming, a chamber and warming with different warming intensities. Winkler samples are excluded. Repeated samplings in a single year are pooled. Counts are added and divided by effort. Effort is defined as the number of pitfall surveys per year (1 to 13). Maybe the time difference between first and last sampling surveys would be more appropriate? It depends if the pitfalls stayed several months and were emptied some times (then dividing by the number of sampling day would be better) or if each survey set pitfalls for a limited number of days and the number of surveys is the best proxy of effort. What's up with block/chamber 6? Its temperature changes. In site HF, both pre and post treatment samples were made in 2009.",
+             comment = "Block design with treatments being, no chamber, a chamber without warming, a chamber and warming with different warming intensities. Winkler samples are excluded. Repeated samplings in a single year are pooled. Counts are added and divided by effort. Effort is defined as the number of pitfall surveys per year (1 to 13). What's up with block/chamber 6? Its temperature changes. In site HF, both pre and post treatment samples were made in 2009.",
              treat = NULL,
              effort =NULL)]
 
