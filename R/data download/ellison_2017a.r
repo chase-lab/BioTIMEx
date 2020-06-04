@@ -222,14 +222,14 @@ if(FALSE) {
 }
 
 # Deleting Winkler samples
-dt18 <- subset(dt18, method != 'Winkler')
+# dt18 <- subset(dt18, method != 'Winkler')
 
 # Merging and saving
 dt18 <- dt18[, colnames(dt18) != 'unique.id']
 dt21 <- dt21[, match(colnames(dt18), colnames(dt21))]
 
 ddata <- rbind(dt18, dt21)
-ddata <- ddata[!is.na(ddata$sampling.id) & !is.na(ddata$genus) & !is.na(ddata$species) & !is.na(ddata$n) & ddata$n > 0, ]
+# ddata <- ddata[!is.na(ddata$sampling.id) & !is.na(ddata$genus) & !is.na(ddata$species) & !is.na(ddata$n) & ddata$n > 0, ]
 
 save(ddata, file = 'data/raw data/ellison_2017a/ddata')
 

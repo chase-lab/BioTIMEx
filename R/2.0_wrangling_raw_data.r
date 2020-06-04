@@ -1,3 +1,3 @@
 # Wrangle raw data
-tb::executeAll(fullPath = 'R/data wrangling', echo=F)
+tb::executeAll(fullPath = 'R/data wrangling', echo=FALSE, local = FALSE) # local = TRUE is prefered but data.table package does not load...
 

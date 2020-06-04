@@ -1,3 +1,19 @@
-﻿variable name,dataset_id,year,site,block,plot,subplot,treatment,treatment_type,design,timepoint,time_since_disturbance_years,realm,taxon,species,metric,value,unit,comment
-necessary,TRUE,TRUE,TRUE,FALSE,FALSE,FALSE,TRUE,TRUE,TRUE,TRUE,FALSE,TRUE,TRUE,TRUE,TRUE,TRUE,TRUE,FALSE
-definition,NA,NA,NA,NA,NA,NA,NA,should be one value for the whole table.,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+variable name	necessary	definition
+dataset_id	TRUE	NA
+year	TRUE	NA
+site	TRUE	NA
+block	FALSE	NA
+plot	FALSE	NA
+subplot	FALSE	NA
+treatment	TRUE	NA
+treatment_type	TRUE	should be one value for the whole table.
+design	TRUE	NA
+timepoints	TRUE	NA
+time_since_disturbance	FALSE	NA
+realm	TRUE	NA
+taxon	TRUE	NA
+species	TRUE	NA
+metric	TRUE	NA
+value	TRUE	NA
+unit	TRUE	NA
+comment	FALSE	NA

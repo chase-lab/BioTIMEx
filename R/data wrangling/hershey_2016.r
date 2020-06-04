@@ -1,50 +1,47 @@
 ## hershey_2016
+library(data.table)
 
 dataset_id <- 'hershey_2016'
 load(file=paste0('data/raw data/',dataset_id, '/ddata'))
+setDT(ddata)
 
+setnames(ddata, c('station.m', 'Trial', 'Date'),
+         c('site', 'block', 'date'))
 # reshaping the data
-ddata <- reshape2::melt(ddata,
+ddata <- melt(ddata,
                measure.vars = c('RHYAC','BRACHY','NATARSIA','ORTHO','OTHCHIR','CHIPUPA','BLACK','BLKPUPA','BAETIS','BAETSP3','EPHEM','CINYG','NEMOURA','TIPULA','SNAILS'),
                variable.name = 'species',
-               value.name = 'count')
+               value.name = 'value')[value > 0 & !is.na(value)]
 
-dat <- data.frame(dataset_id = rep(dataset_id, nrow(ddata)))
+ddata[, ':='(
+   dataset_id = dataset_id,
+   year = as.integer(format(as.Date(date, '%d-%b-%y'), '%Y')),
+   site =  ifelse(abs(as.numeric(trimws(gsub(x=site, pattern='K|k', replacement='')))) < 10, as.numeric(trimws(gsub(x=site, pattern='K|k', replacement=''))) * 1000, as.numeric(trimws(gsub(x=site, pattern='K|k', replacement=''))))
 
-ddata$Date <- as.Date(ddata$Date, format = '%d-%b-%y')
-dat$year <- format(ddata$Date, "%Y")
-dat$month <- format(ddata$Date, "%m")
-dat$day <- format(ddata$Date, "%d")
+)][,
+   ':='(treatment = paste(ifelse(site < 0, 'control', 'impact'), site, sep='_'),
+   treatment_type = "eutrophication",
+   design = paste0('A', ifelse(site < 0, 'C', 'I')),
+   timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
+   time_since_disturbance = ifelse(site < 0, NA, year - 1984),
 
-dat$site <- ddata$Site
-dat$block <- ddata$Stream.Type
-dat$plot <- ddata$Trial
-dat$subplot <- NA
+   realm = 'freshwater',
+   taxon = 'invertebrates',
+   metric = 'count',
+   unit = 'ind per sample',
 
+   comment = 'Treatment variable shows the distance above (negative values) and downstream (positive values) of a nutrient source.',
 
-station <- as.numeric(trimws(gsub(x=ddata$station.m, pattern='K|k', replacement='')))
-station <- ifelse(abs(station) < 10, station * 1000, station)
-dat$treatment <- paste(ifelse(station < 0, 'control', 'impact'), station, sep='_')
-dat$treatment_type <- "eutrophication"
+   Site = NULL,
+   Stream.Type = NULL,
+   Sample.Type = NULL,
+   date = NULL
+   )
+   ][,
+     site := paste0('site_', site)
+   ]
 
-dat$design <- paste0('A', ifelse(station < 0, 'C', 'I'))
-
-timepoints <- seq_along(unique(ddata$Date))
-timepoints <- paste0('T',timepoints[match(ddata$Date, unique(ddata$Date))])
-dat$timepoint <- timepoints
-dat$time_since_disturbance_days <- NA
-
-dat$realm <- 'freshwater'
-dat$taxon <- 'invertebrates'
-dat$species <- ddata$species
-dat$metric <- 'count'
-dat$value <- ddata$count
-dat$unit <- 'count'
-
-dat$comment <- 'Treatment variable shows the distance above (negative values) and downstream (positive values) of a nutrient source.'
-
-dat <- dat[!is.na(dat$value) & dat$value != 0, ]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
           row.names=FALSE)

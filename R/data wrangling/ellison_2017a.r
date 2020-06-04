@@ -1,69 +1,62 @@
 ## ellison_2017a
-# correct typos in subs
+library(data.table)
 
 dataset_id <- 'ellison_2017a'
 load(file='data/raw data/ellison_2017a/ddata')
+setDT(ddata)
 
-dat <- data.frame(dataset_id = rep(dataset_id, nrow(ddata)))
+setnames(ddata, old = c('cham', 'subs', 'n'),
+         new = c('block', 'plot', 'value'))
 
-dat$year <- ddata$year
-dat$month <- ddata$month
-dat$day <- ddata$day
+warming_table <- na.omit(unique(ddata[, c('year', 'site','block','warming','target.delta')]))
 
-dat$site <- ddata$site
-dat$block <- ddata$cham
-dat$plot <- toupper (ddata$subs)
-dat$subplot <- NA         # SPLIT WINKLER AND PITFALLS
+warming_table[, ':='(warming = gsub(warming, pattern = ' c| C', replacement = '_c'),
+                     treatment = paste(warming, target.delta, sep = '_'))
+              ][,
+                ':='(warming = NULL, target.delta = NULL)]
 
+ddata <- merge(ddata, warming_table, by = c('year', 'site', 'block'))
 
-warming_table <- na.omit(unique(ddata[, c('site','cham','warming','target.delta')]))
-warming_table$warming <- gsub(warming_table$warming, pattern = ' c| C', replacement = '_c')
-
-dat$treatment <- ifelse(
-   ddata$site == 'HF',
-   paste(warming_table[warming_table$site == 'HF',][match(ddata$cham, warming_table[warming_table$site == 'HF', 'cham']), "warming"],
-         warming_table[warming_table$site == 'HF',][match(ddata$cham, warming_table[warming_table$site == 'HF', 'cham']), "target.delta"], sep = '_'),
-   ifelse(
-      ddata$site == 'DF',
-      paste(warming_table[warming_table$site == 'DF',][match(ddata$cham, warming_table[warming_table$site == 'DF', 'cham']), "warming"],
-            warming_table[warming_table$site == 'DF',][match(ddata$cham, warming_table[warming_table$site == 'DF', 'cham']), "target.delta"], sep = '_'),
-      NA)
-)
+ddata[method != 'Winkler', ':='(species = paste(genus, species))]
 
 
-dat$treatment_type <- 'warming'
+effort <- ddata[,
+                .(effort = length(unique(sampling.id))),
+                by = .(site, year, block, plot, treat, treatment)]
 
-dat$design <- paste0(ifelse(ddata$treat == 'Pre-treat', 'B', "A"),
-                     ifelse(grepl(dat$treatment, pattern = 'control'), 'C', "I"))
-
-timepoints <- seq_along(unique(ddata$date))
-timepoints <- paste0('T',timepoints[match(ddata$date, unique(ddata$date))])
-dat$timepoint <- timepoints
-fdd <- aggregate(date ~ cham + site, data = ddata, FUN=min, subset = ddata$treat == 'Treat') # first_disturbance_date
-dat$time_since_disturbance_days <- ifelse(ddata$treat == 'Pre-treat',
-                                          NA,
-                                          ifelse(ddata$site == 'HF',
-                                                 as.numeric(ddata$date - fdd[fdd$site == 'HF',][match(ddata$cham, fdd[fdd$site == 'HF', 'cham']), 'date']),
-                                                 ifelse(ddata$site == 'DF',
-                                                        as.numeric(ddata$date - fdd[fdd$site == 'DF',][match(ddata$cham, fdd[fdd$site == 'DF', 'cham']), 'date']),
-                                                        NA)
-                                          )
-)
+ddata <- ddata[,
+               .(value = sum(value)),   # sum of counts per year
+               by = .(site, year, block, plot, treat, treatment, species)
+               ]
+ddata <- merge(ddata, effort, by = c('year', 'site','block', 'plot', 'treat','treatment'))
 
 
-dat$realm <- 'terrestrial'
-dat$taxon <- 'invertebrates'
+ddata[, ':='(dataset_id = dataset_id,
 
-dat$species <- paste(ddata$genus, ddata$species)
-dat$metric <- 'count'
-dat$value <- ddata$n
-dat$unit <- 'count'
+             treatment_type = 'warming',
+             design = paste0(ifelse(treat == 'Pre-treat', 'B', "A"),
+                             ifelse(grepl(treatment, pattern = 'control'), 'C', "I")),
 
-dat$comment <- 'Block design with treatments being ,no chamber, a chamber without warming, a chamber and warming with different warming intensities. Two sampling methods: pitfall traps and Winkler samples.'
+             timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
+             time_since_disturbance = ifelse(treat == 'Pre-treat' | grepl(treatment, pattern = 'control'),
+                                             NA,
+                                             ifelse(site == 'HF',
+                                                    year - 2009, year - 2010
+                                             )
+             ),
+             realm = 'terrestrial',
+             taxon = 'invertebrates',
+             metric = 'count',
+             value = value / effort,
+             unit = 'ind per survey',
+             comment = "Block design with treatments being, no chamber, a chamber without warming, a chamber and warming with different warming intensities. Winkler samples are excluded. Repeated samplings in a single year are pooled. Counts are added and divided by effort. Effort is defined as the number of pitfall surveys per year (1 to 13). Maybe the time difference between first and last sampling surveys would be more appropriate? It depends if the pitfalls stayed several months and were emptied some times (then dividing by the number of sampling day would be better) or if each survey set pitfalls for a limited number of days and the number of surveys is the best proxy of effort. What's up with block/chamber 6? Its temperature changes. In site HF, both pre and post treatment samples were made in 2009.",
+             treat = NULL,
+             effort =NULL)]
 
-dat <- dat[!is.na(dat$value), ]
+
+# dat <- dat[!is.na(value)]    # three rows have a NA value for value but there is a species name.
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
           row.names=FALSE)
 

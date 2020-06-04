@@ -5,31 +5,35 @@ dataset_id <- 'reed_2020a'
 load(file='data/raw data/reed_2020a/ddata')
 setDT(ddata)
 
-dat <- ddata[COUNT > 0, .(value = sum(COUNT)/sum(AREA)), keyby= .(site=SITE, year=YEAR,  treatment=TREATMENT,  species=SCIENTIFIC_NAME)]
-# Is the standardization correct? or does it devide only by area were each species was observed?
+setnames(ddata, tolower)
+setnames(ddata, c('transect', 'scientific_name'), c('block', 'species'))
 
-dat[, design := 'AI'][treatment == 'control', design := 'AC']
+effort <- unique(
+   ddata[,.(year, date, site, block, treatment, quad, side, survey, area)]
+   )[,
+     .(effort = sum(area)), by = .(year, site, block, treatment)
+     ]
+ddata <- ddata[, .(value = sum(count)), by = .(year, site, block, treatment, species)][value > 0]
+ddata <- merge(ddata, effort, by = c('year', 'site', 'block', 'treatment'))
 
-timepoints <- seq_along(unique(dat$year))
-timepoints <- paste0('T',timepoints[match(dat$year, unique(dat$year))])
+ddata[, ':='(
+   dataset_id = dataset_id,
+   treatment = tolower( treatment),
+   treatment_type = 'kelp removal',
+   timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
+   design = ifelse(treatment == 'control', 'AC', 'AI'),
 
-dat[treatment == 'control', "time_since_disturbance_years" := year - min(year), by = site]
-dat[, ':='(dataset_id = dataset_id,
-           # block = NA,
-           # plot = NA,
-           # subplot = NA,
-           treatment = tolower( dat$treatment),
-           treatment_type = 'kelp removal',
-           timepoints = timepoints,
-           realm = 'marine',
-           taxon = 'fish',
-           metric = 'density',
-           unit = 'ind per m2',
-           comment = 'Cryptic and Mobile surveys pooled. Multiple annual surveys pooled into one with total abundances standardized by total sampled area.')]
+   realm = 'marine',
+   taxon = 'fish',
+   metric = 'density',
+   value = value / effort,
+   unit = 'ind per m2',
+   comment = 'Cryptic and Mobile surveys pooled. Multiple annual surveys pooled into one with total abundances standardized by total sampled area. Two transects per site, each with a different treatment.'
+)][, effort := NULL]
 
+ddata[treatment != 'control', "time_since_disturbance" := year - min(year), by = site]
 
-dat <- dat[!is.na(dat$value), ]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
           row.names=FALSE)
