@@ -53,10 +53,12 @@ fd <- fd[fd$Watershed %in% ddata$site, ]
 
 
 time_since_disturbance <- rep(NA, nrow(ddata))
-for (i in 1:nrow(ddata))  {
-   last_fire_date <- max(fd[fd$Watershed == ddata$site[i] & fd$Year <=ddata$year[i], 'Year'])
-   time_since_disturbance[i] <- as.numeric( ddata$year[i] - last_fire_date )
-}
+suppressWarnings({
+   for (i in 1:nrow(ddata))  {
+      last_fire_date <- max(fd[fd$Watershed == ddata$site[i] & fd$Year <=ddata$year[i], 'Year'])
+      time_since_disturbance[i] <- as.numeric( ddata$year[i] - last_fire_date )
+   }
+})
 time_since_disturbance[is.infinite(time_since_disturbance)] <- NA
 
 ddata[, ':='(

@@ -8,14 +8,6 @@ listfiles <- list.files('data/wrangled data', pattern = '.csv',
 template <- read.csv('data/template long format.csv', h = TRUE, sep = '\t')
 column_names_template <- template[,1]
 
-# dt <- data.frame()
-# for(path in listfiles) {
-#    tmp <- read.csv(path, header = TRUE)
-#    if(!setequal(colnames(tmp), column_names_template)) warning(paste0('Check column names for ', path))
-#    tmp <- tmp[, match(column_names_template, colnames(tmp))]
-#    dt <- rbind(dt, tmp)
-# }
-
 lst <- lapply(listfiles, data.table::fread)
 dt <- data.table::rbindlist(lst, fill = TRUE)
 data.table::setcolorder(dt, column_names_template)
