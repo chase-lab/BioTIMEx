@@ -22,7 +22,7 @@ ddata[, ':='(
                       ifelse(site %in% c('BM','Rio'), 'urban_restored',
                              'notUrban_notRestored')
                       ),
-
+   treatment_type = 'riverbank vegetation restoration',
    timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
    time_since_disturbance = ifelse(site == 'BM', year - 2012,
                                    ifelse(site == 'Rio', year - 2005, NA)
@@ -37,4 +37,5 @@ ddata[, ':='(
 ][, ':='(design = paste0('A', ifelse(treatment == "urban_restored", 'I', 'C')),
          effort = NULL)]
 
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, '.csv'))
+dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'))

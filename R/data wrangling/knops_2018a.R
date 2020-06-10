@@ -19,11 +19,11 @@ ddata[, ':='(year = format(Date, '%Y'),
 ][,
   ':='(species = paste(Genus, Specific.epithet),
        treatment = ifelse(treatment == '', 'control', treatment))
-  ]
+  ][, block := paste0('B',seq_along(unique(treatment))[match(treatment, unique(treatment))])]
 
 
 ddata <- ddata[, .(value = sum(nSpecimens)/c(1, 1, 3, 2)[match(year, c(2003:2006))]),
-    by = .(year, treatment, species)]
+    by = .(year, block, treatment, species)]
 
 ddata[,
              ':='(dataset_id = dataset_id,
@@ -40,6 +40,10 @@ ddata[,
                   comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Life stage is also given (sometimes) so subadults could be excluded hence diminishing greatly the number of undeterminate species.'
                   )]
 
+verif <- ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique(species))), by = .(site, block, treatment, year)][S>N]
+if(nrow(verif)>0) warning('S > N')
+
+ddata <- ddata[, ap := NULL]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),

@@ -9,6 +9,8 @@ setDT(ddata)
 setnames(ddata, old = c('RecYear','Watershed','Repsite', 'Species'),
          new = c('year','site','block', 'species'))
 
+## wrong value correction
+ddata[Total == 0, Total := NA]
 
 ddata[, ':='(
    site = toupper(site),
@@ -76,7 +78,11 @@ ddata[, ':='(
 # ddata[!c(apply(ddata[,S1:S10], 1, sum, na.rm=T) == ddata[,.(Total)])]
 
 
-ddata[, effort := NULL]
+verif <- ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique(species))), by = .(dataset_id, site, block, year)][S > N]
+if(nrow(verif) > 0) warning('S > N')
+
+ddata[, ':='(effort = NULL,
+             ap = NULL)]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),

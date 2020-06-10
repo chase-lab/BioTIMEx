@@ -46,7 +46,10 @@ ddata[, ':='(
 )]
 
 
+verif <- ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique(species))), by = .(dataset_id, site, year)][S > N]
+if(nrow(verif) > 0) warning('S > N')
 
+ddata <- ddata[, ap := NULL]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),

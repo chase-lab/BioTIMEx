@@ -42,4 +42,5 @@ ddata[, ':='(
 )
 ][, effort := NULL]
 
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, '.csv'))
+dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'))

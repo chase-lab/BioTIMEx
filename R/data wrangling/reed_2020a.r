@@ -8,6 +8,9 @@ setDT(ddata)
 setnames(ddata, tolower)
 setnames(ddata, c('transect', 'scientific_name'), c('block', 'species'))
 
+ddata[treatment %in% c('POST ANNUAL','POST CONTINUAL'),
+      treatment := ifelse(treatment == 'POST ANNUAL', 'ANNUAL', 'CONTINUAL')]
+
 effort <- unique(
    ddata[,.(year, date, site, block, treatment, quad, side, survey, area)]
    )[,
@@ -33,6 +36,10 @@ ddata[, ':='(
 
 ddata[treatment != 'control', "time_since_disturbance" := year - min(year), by = site]
 
+verif <- ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique(species))), by = .(site, block, year)][S > N]
+if(nrow(verif)>0) warning('S > N')
+
+ddata <- ddata[, ap := NULL]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
