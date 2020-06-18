@@ -6,14 +6,14 @@ load(file='data/raw data/reed_2020a/ddata')
 setDT(ddata)
 
 setnames(ddata, tolower)
-setnames(ddata, c('transect', 'scientific_name'), c('block', 'species'))
+setnames(ddata, c('transect', 'scientific_name','count'), c('block', 'species','value'))
 
 ddata[treatment %in% c('POST ANNUAL','POST CONTINUAL'),
       treatment := ifelse(treatment == 'POST ANNUAL', 'ANNUAL', 'CONTINUAL')]
 
 ddata[, effort := sum(area), by = .(year, site, block, treatment)] # effort is the number of surveys
 
-ddata <- ddata[, .(value = sum(count) / effort), by = .(year, site, block, treatment, species)]  # abundance divided by effort
+ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, block, treatment, species)]  # abundance divided by effort
 ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block,  treatment)]# standardised abundance divided by the smallest abundance
 
 
@@ -37,6 +37,8 @@ verif <- ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique
 if(nrow(verif)>0) warning('S > N')
 
 ddata <- ddata[, ap := NULL]
+
+dddata <- ddata[value > 0]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),

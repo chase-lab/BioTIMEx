@@ -29,7 +29,7 @@ ddata <- merge(ddata, warming_table, by = c('site'))
 
 # Standardisation
 ddata[, effort := length(unique(date)), by = .(year, site, block, treatment)] # effort is the number of surveys
-ddata <- ddata[, .(value = sum(value) / effort), by = .(site, block, year, treatment, species)]  # abundance divided by effort
+ddata <- ddata[, .(value = sum(value / effort)), by = .(site, block, year, treatment, species)]  # abundance divided by effort
 ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, treatment)]# standardised abundance divided by the smallest abundance
 
 ddata[, ':='(

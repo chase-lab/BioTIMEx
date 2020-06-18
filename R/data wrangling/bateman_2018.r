@@ -12,7 +12,7 @@ ddata[, year := as.integer(format(survey_date, '%Y'))]
 
 
 ddata[, effort := length(unique(survey_date)), by = .(year, site, block)] # effort is the number of surveys
-ddata <- ddata[, .(value = sum(value) / effort), by = .(year, site, block, species)]  # abundance divided by effort
+ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, block, species)]  # abundance divided by effort
 ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block)] # standardised abundance divided by the smallest abundance
 
 ddata[, ':='(

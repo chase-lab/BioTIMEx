@@ -24,7 +24,7 @@ ddata[, ':='(
 
 # standardisation
 ddata[, effort := length(unique(date)), by = .(site, year, treatment)]# effort is the number of surveys
-ddata <- ddata[, .(value = sum(value) / effort), by = .(year, site, treatment, species)] # abundance divided by effort
+ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, treatment, species)] # abundance divided by effort
 ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, treatment)] # standardised abundance divided by the smallest abundance
 
 ddata[, ':='(

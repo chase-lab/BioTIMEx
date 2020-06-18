@@ -11,7 +11,7 @@ setnames(ddata, old = c('Treatment', 'Replicate', 'Station', 'Species','Adults',
 
 
 ddata[, effort := length(unique(date)), by = .(year, site, block, plot)] # effort is the number of surveys
-ddata <- ddata[, .(value = sum(value) / effort), by = .(year, site, block, plot, species)]  # abundance divided by effort
+ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, block, plot, species)]  # abundance divided by effort
 ddata[, value := value / min(value), by = .(year, site, block, plot)]# standardised abundance divided by the smallest abundance
 
 ddata <- ddata[value > 0]

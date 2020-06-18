@@ -13,7 +13,7 @@ ddata <- ddata[!site %in% c('Ward Lake','Hummingbird Lake')]
 
 # Standardisation
 ddata[, effort := length(unique(sampledate)), by = .(year, site)] # effort is the number of surveys
-ddata <- ddata[, .(value = sum(value) / effort), by = .(year, site, species)] # abundance divided by effort
+ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, species)] # abundance divided by effort
 ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site)] # standardised abundance divided by the smallest abundance
 
 beforeafter <- ifelse(ddata$site %in% c("Paul Lake", 'Crampton Lake'), '',

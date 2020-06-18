@@ -6,11 +6,11 @@ dataset_id <- 'joern_2019'
 load(file='data/raw data/joern_2019/ddata')
 setDT(ddata)
 
-setnames(ddata, old = c('RecYear','Watershed','Repsite', 'Species'),
-         new = c('year','site','block', 'species'))
+setnames(ddata, old = c('RecYear','Watershed','Repsite', 'Species','Total'),
+         new = c('year','site','block', 'species','value'))
 
 ## wrong value correction
-ddata[Total == 0, Total := NA]
+ddata[value == 0, value := NA]
 
 ddata[, ':='(
    site = toupper(site),
@@ -25,7 +25,7 @@ ddata[, ':='(
 
 # Pooling abundances from different surveys
 ddata[, effort := length(unique(date)), by = .(site, block, year, treatment)] # effort is the number of surveys
-ddata <- ddata[, .(value = sum(Total) / effort), by = .(site, block, year, treatment, species)]  # abundance divided by effort
+ddata <- ddata[, .(value = sum(value / effort)), by = .(site, block, year, treatment, species)]  # abundance divided by effort
 ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, treatment)] # standardised abundance divided by the smallest abundance
 
 

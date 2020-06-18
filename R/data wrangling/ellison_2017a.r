@@ -29,7 +29,7 @@ ddata[,
                 by = .(site, year, block, plot, treat, treatment)] # effort is the number of surveys
 
 ddata <- ddata[,
-               .(value = as.numeric(sum(value)) / effort), by = .(site, year, block, plot, treat, treatment, species)]  # abundance divided by effort
+               .(value = as.numeric(sum(value / effort))), by = .(site, year, block, plot, treat, treatment, species)]  # abundance divided by effort
 ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, plot, treat, treatment)]# standardised abundance divided by the smallest abundance
 
 ddata[, ':='(dataset_id = dataset_id,
