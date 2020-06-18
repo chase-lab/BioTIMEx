@@ -11,15 +11,10 @@ setnames(ddata, c('transect', 'scientific_name'), c('block', 'species'))
 ddata[treatment %in% c('POST ANNUAL','POST CONTINUAL'),
       treatment := ifelse(treatment == 'POST ANNUAL', 'ANNUAL', 'CONTINUAL')]
 
-effort <- unique(
-   ddata[,.(year, date, site, block, treatment, quad, side, survey, area)]
-   )[,
-     .(effort = sum(area)), by = .(year, site, block, treatment)
-     ]
-ddata <- ddata[, .(value = sum(count)), by = .(year, site, block, treatment, species)][value > 0]
-ddata <- merge(ddata, effort, by = c('year', 'site', 'block', 'treatment'))
-ddata[, value := value / effort]
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block,  treatment)]
+ddata[, effort := sum(area), by = .(year, site, block, treatment)] # effort is the number of surveys
+
+ddata <- ddata[, .(value = sum(count) / effort), by = .(year, site, block, treatment, species)]  # abundance divided by effort
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block,  treatment)]# standardised abundance divided by the smallest abundance
 
 
 ddata[, ':='(
@@ -34,7 +29,7 @@ ddata[, ':='(
    metric = 'density',
    unit = 'ind per m2',
    comment = 'Cryptic and Mobile surveys pooled. Multiple annual surveys pooled into one with total abundances standardized by total sampled area. Two transects per site, each with a different treatment.'
-)][, effort := NULL]
+)]
 
 ddata[treatment != 'control', "time_since_disturbance" := year - min(year), by = site]
 

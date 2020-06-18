@@ -22,12 +22,10 @@ ddata[, ':='(
       sep=' ') ), pattern = ' {2,3}', replacement = ' ')
 )]
 
-# effort
-effort <- ddata[, .(effort = length(unique(date))), by = .(site, year, treatment)]
-ddata <- ddata[, .(value = sum(value)), by = .(year, site, treatment, species)]
-ddata <- merge(ddata, effort, by = c('year', 'site', 'treatment'))
-ddata[, value := value / effort]
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, treatment)]
+# standardisation
+ddata[, effort := length(unique(date)), by = .(site, year, treatment)]# effort is the number of surveys
+ddata <- ddata[, .(value = sum(value) / effort), by = .(year, site, treatment, species)] # abundance divided by effort
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, treatment)] # standardised abundance divided by the smallest abundance
 
 ddata[, ':='(
    dataset_id = dataset_id,
@@ -49,10 +47,7 @@ ddata[, ':='(
                                     year - 1991,
                                     ifelse(site %in% c('Peter Lake','Tuesday Lake') & substr(design, 1, 1) == 'A',
                                            year - 1985, NA)
-   )][,
-      effort := NULL
-      ]
-
+   )]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),

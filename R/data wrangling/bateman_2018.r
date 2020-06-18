@@ -11,11 +11,9 @@ setnames(ddata, old = c('reach', 'site_code','common_name','bird_count'),
 ddata[, year := as.integer(format(survey_date, '%Y'))]
 
 
-effort <- ddata[, .(effort = length(unique(survey_date))), by = .(year, site, block)]
-ddata <- ddata[, .(value = sum(value)), by = .(year, site, block, species)]
-ddata <- merge(ddata, effort, by = c('year', 'site', 'block'))
-ddata[, value := value / effort]
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block)]
+ddata[, effort := length(unique(survey_date)), by = .(year, site, block)] # effort is the number of surveys
+ddata <- ddata[, .(value = sum(value) / effort), by = .(year, site, block, species)]  # abundance divided by effort
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block)] # standardised abundance divided by the smallest abundance
 
 ddata[, ':='(
    dataset_id = dataset_id,
@@ -34,8 +32,7 @@ ddata[, ':='(
    unit = 'mean abundance per survey',
    comment = 'Some restored and some unrestored sites along the Salt river. Each station was surveyed several times a year (2 to 9). Abundances are summed per year and divided by the number of sampling events.'
 )
-][, ':='(design = paste0('A', ifelse(treatment == "urban_restored", 'I', 'C')),
-         effort = NULL)]
+][, design := paste0('A', ifelse(treatment == "urban_restored", 'I', 'C'))]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'))

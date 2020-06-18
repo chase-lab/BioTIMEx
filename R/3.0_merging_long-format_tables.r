@@ -73,3 +73,5 @@ sort(table(study_cases$dataset_id), decreasing=T)
 # Saving
 
 data.table::fwrite(dt, 'data/long_table.csv', row.names = F)
+# data.table::fwrite(dt, 'C:/Users/as80fywe/Dropbox/BioTIMEx/long_table.csv', row.names = F)
+

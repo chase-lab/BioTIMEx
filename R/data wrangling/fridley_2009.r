@@ -21,7 +21,7 @@ ddata[, ':='(
    metric = 'count',
    unit = 'count',
 
-   comment = 'Artificial temperature increase in winter began in November 1993 (warm treatment). Artificial drought began in summer 1994. Artificial increase of water input began in summer 1994. See metadata for full setup. No standardisation needed, on sampling per year.'
+   comment = 'Artificial temperature increase in winter began in November 1993 (warm treatment). Artificial drought began in summer 1994. Artificial increase of water input began in summer 1994. See metadata for full setup. No standardisation needed, one sampling per year.'
 
 )]
 

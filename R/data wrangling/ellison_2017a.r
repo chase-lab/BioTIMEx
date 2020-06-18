@@ -24,17 +24,13 @@ ddata <- merge(ddata, warming_table, by = c('year', 'site', 'block'))
 ddata[method != 'Winkler', ':='(species = paste(genus, species),
                                 plot = trimws( toupper( plot ) ))]
 
-effort <- ddata[,
-                .(effort = length(unique(sampling.id))),
-                by = .(site, year, block, plot, treat, treatment)]
+ddata[,
+                effort := length(unique(sampling.id)),
+                by = .(site, year, block, plot, treat, treatment)] # effort is the number of surveys
 
 ddata <- ddata[,
-               .(value = as.numeric(sum(value))),   # sum of counts per year
-               by = .(site, year, block, plot, treat, treatment, species)
-               ]
-ddata <- merge(ddata, effort, by = c('year', 'site','block', 'plot', 'treat','treatment'))
-ddata[, value := value / effort]
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, plot, treat, treatment)]
+               .(value = as.numeric(sum(value)) / effort), by = .(site, year, block, plot, treat, treatment, species)]  # abundance divided by effort
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, plot, treat, treatment)]# standardised abundance divided by the smallest abundance
 
 ddata[, ':='(dataset_id = dataset_id,
              treatment_type = 'warming',
@@ -53,8 +49,7 @@ ddata[, ':='(dataset_id = dataset_id,
              metric = 'count',
              unit = 'ind per survey',
              comment = "Block design with treatments being, no chamber, a chamber without warming, a chamber and warming with different warming intensities. Winkler samples are excluded. Repeated samplings in a single year are pooled. Counts are added and divided by effort. Effort is defined as the number of pitfall surveys per year (1 to 13). What's up with block/chamber 6? Its temperature changes. In site HF, both pre and post treatment samples were made in 2009.",
-             treat = NULL,
-             effort = NULL)]
+             treat = NULL)]
 
 
 ddata <- ddata[!is.na(value) & !is.na(species) & species != 'NA NA']    # three rows have a NA value for value but there is a species name.

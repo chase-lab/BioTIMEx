@@ -28,11 +28,9 @@ ddata <- merge(ddata, warming_table, by = c('site'))
 
 
 # Standardisation
-effort <- ddata[, .(effort = length(unique(date))), by = .(year, site, block, treatment)]
-ddata <- ddata[, .(value = sum(value)), by = .(site, block, year, treatment, species)]
-ddata <- merge(ddata, effort, by = c('year', 'site', 'block', 'treatment'))
-ddata[, value := value / effort]
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, treatment)]
+ddata[, effort := length(unique(date)), by = .(year, site, block, treatment)] # effort is the number of surveys
+ddata <- ddata[, .(value = sum(value) / effort), by = .(site, block, year, treatment, species)]  # abundance divided by effort
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, treatment)]# standardised abundance divided by the smallest abundance
 
 ddata[, ':='(
    dataset_id = dataset_id,
@@ -46,11 +44,7 @@ ddata[, ':='(
    taxon = 'invertebrates',
    metric = 'count',
    unit = 'ind per survey',
-   comment =  'Block design with treatments being, no chamber, a chamber without warming, a chamber and warming with different warming intensities. No Winkler samples in this dataset. Repeated samplings in a single year are pooled. Counts are added and divided by effort. Effort is defined as the number of surveys per year (1 to 4).',
-
-   # warming = NULL,
-   # treat = NULL,
-   effort = NULL
+   comment =  'Block design with treatments being, no chamber, a chamber without warming, a chamber and warming with different warming intensities. No Winkler samples in this dataset. Repeated samplings in a single year are pooled. Counts are added and divided by effort. Effort is defined as the number of surveys per year (1 to 4).'
 )
 ]
 

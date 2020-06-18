@@ -24,11 +24,9 @@ ddata[, ':='(
 
 
 # Pooling abundances from different surveys
-effort <- ddata[, .(effort = length(unique(date))), by = .(site, block, year, treatment)]
-ddata <- ddata[, .(value = sum(Total)), by = .(site, block, year, treatment, species)]
-ddata <- merge(ddata, effort, by = c('year', 'site','block', 'treatment'))
-ddata[, value := value / effort]
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, treatment)]
+ddata[, effort := length(unique(date)), by = .(site, block, year, treatment)] # effort is the number of surveys
+ddata <- ddata[, .(value = sum(Total) / effort), by = .(site, block, year, treatment, species)]  # abundance divided by effort
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, treatment)] # standardised abundance divided by the smallest abundance
 
 
 ddata[, ':='(
@@ -83,8 +81,7 @@ ddata[, ':='(
 verif <- ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique(species))), by = .(dataset_id, site, block, year)][S > N]
 if(nrow(verif) > 0) warning('S > N')
 
-ddata[, ':='(effort = NULL,
-             ap = NULL)]
+ddata[, ap := NULL]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),

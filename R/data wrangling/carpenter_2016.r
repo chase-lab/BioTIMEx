@@ -11,10 +11,10 @@ setnames(ddata, c('year4', 'lakename', 'taxon_name', 'abundance'),
 # Exclusion of lakes with unknown disturbance history
 ddata <- ddata[!site %in% c('Ward Lake','Hummingbird Lake')]
 
-effort <- ddata[, .(effort = length(unique(sampledate))), by = .(year, site)]
-ddata <- merge(ddata, effort, by = c('year', 'site'))
-ddata <- ddata[, .(value = sum(value) / effort), by = .(year, site, species)]
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site)]
+# Standardisation
+ddata[, effort := length(unique(sampledate)), by = .(year, site)] # effort is the number of surveys
+ddata <- ddata[, .(value = sum(value) / effort), by = .(year, site, species)] # abundance divided by effort
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site)] # standardised abundance divided by the smallest abundance
 
 beforeafter <- ifelse(ddata$site %in% c("Paul Lake", 'Crampton Lake'), '',
                       ifelse(

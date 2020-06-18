@@ -14,12 +14,10 @@ ddata[, ':='( year = as.integer(format(date, '%Y')),
                  subplot, sep='_'),
               species = paste(genus, species))]
 
-effort <- ddata[, .(effort = length(unique(date))), by = .(year, site, block, plot, subplot, treatment)]
+ddata[, effort := length(unique(date)), by = .(year, site, block, plot, subplot, treatment)] # effort is the number of surveys
+ddata <- ddata[, .(value = sum(value) / effort), by = .(year, site, block, plot, subplot, treatment, species)]  # abundance divided by effort
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, plot, subplot, treatment)] # standardised abundance divided by the smallest abundance
 
-ddata <- ddata[, .(value = sum(value)), by = .(year, site, block, plot, subplot, treatment, species)]
-ddata <- merge(ddata, effort, by = c('year', 'site','block', 'plot', 'subplot', 'treatment'))
-ddata[, value := value / effort]
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, plot, subplot, treatment)]
 
 
 ddata[, ':='(dataset_id = dataset_id,
@@ -33,7 +31,7 @@ ddata[, ':='(dataset_id = dataset_id,
              unit = 'ind per survey',
              comment = 'Hierarchical experimental design. Treatment is one of 8 canopy manipulation treatments. Effort: each survey corresponds to traps being open/active for 48 hours (Ellison 2005).'
 )
-][, effort := NULL]
+]
 
 
 
