@@ -18,6 +18,9 @@ effort <- unique(
      ]
 ddata <- ddata[, .(value = sum(count)), by = .(year, site, block, treatment, species)][value > 0]
 ddata <- merge(ddata, effort, by = c('year', 'site', 'block', 'treatment'))
+ddata[, value := value / effort]
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block,  treatment)]
+
 
 ddata[, ':='(
    dataset_id = dataset_id,
@@ -29,7 +32,6 @@ ddata[, ':='(
    realm = 'marine',
    taxon = 'fish',
    metric = 'density',
-   value = value / effort,
    unit = 'ind per m2',
    comment = 'Cryptic and Mobile surveys pooled. Multiple annual surveys pooled into one with total abundances standardized by total sampled area. Two transects per site, each with a different treatment.'
 )][, effort := NULL]

@@ -18,6 +18,9 @@ effort <- ddata[, .(effort = length(unique(date))), by = .(year, site, block, pl
 
 ddata <- ddata[, .(value = sum(value)), by = .(year, site, block, plot, subplot, treatment, species)]
 ddata <- merge(ddata, effort, by = c('year', 'site','block', 'plot', 'subplot', 'treatment'))
+ddata[, value := value / effort]
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, plot, subplot, treatment)]
+
 
 ddata[, ':='(dataset_id = dataset_id,
              treatment_type = "manipulated community",
@@ -27,7 +30,6 @@ ddata[, ':='(dataset_id = dataset_id,
              realm = 'terrestrial',
              taxon = 'invertebrates',
              metric = 'count',
-             value = value  / effort,
              unit = 'ind per survey',
              comment = 'Hierarchical experimental design. Treatment is one of 8 canopy manipulation treatments. Effort: each survey corresponds to traps being open/active for 48 hours (Ellison 2005).'
 )

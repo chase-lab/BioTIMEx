@@ -26,7 +26,8 @@ ddata[, ':='(
 effort <- ddata[, .(effort = length(unique(date))), by = .(site, year, treatment)]
 ddata <- ddata[, .(value = sum(value)), by = .(year, site, treatment, species)]
 ddata <- merge(ddata, effort, by = c('year', 'site', 'treatment'))
-
+ddata[, value := value / effort]
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, treatment)]
 
 ddata[, ':='(
    dataset_id = dataset_id,
@@ -41,7 +42,6 @@ ddata[, ':='(
    realm = 'freshwater',
    taxon = 'phytoplankton',
    metric = 'concentration',
-   value = value / effort,
    unit = NA,  # cell/mL of water?
    comment =  'Samples from 1991 to 1995 were counted by the same person hence ensuring comparable counts. 2013 to 2015 should have consistent sampling and counting too. Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf.'
 )][,

@@ -9,7 +9,7 @@ setDT(ddata)
 setnames(ddata, old = c('Treatment', 'Replicate', 'Station', 'Species','Adults', 'Year'),
          new = c('site', 'block', 'plot', 'species','value', 'year'))
 
-ddata <- ddata[value >0]
+ddata <- ddata[value > 0]
 
 effort <- ddata[, .(effort = length(unique(Sample_Date))), by = .(year, site, block, plot)]
 ddata <- ddata[, .(value = sum(value)), by = .(year, site, block, plot, species)]
@@ -41,6 +41,8 @@ ddata[, ':='(
    comment = 'Hierarchical experimental design. Treatment is one of 10 culture treatments. Effort: several replicates (block) per treatment (site), each being sampled at 5 stations (plot) several time a year. Abundances are summed per year and divided by the number of sampling events.'
 )
 ][, effort := NULL]
+
+ddata[, value := value / min(value), by = .(year, site, block, plot)]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'))

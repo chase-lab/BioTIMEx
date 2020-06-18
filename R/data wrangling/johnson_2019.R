@@ -38,6 +38,10 @@ if(FALSE) {
       effort <- ddata[, .(effort = length(unique(Month))), by = .(year, site, block, plot, subplot, treatment)]
       ddata <- ddata[, .(value = sum(value)), by = .(site, block, plot, subplot, year, treatment, species)]
       ddata <- merge(ddata, effort, by = c('year', 'site','block', 'plot', 'subplot', 'treatment'))
+      # ddata[, value := value / effort]
+      # ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, plot, subplot, treatment)]      # NOT CHECKED BECAUSE DATASET ON HOLD
+
+
 
       ddata[, ':='(dataset_id = dataset_id,
                    timepoints =  paste0('T',seq_along(unique(year))[match(year, unique(year))]),
@@ -51,7 +55,6 @@ if(FALSE) {
                    realm = 'terrestrial',
                    taxon = 'invertebrates',
                    metric = 'density',
-                   value = value / effort,
                    unit = 'ind/m2',
                    comment = 'Block design with two treatments. Treatments were applied at different times and frequencies. Abundances from several samplings a year were pooled together.'
       )

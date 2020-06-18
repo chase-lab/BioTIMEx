@@ -29,11 +29,12 @@ effort <- ddata[,
                 by = .(site, year, block, plot, treat, treatment)]
 
 ddata <- ddata[,
-               .(value = sum(value)),   # sum of counts per year
+               .(value = as.numeric(sum(value))),   # sum of counts per year
                by = .(site, year, block, plot, treat, treatment, species)
                ]
 ddata <- merge(ddata, effort, by = c('year', 'site','block', 'plot', 'treat','treatment'))
-
+ddata[, value := value / effort]
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, plot, treat, treatment)]
 
 ddata[, ':='(dataset_id = dataset_id,
              treatment_type = 'warming',
@@ -50,7 +51,6 @@ ddata[, ':='(dataset_id = dataset_id,
              realm = 'terrestrial',
              taxon = 'invertebrates',
              metric = 'count',
-             value = value / effort,
              unit = 'ind per survey',
              comment = "Block design with treatments being, no chamber, a chamber without warming, a chamber and warming with different warming intensities. Winkler samples are excluded. Repeated samplings in a single year are pooled. Counts are added and divided by effort. Effort is defined as the number of pitfall surveys per year (1 to 13). What's up with block/chamber 6? Its temperature changes. In site HF, both pre and post treatment samples were made in 2009.",
              treat = NULL,
@@ -59,7 +59,7 @@ ddata[, ':='(dataset_id = dataset_id,
 
 ddata <- ddata[!is.na(value) & !is.na(species) & species != 'NA NA']    # three rows have a NA value for value but there is a species name.
 
-ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique(species))), by = .(site, block, plot, treatment, design, year)][S>N]
+# ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique(species))), by = .(site, block, plot, treatment, design, year)][S>N]
 
 
 

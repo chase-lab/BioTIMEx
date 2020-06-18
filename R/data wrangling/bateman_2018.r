@@ -14,7 +14,8 @@ ddata[, year := as.integer(format(survey_date, '%Y'))]
 effort <- ddata[, .(effort = length(unique(survey_date))), by = .(year, site, block)]
 ddata <- ddata[, .(value = sum(value)), by = .(year, site, block, species)]
 ddata <- merge(ddata, effort, by = c('year', 'site', 'block'))
-
+ddata[, value := value / effort]
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block)]
 
 ddata[, ':='(
    dataset_id = dataset_id,
@@ -30,7 +31,6 @@ ddata[, ':='(
    realm = 'terrestrial',
    taxon = 'birds',
    metric = 'count',
-   value = value  / effort,
    unit = 'mean abundance per survey',
    comment = 'Some restored and some unrestored sites along the Salt river. Each station was surveyed several times a year (2 to 9). Abundances are summed per year and divided by the number of sampling events.'
 )

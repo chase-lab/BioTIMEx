@@ -37,6 +37,7 @@ ddata[,
                    Burning = NULL,
                    Trapnights = NULL
            )]
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, treatment)]
 
 ddata <- ddata[   value > 0   ]
 

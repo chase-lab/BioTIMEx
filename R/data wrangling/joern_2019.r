@@ -27,6 +27,9 @@ ddata[, ':='(
 effort <- ddata[, .(effort = length(unique(date))), by = .(site, block, year, treatment)]
 ddata <- ddata[, .(value = sum(Total)), by = .(site, block, year, treatment, species)]
 ddata <- merge(ddata, effort, by = c('year', 'site','block', 'treatment'))
+ddata[, value := value / effort]
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block, treatment)]
+
 
 ddata[, ':='(
    dataset_id = dataset_id,
@@ -68,7 +71,6 @@ ddata[, ':='(
    realm = 'terrestrial',
    taxon = 'invertebrates',
    metric = 'count',
-   value = value / effort,
    unit = 'count',
    comment = 'Grasshopper sampling in fields burnt at various frequencies (the number in the site names indicates the theoretical frequency). Some fields are also grazed and the site name indicates N for natural grazing by bison. Most of the type, there were several samplings in a year, they have been pooled together and divided by the number of visits (1 to 14).'
 )]

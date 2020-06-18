@@ -23,11 +23,13 @@ ddata[, ':='(year = format(Date, '%Y'),
 
 
 ddata <- ddata[, .(value = sum(nSpecimens)/c(1, 1, 3, 2)[match(year, c(2003:2006))]),
-    by = .(year, block, treatment, species)]
+    by = .(year, site, block, treatment, species)]
+ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block,  treatment)]
+
+
 
 ddata[,
              ':='(dataset_id = dataset_id,
-                  site = 'Field.B',
                   treatment_type = 'prairie management',
                   timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
                   design = paste0('A', ifelse(treatment == 'control', 'C', "I")),
