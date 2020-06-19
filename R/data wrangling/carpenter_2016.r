@@ -5,16 +5,38 @@ dataset_id <- 'carpenter_2016'
 load(file='data/raw data/carpenter_2016/ddata')
 setDT(ddata)
 
-setnames(ddata, c('year4', 'lakename', 'taxon_name', 'abundance'),
-         c('year', 'site', 'species', 'value'))
+setnames(ddata, c('year4', 'lakename', 'taxon_name', 'abundance','sampledate'),
+         c('year', 'site', 'species', 'value','date'))
 
 # Exclusion of lakes with unknown disturbance history
 ddata <- ddata[!site %in% c('Ward Lake','Hummingbird Lake')]
 
-# Standardisation
-ddata[, effort := length(unique(sampledate)), by = .(year, site)] # effort is the number of surveys
-ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, species)] # abundance divided by effort
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site)] # standardised abundance divided by the smallest abundance
+# Exclusion of samples outside of the first of May to 31st of August period
+ddata[, daynumber := format(date, '%j')]
+ddata <- ddata[daynum > 121 & daynum < 243]
+
+ddata <- ddata[!is.na(value) & value > 0]
+ddata[, value := round(value, 0)]
+
+# Community
+ddata[, ':='(
+   N = sum(value),
+   S = length(unique(species)),
+   INSPIE = vegan::diversity(x = value, index = 'invsimpson')
+),
+by = .(site, year, date)
+]
+
+ddata[, minN := min(N), by = .(site)] # No minN < 6
+
+ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, year, date)]
+
+ddata <- ddata[,
+               lapply(.SD, mean),
+               by = .(site, year),
+               .SDcols = c('N','S','Sn','INSPIE')
+               ]
+
 
 beforeafter <- ifelse(ddata$site %in% c("Paul Lake", 'Crampton Lake'), '',
                       ifelse(
@@ -40,16 +62,10 @@ ddata[, ':='(
    ),
    realm = 'freshwater',
    taxon = 'zooplankton',
-   metric = 'standardised count',
-   unit = 'count',
-   comment = 'Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf. Zooplankton abundances are additionned and devided by the number of surveys in a lake in a year (3 to 19).'
+
+   comment = 'Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf. Zooplankton abundances from several surveys a year are additionned and averaged (3 to 19 surveys).'
 )]
 
-
-verif <- ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique(species))), by = .(dataset_id, site, year)][S > N]
-if(nrow(verif) > 0) warning('S > N')
-
-ddata <- ddata[, ap := NULL]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),

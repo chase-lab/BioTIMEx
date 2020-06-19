@@ -1,7 +1,7 @@
 packrat/lib*/
 .Rproj.user
-data\raw data\adler_2016\3528368.zip
-points/28 05 2020.pptx
+*.zip
+*.pptx
 todo.r
 *.csv
 

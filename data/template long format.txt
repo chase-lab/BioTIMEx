@@ -12,8 +12,8 @@ timepoints	TRUE	NA
 time_since_disturbance	FALSE	NA
 realm	TRUE	NA
 taxon	TRUE	NA
-species	TRUE	NA
-metric	TRUE	NA
-value	TRUE	NA
-unit	TRUE	NA
+N	TRUE	NA
+S	TRUE	NA
+Sn	TRUE	NA
+INSPIE	TRUE	NA
 comment	FALSE	NA

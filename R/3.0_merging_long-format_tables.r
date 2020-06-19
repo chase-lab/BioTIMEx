@@ -5,7 +5,7 @@ library(data.table)
 listfiles <- list.files('data/wrangled data', pattern = '.csv',
                         full.names = TRUE, recursive = T)
 
-template <- read.csv('data/template long format.csv', h = TRUE, sep = '\t')
+template <- read.csv('data/template long format.txt', h = TRUE, sep = '\t')
 column_names_template <- template[,1]
 
 lst <- lapply(listfiles, data.table::fread)

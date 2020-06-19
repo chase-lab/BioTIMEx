@@ -8,27 +8,53 @@ setDT(ddata)
 setnames(ddata, old = c( 'lakename','year4','sampledate', 'concentration'),
          new = c('site', 'year','date', 'value'))
 
-ddata[, ':='(
-   treatment = ifelse(site == "Paul Lake", 'control',
-                      ifelse(site %in% c('East Long Lake', 'West Long Lake'), 'eutrophication',
-                             ifelse(site %in% c('Peter Lake','Tuesday Lake'), 'community manipulation', NA)
-                      )
-   ),
-   species = gsub( trimws( paste(
+ddata[, species := gsub( trimws( paste(
       ifelse(is.na(genus), '', as.character(genus)),
       ifelse(is.na(species), '', as.character(species)),
       ifelse(is.na(genus) & is.na(species), 'Unkown', ''),
       ifelse(is.na(genus) & is.na(species) & !is.na(description), as.character(description), ''),
       sep=' ') ), pattern = ' {2,3}', replacement = ' ')
-)]
+]
 
-# standardisation
-ddata[, effort := length(unique(date)), by = .(site, year, treatment)]# effort is the number of surveys
-ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, treatment, species)] # abundance divided by effort
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, treatment)] # standardised abundance divided by the smallest abundance
+ddata[, daynumber := format(date, '%j')]
+ddata <- ddata[daynum > 152 & daynum < 243]
+# A = ddata[daynum > 121 & daynum < 273,length(unique(date)), by = .(site, year)]
+# B = ddata[daynum > 152 & daynum < 273,length(unique(date)), by = .(site, year)]
+# C = ddata[daynum > 152 & daynum < 243,length(unique(date)), by = .(site, year)]
+
+ddata <- ddata[!is.na(value) & value > 0]
+ddata[, value := ifelse(value > 0 & value <= 1, 1, round(value, 0))]
+
+# Community
+ddata[, ':='(
+            N = sum(value),
+            S = length(unique(species)),
+            INSPIE = vegan::diversity(x = value, index = 'invsimpson')
+         ),
+         by = .(site, year, date)
+]
+
+# One site with only one individual sampled. Considered an outlier and excluded
+ddata <- ddata[N > 1]
+
+ddata[, minN := min(N), by = .(site)] # No minN < 6
+
+ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, year, date)]
+
+ddata <- ddata[,
+               lapply(.SD, mean),
+               by = .(site, year),
+               .SDcols = c('N','S','Sn','INSPIE')
+               ]
 
 ddata[, ':='(
    dataset_id = dataset_id,
+   treatment = ifelse(site == "Paul Lake", 'control',
+                      ifelse(site %in% c('East Long Lake', 'West Long Lake'), 'eutrophication',
+                             ifelse(site %in% c('Peter Lake','Tuesday Lake'), 'community manipulation', NA)
+                      )
+   ),
+
    treatment_type = 'eutrophication and community manipulation',
    design = paste0(ifelse(site == "Paul Lake", '',
                           ifelse(
@@ -36,12 +62,12 @@ ddata[, ':='(
                                 (site %in% c('Peter Lake','Tuesday Lake') & year < 1985), 'B', 'A')
    ),
    ifelse(site == "Paul Lake", 'C', 'I')),
+
    timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
    realm = 'freshwater',
    taxon = 'phytoplankton',
-   metric = 'concentration',
-   unit = NA,  # cell/mL of water?
-   comment =  'Samples from 1991 to 1995 were counted by the same person hence ensuring comparable counts. 2013 to 2015 should have consistent sampling and counting too. Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf.'
+
+   comment =  'One suvey detecting only one individual was excluded. Samples from 1991 to 1995 were counted by the same person hence ensuring comparable counts. 2013 to 2015 should have consistent sampling and counting too. Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf.'
 )][,
    time_since_disturbance := ifelse(site %in% c('East Long Lake', 'West Long Lake') & substr(design, 1, 1) == 'A',
                                     year - 1991,

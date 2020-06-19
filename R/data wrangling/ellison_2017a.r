@@ -26,6 +26,9 @@ ddata[method != 'Winkler', ':='(species = paste(genus, species),
 
 ddata[,
                 effort := length(unique(sampling.id)),
+
+
+      # EFFORT SHOULD USE DATE INSTEAD
                 by = .(site, year, block, plot, treat, treatment)] # effort is the number of surveys
 
 ddata <- ddata[,

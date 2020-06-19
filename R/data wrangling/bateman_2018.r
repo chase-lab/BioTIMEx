@@ -6,12 +6,12 @@ dataset_id <- 'bateman_2018'
 load(file='data/raw data/bateman_2018/ddata')
 setDT(ddata)
 
-setnames(ddata, old = c('reach', 'site_code','common_name','bird_count'),
-         new = c('site', 'block', 'species','value'))
-ddata[, year := as.integer(format(survey_date, '%Y'))]
+setnames(ddata, old = c('reach', 'site_code','common_name','bird_count','survey_date'),
+         new = c('site', 'block', 'species','value','date'))
+ddata[, year := as.integer(format(date, '%Y'))]
 
 
-ddata[, effort := length(unique(survey_date)), by = .(year, site, block)] # effort is the number of surveys
+ddata[, effort := length(unique(date)), by = .(year, site, block)] # effort is the number of surveys
 ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, block, species)]  # abundance divided by effort
 ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block)] # standardised abundance divided by the smallest abundance
 
