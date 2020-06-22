@@ -32,7 +32,7 @@ ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year, dat
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, year),
-               .SDcols = c('N','S','Sn','ENSPIE')
+               .SDcols = c('N','minN','S','Sn','ENSPIE')
                ]
 
 
@@ -55,4 +55,4 @@ ddata[, ':='(
 ][, design := paste0('A', ifelse(treatment == "urban_restored", 'I', 'C'))]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv',  row.names=FALSE))
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'),  row.names=FALSE)

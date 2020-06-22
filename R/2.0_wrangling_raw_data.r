@@ -1,2 +1,2 @@
 # Wrangle raw data
-tb::executeAll(fullPath = 'R/data wrangling', echo=FALSE, local = TRUE)
+tb::executeAll(fullPath = 'R/data wrangling', echo=FALSE)

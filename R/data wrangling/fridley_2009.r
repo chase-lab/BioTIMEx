@@ -35,7 +35,6 @@ ddata[, ':='(
    taxon = 'plants',
    species = NULL,
    value = NULL,
-   minN = NULL,
 
    comment = 'Artificial temperature increase in winter began in November 1993 (warm treatment). Artificial drought began in summer 1994. Artificial increase of water input began in summer 1994. See metadata for full setup. No standardisation needed, one sampling per year.'
 
@@ -46,4 +45,7 @@ ddata <- unique(ddata)
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
           row.names=FALSE)
+
+
+
 

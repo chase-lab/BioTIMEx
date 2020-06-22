@@ -88,3 +88,6 @@ ddata[, ':='(
 # dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 # fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
 #        row.names=FALSE)
+('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
+#        row.names=FALSE)
+

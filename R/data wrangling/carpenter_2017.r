@@ -44,7 +44,7 @@ ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, year, date)]
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, year),
-               .SDcols = c('N','S','Sn','ENSPIE')
+               .SDcols = c('N','minN','S','Sn','ENSPIE')
                ]
 
 ddata[, ':='(

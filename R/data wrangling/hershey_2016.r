@@ -16,7 +16,6 @@ ddata <- melt(ddata,
 ddata <- ddata[species != 'SNAILS']
 
 ddata[, ':='(
-        dataset_id = dataset_id,
         year = as.integer(format(as.Date(date, '%d-%b-%y'), '%Y')),
         site =  ifelse(abs(as.numeric(trimws(gsub(x=site, pattern='K|k', replacement='')))) < 10,
                        as.numeric(trimws(gsub(x=site, pattern='K|k', replacement=''))) * 1000,
@@ -40,12 +39,14 @@ ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year, dat
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, year),
-               .SDcols = c('N','S','Sn','ENSPIE')
+               .SDcols = c('N','minN','S','Sn','ENSPIE')
                ]
 
 
 ddata[,
-      ':='(treatment = paste(ifelse(site < 0, 'control', 'impact'), site, sep='_'),
+      ':='(
+        dataset_id = dataset_id,
+        treatment = paste(ifelse(site < 0, 'control', 'impact'), site, sep='_'),
            treatment_type = "eutrophication",
            design = paste0('A', ifelse(site < 0, 'C', 'I')),
            timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),

@@ -35,7 +35,7 @@ ddata[, Sn := NA] #vegan::rarefy(value, sample = minN), by = .(site, block, year
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, plot, year),
-               .SDcols = c('N','S','Sn','ENSPIE')
+               .SDcols = c('N','minN','S','Sn','ENSPIE')
                ]
 
 

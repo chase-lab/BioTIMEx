@@ -52,7 +52,7 @@ ddata[, Sn := NA] #vegan::rarefy(value, sample = minN), by = .(site, block, trea
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, plot, treatment, year),
-               .SDcols = c('N','S','Sn','ENSPIE')
+               .SDcols = c('N','minN','S','Sn','ENSPIE')
                ]
 
 
@@ -103,3 +103,4 @@ ddata[, ':='(
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
           row.names=FALSE)
+
