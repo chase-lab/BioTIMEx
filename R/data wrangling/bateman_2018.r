@@ -8,12 +8,33 @@ setDT(ddata)
 
 setnames(ddata, old = c('reach', 'site_code','common_name','bird_count','survey_date'),
          new = c('site', 'block', 'species','value','date'))
-ddata[, year := as.integer(format(date, '%Y'))]
+ddata[, ':='(year = as.integer(format(date, '%Y')),
+             month = as.integer(format(date, '%m')))]
 
+# Selecting surveys between January and May, excluding 2018 which has only January
+ddata <- ddata[ year != 2018 & month <= 5]
 
-ddata[, effort := length(unique(date)), by = .(year, site, block)] # effort is the number of surveys
-ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, block, species)]  # abundance divided by effort
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block)] # standardised abundance divided by the smallest abundance
+ddata[is.na(value), value := 1]
+
+# Community
+ddata[, ':='(
+         N = sum(value),
+         S = length(unique(species)),
+         ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
+      ),
+      by = .(site, block, year, date)
+]
+
+ddata[, minN := min(N), by = .(site, block)] # 0% minN < 6
+
+ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year, date)]
+
+ddata <- ddata[,
+               lapply(.SD, mean),
+               by = .(site, block, year),
+               .SDcols = c('N','S','Sn','ENSPIE')
+               ]
+
 
 ddata[, ':='(
    dataset_id = dataset_id,
@@ -28,11 +49,10 @@ ddata[, ':='(
                                    ),
    realm = 'terrestrial',
    taxon = 'birds',
-   metric = 'count',
-   unit = 'mean abundance per survey',
+
    comment = 'Some restored and some unrestored sites along the Salt river. Each station was surveyed several times a year (2 to 9). Abundances are summed per year and divided by the number of sampling events.'
 )
 ][, design := paste0('A', ifelse(treatment == "urban_restored", 'I', 'C'))]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'))
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv',  row.names=FALSE))

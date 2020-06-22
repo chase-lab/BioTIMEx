@@ -22,7 +22,7 @@ ddata[, value := round(value, 0)]
 ddata[, ':='(
    N = sum(value),
    S = length(unique(species)),
-   INSPIE = vegan::diversity(x = value, index = 'invsimpson')
+   ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
 ),
 by = .(site, year, date)
 ]
@@ -34,7 +34,7 @@ ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, year, date)]
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, year),
-               .SDcols = c('N','S','Sn','INSPIE')
+               .SDcols = c('N','S','Sn','ENSPIE')
                ]
 
 

@@ -2,6 +2,7 @@
 library(data.table)
 
 dataset_id <- 'ellison_2017a'
+if(FALSE){
 load(file='data/raw data/ellison_2017a/ddata')
 setDT(ddata)
 
@@ -64,4 +65,4 @@ ddata <- ddata[!is.na(value) & !is.na(species) & species != 'NA NA']    # three 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
           row.names=FALSE)
-
+}

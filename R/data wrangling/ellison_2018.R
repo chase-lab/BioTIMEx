@@ -17,7 +17,7 @@ ddata <- ddata[!(date > '2006-08-31' & date < '2006-12-31')]
 ddata[, ':='(
    N = sum(value),
    S = length(unique(species)),
-   INSPIE = vegan::diversity(x = value, index = 'invsimpson')
+   ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
 ),
 by = .(site, block, plot, subplot, year, date)
 ]
@@ -29,7 +29,7 @@ ddata[, Sn := NA] #vegan::rarefy(value, sample = minN), by = .(site, block, plot
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, plot, subplot, treatment, year),
-               .SDcols = c('N','S','Sn','INSPIE')
+               .SDcols = c('N','S','Sn','ENSPIE')
                ]
 
 

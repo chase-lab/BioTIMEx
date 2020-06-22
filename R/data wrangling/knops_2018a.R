@@ -5,9 +5,10 @@ dataset_id <- 'knops_2018a'
 load(file='data/raw data/knops_2018a/ddata')
 setDT(ddata)
 
-setnames(ddata, 'Plot', 'site')
+setnames(ddata, c('Plot','nSpecimens','Date'), c('site','value','date'))
 
-ddata[, ':='(year = format(Date, '%Y'),
+ddata[, ':='(year = format(date, '%Y'),
+             month = format(date, '%m'),
              treatment = paste0(
                 ifelse(Exclosure == 'y', 'Ex', ''),
                 ifelse(Fertilized == 'y', 'Fe', ''),
@@ -21,11 +22,30 @@ ddata[, ':='(year = format(Date, '%Y'),
        treatment = ifelse(treatment == '', 'control', treatment))
   ][, block := paste0('B',seq_along(unique(treatment))[match(treatment, unique(treatment))])]
 
+# selecting surveys happening in August
+# excluding sub-adults
+ddata <- ddata[month == '08' & (Life.stage == 'na' | Life.stage == 'adults')]
 
-ddata <- ddata[, .(value = sum(nSpecimens)/c(1, 1, 3, 2)[match(year, c(2003:2006))]),
-    by = .(year, site, block, treatment, species)]
-ddata[!is.na(value) & value > 0, value := value / min(value), by = .(year, site, block,  treatment)]
 
+
+# Community
+ddata[, ':='(
+   N = sum(value),
+   S = length(unique(species)),
+   ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
+),
+by = .(site, block, treatment, year, date)
+]
+
+ddata[, minN := min(N), by = .(site, block, treatment)] # 0% minN < 6
+
+ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, treatment, year, date)]
+
+ddata <- ddata[,
+               lapply(.SD, mean),
+               by = .(site, block, treatment, year),
+               .SDcols = c('N','S','Sn','ENSPIE')
+               ]
 
 
 ddata[,
@@ -37,15 +57,10 @@ ddata[,
                                                   as.numeric(year) - 2000),
                   realm = 'terrestrial',
                   taxon = 'invertebrates',
-                  metric = 'count',
-                  unit = 'ind per survey',
-                  comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Life stage is also given (sometimes) so subadults could be excluded hence diminishing greatly the number of undeterminate species.'
+
+                  comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Subadults are excluded which  diminishes greatly the number of undeterminate species.'
                   )]
 
-verif <- ddata[, ap := ifelse(value > 0, 1, 0)][, .(N = sum(ap), S=length(unique(species))), by = .(site, block, treatment, year)][S>N]
-if(nrow(verif)>0) warning('S > N')
-
-ddata <- ddata[, ap := NULL]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),

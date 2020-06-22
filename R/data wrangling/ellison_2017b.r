@@ -2,6 +2,7 @@
 # correct typos in subs, method
 
 dataset_id <- 'ellison_2017b'
+if(FALSE){
 load(file='data/raw data/ellison_2017b/ddata')
 setDT(ddata)
 
@@ -53,3 +54,4 @@ dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
           row.names=FALSE)
 
+}

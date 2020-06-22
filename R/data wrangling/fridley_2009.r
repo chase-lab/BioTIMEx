@@ -7,6 +7,21 @@ setDT(ddata)
 
 setnames(ddata, c('block', 'plot', 'contacts'),
          c('site', 'block', 'value'))
+
+# Community
+ddata[, ':='(
+   N = sum(value),
+   S = length(unique(species)),
+   ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
+),
+by = .(site, block, year)
+]
+
+ddata[, minN := min(N), by = .(site, block)] # No minN < 6
+
+ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year)]
+
+
 ddata[, ':='(
    dataset_id = dataset_id,
    treatment_type = "manipulated climate",
@@ -18,13 +33,17 @@ ddata[, ':='(
 
    realm = 'terrestrial',
    taxon = 'plants',
-   metric = 'count',
-   unit = 'count',
+   species = NULL,
+   value = NULL,
+   minN = NULL,
 
    comment = 'Artificial temperature increase in winter began in November 1993 (warm treatment). Artificial drought began in summer 1994. Artificial increase of water input began in summer 1994. See metadata for full setup. No standardisation needed, one sampling per year.'
 
 )]
 
+ddata <- unique(ddata)
+
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
           row.names=FALSE)
+

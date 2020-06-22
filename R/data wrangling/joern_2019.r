@@ -16,7 +16,12 @@ ddata[, ':='(
              'noFire',
              paste0('fire', substr(site, 2, 3) )), sep = '_'),
    date = as.Date(paste(year, RecMonth, RecDay, sep='/'), format = '%Y/%m/%d')
-)][, treatment := ifelse(treatment == 'noGrazing_noFire', 'control', treatment)]
+)][, ':='(treatment = ifelse(treatment == 'noGrazing_noFire', 'control', treatment),
+   daynum = format(date, format = '%j'))
+   ]
+
+# Keeping only samples between July and August
+ddata <- ddata[daynum >= 182  & daynum <= 243]
 
 # melting sites and selecting columns
 ddata <- melt(ddata,
@@ -35,7 +40,7 @@ ddata <- ddata[!is.na(value) & value > 0]
 ddata[, ':='(
    N = sum(value),
    S = length(unique(species)),
-   INSPIE = vegan::diversity(x = value, index = 'invsimpson')
+   ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
 ),
 by = .(site, block, plot, treatment, year, date)
 ]
@@ -47,7 +52,7 @@ ddata[, Sn := NA] #vegan::rarefy(value, sample = minN), by = .(site, block, trea
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, plot, treatment, year),
-               .SDcols = c('N','S','Sn','INSPIE')
+               .SDcols = c('N','S','Sn','ENSPIE')
                ]
 
 

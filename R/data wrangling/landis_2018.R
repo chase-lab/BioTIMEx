@@ -9,12 +9,35 @@ setDT(ddata)
 setnames(ddata, old = c('Treatment', 'Replicate', 'Station', 'Species','Adults', 'Year','Sample_Date'),
          new = c('site', 'block', 'plot', 'species','value', 'year','date'))
 
-
-ddata[, effort := length(unique(date)), by = .(year, site, block, plot)] # effort is the number of surveys
-ddata <- ddata[, .(value = sum(value / effort)), by = .(year, site, block, plot, species)]  # abundance divided by effort
-ddata[, value := value / min(value), by = .(year, site, block, plot)]# standardised abundance divided by the smallest abundance
-
 ddata <- ddata[value > 0]
+
+# Selecting surveys between beginningof June and end of August
+ddata[, daynum := format(date, '%j')]
+ddata <- ddata[daynum > 152 & daynum < 243]
+# A = ddata[daynum > 121 & daynum < 243,length(unique(date)), by = .(site, year)]
+# B = ddata[daynum > 152 & daynum < 243,length(unique(date)), by = .(site, year)]
+# C = ddata[daynum > 152 & daynum < 243,length(unique(date)), by = .(site, year)]
+
+
+# Community
+ddata[, ':='(
+   N = sum(value),
+   S = length(unique(species)),
+   ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
+),
+by = .(site, block, plot, year, date)
+]
+
+ddata[, minN := min(N), by = .(site, block, plot)] # 100% minN=1
+
+ddata[, Sn := NA] #vegan::rarefy(value, sample = minN), by = .(site, block, year, date)]
+
+ddata <- ddata[,
+               lapply(.SD, mean),
+               by = .(site, block, plot, year),
+               .SDcols = c('N','S','Sn','ENSPIE')
+               ]
+
 
 ddata[, ':='(
    dataset_id = dataset_id,
@@ -34,13 +57,12 @@ ddata[, ':='(
    time_since_disturbance = year - 1989,
    realm = 'terrestrial',
    taxon = 'invertebrates',
-   metric = 'count',
-   unit = 'ind per replicate',
-   comment = 'Hierarchical experimental design. Treatment is one of 10 culture treatments. Effort: several replicates (block) per treatment (site), each being sampled at 5 stations (plot) several time a year. Abundances are summed per year and divided by the number of sampling events.'
+
+   comment = 'Hierarchical experimental design. Treatment is one of 10 culture treatments. Effort: several replicates (block) per treatment (site), each being sampled at 5 stations (plot) several time a year. Several biodiversity metrics each year are averaged.'
 )
 ]
 
 
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'))
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'), row.names=FALSE)
