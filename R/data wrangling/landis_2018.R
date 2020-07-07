@@ -11,31 +11,35 @@ setnames(ddata, old = c('Treatment', 'Replicate', 'Station', 'Species','Adults',
 
 ddata <- ddata[value > 0]
 
-# Selecting surveys between beginningof June and end of August
+# Selecting surveys between beginning of June and end of August
 ddata[, daynum := format(date, '%j')]
 ddata <- ddata[daynum > 152 & daynum < 243]
 # A = ddata[daynum > 121 & daynum < 243,length(unique(date)), by = .(site, year)]
 # B = ddata[daynum > 152 & daynum < 243,length(unique(date)), by = .(site, year)]
 # C = ddata[daynum > 152 & daynum < 243,length(unique(date)), by = .(site, year)]
 
-
 # Community
+## Pooling plots (There are always 5 plots) and blocks together (the number of blocks is constant for a given site / treatment in time).
+ddata <- unique(ddata[, .(value = sum(value)), by = .(site, year, date, species)])
+ddata[, effort := length(unique(date)), by = .(site, year)]
+
+## Computing metrics
 ddata[, ':='(
    N = sum(value),
    S = length(unique(species)),
    ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
 ),
-by = .(site, block, plot, year, date)
+by = .(site, year, date)
 ]
 
-ddata[, minN := min(N), by = .(site, block, plot)] # 100% minN=1
+ddata[, minN := min(N), by = .(site)]
 
-ddata[, Sn := NA] #vegan::rarefy(value, sample = minN), by = .(site, block, year, date)]
+ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, year, date)]
 
 ddata <- ddata[,
                lapply(.SD, mean),
-               by = .(site, block, plot, year),
-               .SDcols = c('N','minN','S','Sn','ENSPIE')
+               by = .(site, year),
+               .SDcols = c('effort','N','minN','S','ENSPIE','Sn')
                ]
 
 
@@ -58,7 +62,7 @@ ddata[, ':='(
    realm = 'terrestrial',
    taxon = 'invertebrates',
 
-   comment = 'Hierarchical experimental design. Treatment is one of 10 culture treatments. Effort: several replicates (block) per treatment (site), each being sampled at 5 stations (plot) several time a year. Several biodiversity metrics each year are averaged.'
+   comment = 'Hierarchical experimental design. Treatment is one of 10 culture treatments. Effort: 3 or 6 replicates (block) per treatment (site), each being sampled at 5 stations (plot) several time a year. Blocks and plots were pooled together to increase min N but it is still low. However, the number of surveys per year varies a lot so several biodiversity metrics each year are averaged. Effort gives the number of surveys per year.'
 )
 ]
 

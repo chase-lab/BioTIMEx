@@ -8,6 +8,7 @@ setDT(ddata)
 
 setnames(ddata, old = c('RecYear','Watershed','Repsite', 'Species'),
          new = c('year','site','block', 'species'))
+
 ddata[, ':='(
    site = toupper(site),
    treatment = paste(
@@ -34,7 +35,7 @@ ddata <- melt(ddata,
 ## wrong value correction
 ddata[value == 0, value := NA]
 ddata <- ddata[!is.na(value) & value > 0]
-
+ddata <- ddata[, .(value = sum(value)), by = .(site, block, treatment, year, species)] # Pooling by block is the same as taking the total column from raw data
 
 # Community
 ddata[, ':='(
@@ -42,26 +43,25 @@ ddata[, ':='(
    S = length(unique(species)),
    ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
 ),
-by = .(site, block, plot, treatment, year, date)
+by = .(site, block, treatment, year)
 ]
 
-ddata[, minN := min(N), by = .(site, block, plot, treatment)] # 99% minN=1
+ddata[, minN := min(N), by = .(site, block, treatment)] # 100% > 5
 
-ddata[, Sn := NA] #vegan::rarefy(value, sample = minN), by = .(site, block, treatment, year, date)]
-
-ddata <- ddata[,
-               lapply(.SD, mean),
-               by = .(site, block, plot, treatment, year),
-               .SDcols = c('N','minN','S','Sn','ENSPIE')
-               ]
+ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, treatment, year)]
 
 
 ddata[, ':='(
    dataset_id = dataset_id,
    treatment_type = "fire and grazing",
    timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
-   design = paste0('A', ifelse(treatment == 'control', 'C', 'I'))
+   design = paste0('A', ifelse(treatment == 'control', 'C', 'I')),
+
+   species = NULL,
+   value = NULL
 )]
+
+ddata <- unique(ddata)
 
 # Disturbance calendar
 load('data/raw data/joern_2019/ddata_env')
@@ -95,8 +95,9 @@ ddata[, ':='(
    time_since_disturbance = time_since_disturbance,
    realm = 'terrestrial',
    taxon = 'invertebrates',
+   effort = 1,
 
-   comment = 'Grasshopper sampling in fields burnt at various frequencies (the number in the site names indicates the theoretical frequency). Some fields are also grazed and the site name indicates N for natural grazing by bison. Most of the time, there were several samplings in a year, their divrsity metrics have been averaged together.'
+   comment = 'Grasshopper sampling in fields burnt at various frequencies (the number in the site names indicates the theoretical frequency of fire). Some fields are also grazed and the site name indicates N for natural grazing by bison. Most of the time, there were several samplings in a year and each site was sampled in two ares(block) each in 10 transects. The 10 transects and several surveys per year were pooled together and diversity metrics were computed on these aggregated communities. Effort is the same everywhere every year.'
 )]
 
 

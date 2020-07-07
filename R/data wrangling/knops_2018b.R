@@ -2,7 +2,6 @@
 library(data.table)
 
 dataset_id <- 'knops_2018b'
-if(FALSE){
 load(file='data/raw data/knops_2018b/ddata')
 setDT(ddata)
 
@@ -16,31 +15,24 @@ ddata[, ':='(treatment = paste0(
    ifelse(Fertilization > 0, paste0('Fe', Fertilization), ''),
    ifelse(Burning == 1, 'Bu', '')
 )
-)
-][,
-  treatment := ifelse(treatment == '', 'control', treatment)
-  ]
+)][,
+   treatment := ifelse(treatment == '', 'control', treatment)
+   ]
 
-ddata[, relEffort := Trapnights /min(Trapnights)]
-ddata[, ':='(N = sum(value) / relEffort,
-             S = NA,
-             ENSPIE = vegan::diversity(x = sum(value), index = 'invsimpson')
-),
-by = .(year, site)
-]
+# community
+ddata[, effort := Trapnights / min(Trapnights)]
+ddata[,
+      ':='(N = sum(value) / effort,
+           ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
+      ),
+      by = .(year, site)
+      ]
 
-# Minimal abundance
-# ddata[, min(N) >= 6, by = site]
-ddata[, minN := min(N), by = .(site, treatment)] # 0% minN < 6
+ddata[, S := vegan::rarefy(value, sample = round(sum(value) / effort), 0), by = .(year, site)]
 
-ddata[, Sn := NA] # vegan::rarefy(value, sample = minN), by = .(site, treatment, year)]
-
-ddata <- ddata[,
-               lapply(.SD, mean),
-               by = .(site, treatment, year),
-               .SDcols = c('N','minN','S','Sn','ENSPIE')
-               ]
-
+# Sn
+ddata[, minN := round(min(N), 0), by = .(site, treatment)] # 0% minN < 6
+ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, treatment, year)]
 
 
 ddata[,
@@ -53,7 +45,10 @@ ddata[,
               realm = 'terrestrial',
               taxon = 'mammals',
 
-              comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization (0 + 2 dosages)) and Bu (burning every other year).',
+              comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization (0 + 2 dosages)) and Bu (burning every other year). Effort is standardised by the smallest effort. N is standardised by the relative effort. S is the exected richness for N while Sn is the expected richness for minN.',
+
+              species = NULL,
+              value = NULL,
 
               Fencing = NULL,
               Fertilization = NULL,
@@ -61,7 +56,9 @@ ddata[,
               Trapnights = NULL
       )]
 
+ddata <- unique(ddata)
+
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
        row.names=FALSE)
-}
+

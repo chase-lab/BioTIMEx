@@ -31,10 +31,12 @@ ddata[, minN := min(N), by = .(site)] # No minN < 6
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, year, date)]
 
+ddata[, effort := length(unique(date)), by = .(site, year)]
+
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, year),
-               .SDcols = c('N','minN','S','Sn','ENSPIE')
+               .SDcols = c('effort','N','minN','S','Sn','ENSPIE')
                ]
 
 
@@ -63,7 +65,7 @@ ddata[, ':='(
    realm = 'freshwater',
    taxon = 'zooplankton',
 
-   comment = 'Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf. Zooplankton abundances from several surveys a year are additionned and averaged (3 to 19 surveys).'
+   comment = 'Effort is the number of surveys per year. Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf. Zooplankton abundances from several surveys a year are additionned and averaged (3 to 19 surveys).'
 )]
 
 

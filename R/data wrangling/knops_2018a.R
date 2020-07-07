@@ -42,7 +42,7 @@ ddata[, minN := min(N), by = .(site, block, treatment)] # 0% minN < 6
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, treatment, year, date)]
 
 ddata <- ddata[,
-               lapply(.SD, mean),
+               lapply(.SD, unique),
                by = .(site, block, treatment, year),
                .SDcols = c('N','minN','S','Sn','ENSPIE')
                ]
@@ -58,7 +58,7 @@ ddata[,
                   realm = 'terrestrial',
                   taxon = 'invertebrates',
 
-                  comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Subadults are excluded which  diminishes greatly the number of undeterminate species.'
+                  comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Subadults are excluded which diminishes greatly the number of undeterminate species. Only surveys from August are kept, that is one survey per year.'
                   )]
 
 

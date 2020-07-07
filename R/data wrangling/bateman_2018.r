@@ -17,12 +17,11 @@ ddata <- ddata[ year != 2018 & month <= 5]
 ddata[is.na(value), value := 1]
 
 # Community
-ddata[, ':='(
-         N = sum(value),
-         S = length(unique(species)),
-         ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
-      ),
-      by = .(site, block, year, date)
+ddata[, ':='(N = sum(value),
+             S = length(unique(species)),
+             ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
+            ),
+        by = .(site, block, year, date)
 ]
 
 ddata[, minN := min(N), by = .(site, block)] # 0% minN < 6

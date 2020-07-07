@@ -4,7 +4,6 @@ year	TRUE	NA
 site	TRUE	NA
 block	FALSE	NA
 plot	FALSE	NA
-subplot	FALSE	NA
 treatment	TRUE	NA
 treatment_type	TRUE	should be one value for the whole table.
 design	TRUE	NA

@@ -41,10 +41,12 @@ ddata[, minN := min(N), by = .(site)] # No minN < 6
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, year, date)]
 
+ddata[, effort := length(unique(date)), by = .(site, year)]
+
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, year),
-               .SDcols = c('N','minN','S','Sn','ENSPIE')
+               .SDcols = c('effort','N','minN','S','Sn','ENSPIE')
                ]
 
 ddata[, ':='(
@@ -67,7 +69,7 @@ ddata[, ':='(
    realm = 'freshwater',
    taxon = 'phytoplankton',
 
-   comment =  'One suvey detecting only one individual was excluded. Samples from 1991 to 1995 were counted by the same person hence ensuring comparable counts. 2013 to 2015 should have consistent sampling and counting too. Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf.'
+   comment =  'One survey detecting only one individual was excluded. Effort is the number of surveys per year. Samples from 1991 to 1995 were counted by the same person hence ensuring comparable counts. 2013 to 2015 should have consistent sampling and counting too. Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf.'
 )][,
    time_since_disturbance := ifelse(site %in% c('East Long Lake', 'West Long Lake') & substr(design, 1, 1) == 'A',
                                     year - 1991,

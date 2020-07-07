@@ -20,7 +20,6 @@ ddata[, ':='(
         site =  ifelse(abs(as.numeric(trimws(gsub(x=site, pattern='K|k', replacement='')))) < 10,
                        as.numeric(trimws(gsub(x=site, pattern='K|k', replacement=''))) * 1000,
                        as.numeric(trimws(gsub(x=site, pattern='K|k', replacement=''))))
-
 )]
 
 # Community
@@ -36,10 +35,12 @@ ddata[, minN := min(N), by = .(site, block)] # No minN < 6
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year, date)]
 
+ddata[, effort := length(unique(date)), by = .(site, block, year)]
+
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, year),
-               .SDcols = c('N','minN','S','Sn','ENSPIE')
+               .SDcols = c('effort','N','minN','S','Sn','ENSPIE')
                ]
 
 
