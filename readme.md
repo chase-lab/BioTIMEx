@@ -1,16 +1,16 @@
-\#BioTIMEx
+BioTIMEx
+--------
 
-Description
------------
+### Description
 
 This research compendium regroups scripts used to download, re-structure
 and aggregate data sets to constitute a large meta-analysis of
 communities in experimental setups sampled several times. The code found
 here was originally versionned using git and stored on github &lt;&gt;,
-and was eventually submitted to Zenodo &lt;&gt;.
+and was eventually submitted to Zenodo &lt;&gt;. This code accompanies
+the article: XXXXX.
 
-Methods
--------
+### Methods
 
 Data sets were originally searched for among LTER data sets and suitable
 open access data stored on EPI were selected
@@ -43,3 +43,8 @@ structure of the end-product table is a long format with each row
 recording the composition of a community in one place at a given time.
 Format is described in `./data/template long format.txt` and variables
 are defined.
+
+### Analyses
+
+Further analyses were carried at on R too by Shane Blowes and
+collaborators.
