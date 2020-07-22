@@ -22,6 +22,7 @@ follow EDI process of data checking and formatting. You can run all
 these scripts at once by running this command here or from
 `R/1.0_downloading_raw_data.r`:
 
+    if(!dir.exists('data/raw data/'))   dir.create('data/raw data/')
     listF <- list.files('./R/data download', pattern = ".R|.r", full.names = TRUE)
     lapply(listF, function(fullPath) source(fullPath, encoding = 'UTF-8', echo = FALSE, local = TRUE))
 
@@ -34,6 +35,7 @@ heterogeneously structured data sets into comparable tables are in the
 `./R/data wrangling/` folder. You can run all these scripts at once by
 running this command here or from `R/2.0-wrangling_raw_data.r`:
 
+    if(!dir.exists('data/wrangled data/'))   dir.create('data/wrangled data/')
     listF <- list.files('R/data wrangling', pattern = ".R|.r", full.names = TRUE)
     lapply(listF, function(fullPath) source(fullPath, encoding = 'UTF-8', echo = FALSE, local = TRUE))
 

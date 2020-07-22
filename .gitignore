@@ -1,8 +1,6 @@
 packrat/lib*/
 .Rproj.user
-*.zip
-*.pptx
-todo.r
+.Rprofile
 *.csv
 /points
 /supporting litterature
