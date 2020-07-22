@@ -17,8 +17,8 @@ are documented and isolated, the package renv
 (<a href="https://rstudio.github.io/renv/index.html" class="uri">https://rstudio.github.io/renv/index.html</a>)
 was used. If you run into issues while trying to reproduce this research
 compendium, please try restoring the same working environment using
-`renv::restore()`. This function will use the `renv.lock` file to
-download the same versions of packages that we used.
+`renv::init()`. This function will use the `renv.lock` file to download
+the same versions of packages that we used.
 
 ### Methods
 
@@ -50,11 +50,11 @@ running this command here or from `R/2.0-wrangling_raw_data.r`:
     lapply(listF, function(fullPath) source(fullPath, encoding = 'UTF-8', echo = FALSE, local = TRUE))
 
 Finally, all restructured tables are aggregated together in a final
-table in the `.R/3.0_merging_long-format_ttables.r` script. The
-structure of the end-product table is a long format with each row
-recording the composition of a community in one place at a given time.
-Format is described in `./data/template long format.txt` and variables
-are defined.
+table by the `.R/3.0_merging_long-format_tables.r` script. The structure
+of the end-product table is a long format with each row recording the
+composition of a community in one place at a given time. Format is
+described in `./data/template long format.txt` and variables are
+defined.
 
 ### Analyses
 
