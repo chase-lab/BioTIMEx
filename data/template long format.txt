@@ -1,19 +1,19 @@
 variable name	necessary	definition
-dataset_id	TRUE	NA
-year	TRUE	NA
-site	TRUE	NA
-block	FALSE	NA
-plot	FALSE	NA
-treatment	TRUE	NA
-treatment_type	TRUE	should be one value for the whole table.
-design	TRUE	NA
-timepoints	TRUE	NA
-time_since_disturbance	FALSE	NA
-realm	TRUE	NA
-taxon	TRUE	NA
-N	TRUE	NA
-S	TRUE	NA
-minN	TRUE	NA
-Sn	TRUE	NA
-ENSPIE	TRUE	NA
-comment	FALSE	NA
+dataset_id	TRUE	A unique identifier author_year.
+year	TRUE	Year during which the sampling was made.
+site	TRUE	Name of the location in which samples were made.
+block	FALSE	Nested location within a site.
+plot	FALSE	Nested location within a block.
+treatment	TRUE	Name or code describing the treatment applied to this particular site/block/plot.
+treatment_type	TRUE	General description of the treatments applied in this study.
+design	TRUE	Code following the BACI: Before-After, Control-Impact design.
+timepoints	TRUE	Numbered values (T1, T2) counting years between the first survey and the following ones.
+time_since_disturbance	FALSE	Number of year since the disturbance began (or NA in Control sites or in surveys before treatment began.
+realm	TRUE	One of 'Terrestrial', 'freshwater' or 'marine'.
+taxon	TRUE	One of 'plants', 'mammals', 'invertebrates', etc
+N	TRUE	Total abundance of the community.
+S	TRUE	Species richness of the community.
+minN	TRUE	Minimal S for this community over the years.
+Sn	TRUE	Rarefied richness.
+ENSPIE	TRUE	Inverse Simpson diversity metric.
+comment	FALSE	A note describing effort, experimental design, treatments or the method used to standardise the community.

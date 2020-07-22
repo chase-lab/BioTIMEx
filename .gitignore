@@ -4,4 +4,7 @@ packrat/lib*/
 *.pptx
 todo.r
 *.csv
-
+/points
+/supporting litterature
+/data/raw data/
+/data/wrangled data/

@@ -37,7 +37,7 @@ ddata <- ddata[,
 
 ddata[, ':='(
    dataset_id = dataset_id,
-   treatment = ifelse(site %in% c('Ave35','Ave67','Price','Priest'), 'Urban_notRestored',
+   treatment = ifelse(site %in% c('Ave35','Ave67','Price','Priest'), 'urban_notRestored',
                       ifelse(site %in% c('BM','Rio'), 'urban_restored',
                              'notUrban_notRestored')
                       ),
