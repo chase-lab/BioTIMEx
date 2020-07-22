@@ -11,12 +11,13 @@ knitr::opts_chunk$set(echo = FALSE)
 ## BioTIMEx
 
 ### Description
-
 This research compendium regroups scripts used to download, re-structure and aggregate data sets to constitute a large meta-analysis of communities in experimental setups sampled several times.
 The code found here was originally versionned using git and stored on github <>, and was eventually submitted to Zenodo <>. This code accompanies the article: XXXXX.
 
-### Methods
+### Reproducibility and R environment
+To ensure that the working environment (R version and package version) are documented and isolated, the package renv (<https://rstudio.github.io/renv/index.html>) was used. If you run into issues while trying to reproduce this research compendium, please try restoring the same working environment using `renv::restore()`. This function will use the `renv.lock` file to download the same versions of packages that we used.
 
+### Methods
 Data sets were originally searched for among LTER data sets and suitable open access data stored on EPI were selected (<https://portal.edirepository.org/nis/home.jsp>).
 
 Suitable data sets were individually downloaded from R. Scripts managing these downloads are grouped inside `R/data download/`. These scripts follow EDI process of data checking and formatting. You can run all these scripts at once by running this command here or from `R/1.0_downloading_raw_data.r`:

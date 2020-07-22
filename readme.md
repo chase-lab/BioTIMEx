@@ -10,6 +10,16 @@ here was originally versionned using git and stored on github &lt;&gt;,
 and was eventually submitted to Zenodo &lt;&gt;. This code accompanies
 the article: XXXXX.
 
+### Reproducibility and R environment
+
+To ensure that the working environment (R version and package version)
+are documented and isolated, the package renv
+(<a href="https://rstudio.github.io/renv/index.html" class="uri">https://rstudio.github.io/renv/index.html</a>)
+was used. If you run into issues while trying to reproduce this research
+compendium, please try restoring the same working environment using
+`renv::restore()`. This function will use the `renv.lock` file to
+download the same versions of packages that we used.
+
 ### Methods
 
 Data sets were originally searched for among LTER data sets and suitable
