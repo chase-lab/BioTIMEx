@@ -15,7 +15,7 @@ This research compendium regroups scripts used to download, re-structure and agg
 The code found here was originally versionned using git and stored on github <>, and was eventually submitted to Zenodo <>. This code accompanies the article: XXXXX.
 
 ### Reproducibility and R environment
-To ensure that the working environment (R version and package version) are documented and isolated, the package renv (<https://rstudio.github.io/renv/index.html>) was used. If you run into issues while trying to reproduce this research compendium, please try restoring the same working environment using `renv::init()`. This function will use the `renv.lock` file to download the same versions of packages that we used.
+To ensure that the working environment (R version and package version) are documented and isolated, the package renv (<https://rstudio.github.io/renv/index.html>) was used. By running `renv::restore()`, renv will install all missing packages at once. This function will use the `renv.lock` file to download the same versions of packages that we used.
 
 ### Methods
 Data sets were originally searched for among LTER data sets and suitable open access data stored on EPI were selected (<https://portal.edirepository.org/nis/home.jsp>).
