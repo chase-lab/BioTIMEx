@@ -60,7 +60,7 @@ ddata[, ':='(dataset_id = dataset_id,
 )][, ':='(
              treatment_type = "manipulated community",
              design = paste0('A', fifelse(grepl('control', treatment), 'C', 'I')),
-             timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
+             timepoints = paste0('T',seq_along(unique(year))[match(year, sort(unique(year)))]),
              time_since_disturbance = ifelse(grepl('control', treatment), NA, year - 2006),
              realm = 'terrestrial',
              taxon = 'invertebrates',

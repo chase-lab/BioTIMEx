@@ -37,7 +37,7 @@ ddata[, ':='(
    dataset_id = dataset_id,
    treatment_type = "manipulated climate",
    design = paste0('A', fifelse(treatment == 'control', 'C', 'I')),
-   timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
    time_since_disturbance = ifelse(treatment == 'control', NA,
                                    fifelse(treatment %like% 'warm', year - 1993, year - 1994)
    ),

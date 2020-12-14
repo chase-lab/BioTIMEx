@@ -65,7 +65,7 @@ ddata[, ':='(
 ddata[, ':='(
    dataset_id = dataset_id,
    treatment_type = "fire and grazing",
-   timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
    design = paste0('A', fifelse(treatment == 'control', 'C', 'I')),
 
    species = NULL,

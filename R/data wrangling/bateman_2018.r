@@ -53,7 +53,7 @@ ddata[, ':='(
                              'notUrban_notRestored')
    ),
    treatment_type = 'riverbank vegetation restoration',
-   timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
    time_since_disturbance = ifelse(site == 'BM', year - 2012,
                                    ifelse(site == 'Rio', year - 2005, NA)
    ),

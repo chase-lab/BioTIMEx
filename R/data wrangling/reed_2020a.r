@@ -65,7 +65,7 @@ ddata[, ':='(
    dataset_id = dataset_id,
    treatment = tolower( treatment),
    treatment_type = 'kelp removal',
-   timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
    design = fifelse(treatment == 'control', 'AC', 'AI'),
 
    realm = 'marine',

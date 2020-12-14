@@ -68,7 +68,7 @@ ddata[, ':='(
                      'early-successional'
    ))))))))),
    design = 'AI',
-   timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
+   timepoints = paste0('T',seq_along(unique(year))[match(year, sort(unique(year)))]),
    time_since_disturbance = year - 1989,
    realm = 'terrestrial',
    taxon = 'invertebrates',

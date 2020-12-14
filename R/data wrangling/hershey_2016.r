@@ -62,7 +62,7 @@ ddata[,
         treatment = paste(fifelse(site < 0, 'control', 'impact'), site, sep = '_'),
            treatment_type = "eutrophication",
            design = paste0('A', ifelse(site < 0, 'C', 'I')),
-           timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
+           timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
            time_since_disturbance = ifelse(site < 0, NA, year - 1984),
 
            realm = 'freshwater',

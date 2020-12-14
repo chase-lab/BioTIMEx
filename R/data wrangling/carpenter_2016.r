@@ -66,7 +66,7 @@ ddata[, ':='(
    ),
    treatment_type = 'eutrophication + fish community manipulation',
    design = paste0(beforeafter, ifelse(site %in% c("Paul Lake", 'Crampton Lake'), 'C', 'I')),
-   timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
    time_since_disturbance = ifelse(site %in% c('East Long Lake', 'West Long Lake') & beforeafter == 'A',
                                    year - 1991,
                                    ifelse(site %in% c('Peter Lake','Tuesday Lake') & beforeafter == 'A',

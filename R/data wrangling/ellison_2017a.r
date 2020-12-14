@@ -63,7 +63,7 @@ ddata[, ':='(dataset_id = dataset_id,
              design = paste0(fifelse(treat == 'Pre-treat', 'B', "A"),
                              fifelse(grepl(treatment, pattern = 'control'), 'C', "I")),
 
-             timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
+             timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
              time_since_disturbance = ifelse(treat == 'Pre-treat' | grepl(treatment, pattern = 'control'),
                                              NA,
                                              fifelse(site == 'HF',
