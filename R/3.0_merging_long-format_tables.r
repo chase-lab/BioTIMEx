@@ -15,9 +15,9 @@ data.table::setcolorder(dt, column_names_template)
 
 
 # Checking data
-indispensable_variables <- column_names_template[as.logical(template[2,])]
+indispensable_variables <- column_names_template[as.logical(template[,2])]
 
-if(any(is.na(dt$site) & !is.na(dt$block)) ||
+if (any(is.na(dt$site) & !is.na(dt$block)) ||
    any(is.na(dt$block) & !is.na(dt$plot)) ||
    any(is.na(dt$plot) & !is.na(dt$subplot))
 ) {
@@ -28,17 +28,17 @@ if(any(is.na(dt$site) & !is.na(dt$block)) ||
 }
 
 na_variables <- apply(dt[, .(indispensable_variables)], 2, function(variable) any(is.na(variable)))
-if(any(na_variables))   {
+if (any(na_variables))   {
 
    na_variables_names <- indispensable_variables[na_variables]
    # warning(paste0('NA values in columns ', paste(na_variables_names, collapse = ", ")))
 
-   for(na_variable in na_variables_names) {
+   for (na_variable in na_variables_names) {
       warning(paste0('The variable -', na_variable, '- has missing values in the following datasets: ', paste(unique(dt[is.na(dt[, .(na_variable)]), 'dataset_id']), collapse = ', ')))
    }
 
 }
-if( any(!is.na(dt$time_since_disturbance_days) & dt$time_since_disturbance_days < 0) ) {
+if ( any(!is.na(dt$time_since_disturbance_days) & dt$time_since_disturbance_days < 0) ) {
    problematic_studies <- unique(dt[!is.na(dt$time_since_disturbance_days) & dt$time_since_disturbance_days < 0, 'dataset_id'])
    warning(paste0('Negative values in "time_since_disturbance_days" in: ', paste(problematic_studies, collapse = ', ')))
 }
@@ -48,7 +48,7 @@ if( any(!is.na(dt$time_since_disturbance_days) & dt$time_since_disturbance_days 
 ## Counting the study cases
 study_cases <- unique(dt[grep('C', dt$design, invert = T), c('dataset_id','treatment')])
 nrow(study_cases)
-sort(table(study_cases$dataset_id), decreasing=T)
+sort(table(study_cases$dataset_id), decreasing = T)
 
 
 # Saving

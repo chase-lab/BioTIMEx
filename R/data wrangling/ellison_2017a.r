@@ -2,7 +2,7 @@
 library(data.table)
 
 dataset_id <- 'ellison_2017a'
-load(file='data/raw data/ellison_2017a/ddata')
+load(file = 'data/raw data/ellison_2017a/ddata')
 setDT(ddata)
 
 setnames(ddata, old = c('cham', 'subs', 'n'),
@@ -31,7 +31,19 @@ by = .(site, block, year, treat)
 ddata[, minN := min(N), by = .(site, block)]
 #data.frame(ddata[, .(minN=min(N)), by = .(site, block, year)][order(minN)][minN<6])
 
-ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year)]
+ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year, treat)]
+
+ddata[, ':='(
+   singletons = sum(value == 1),
+   doubletons = sum(value == 2)
+), by = .(site, block, year, treat)
+][,
+  coverage := fifelse(
+     doubletons > 0,
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
+
 ddata[, ':='(value = NULL,
              species = NULL)]
 ddata <- unique(ddata)
@@ -48,13 +60,13 @@ ddata <- merge(ddata, warming_table, by = c('site', 'block'), all.x = TRUE)
 
 ddata[, ':='(dataset_id = dataset_id,
              treatment_type = 'warming',
-             design = paste0(ifelse(treat == 'Pre-treat', 'B', "A"),
-                             ifelse(grepl(treatment, pattern = 'control'), 'C', "I")),
+             design = paste0(fifelse(treat == 'Pre-treat', 'B', "A"),
+                             fifelse(grepl(treatment, pattern = 'control'), 'C', "I")),
 
              timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
              time_since_disturbance = ifelse(treat == 'Pre-treat' | grepl(treatment, pattern = 'control'),
                                              NA,
-                                             ifelse(site == 'HF',
+                                             fifelse(site == 'HF',
                                                     year - 2009, year - 2010
                                              )
              ),
@@ -71,4 +83,4 @@ ddata[, ':='(dataset_id = dataset_id,
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names=FALSE)
+          row.names = FALSE)

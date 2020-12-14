@@ -3,7 +3,7 @@ library(data.table)
 
 
 dataset_id <- 'bateman_2018'
-load(file='data/raw data/bateman_2018/ddata')
+load(file = 'data/raw data/bateman_2018/ddata')
 setDT(ddata)
 
 setnames(ddata, old = c('reach', 'site_code','common_name','bird_count','survey_date'),
@@ -20,19 +20,30 @@ ddata[is.na(value), value := 1]
 ddata[, ':='(N = sum(value),
              S = length(unique(species)),
              ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
-            ),
-        by = .(site, block, year, date)
+),
+by = .(site, block, year, date)
 ]
 
 ddata[, minN := min(N), by = .(site, block)] # 0% minN < 6
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year, date)]
 
+ddata[, ':='(
+   singletons = sum(value == 1),
+   doubletons = sum(value == 2)
+), by = .(site, block, year, date)
+][,
+  coverage := fifelse(
+     doubletons > 0,
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
+
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, year),
-               .SDcols = c('N','minN','S','Sn','ENSPIE')
-               ]
+               .SDcols = c('N','minN','S','Sn','ENSPIE','coverage')
+]
 
 
 ddata[, ':='(
@@ -40,18 +51,18 @@ ddata[, ':='(
    treatment = ifelse(site %in% c('Ave35','Ave67','Price','Priest'), 'urban_notRestored',
                       ifelse(site %in% c('BM','Rio'), 'urban_restored',
                              'notUrban_notRestored')
-                      ),
+   ),
    treatment_type = 'riverbank vegetation restoration',
    timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
    time_since_disturbance = ifelse(site == 'BM', year - 2012,
                                    ifelse(site == 'Rio', year - 2005, NA)
-                                   ),
+   ),
    realm = 'terrestrial',
    taxon = 'birds',
 
    comment = 'Some restored and some unrestored sites along the Salt river. Each station was surveyed several times a year (2 to 9). Abundances are summed per year and divided by the number of sampling events.'
 )
-][, design := paste0('A', ifelse(treatment == "urban_restored", 'I', 'C'))]
+][, design := paste0('A', fifelse(treatment == "urban_restored", 'I', 'C'))]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'),  row.names=FALSE)

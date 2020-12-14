@@ -2,7 +2,7 @@
 library(data.table)
 
 dataset_id <- 'knops_2018b'
-load(file='data/raw data/knops_2018b/ddata')
+load(file = 'data/raw data/knops_2018b/ddata')
 setDT(ddata)
 
 setnames(ddata, c('Year','Plot'), c('year','site'))
@@ -11,12 +11,12 @@ ddata <- melt(ddata, id.vars = 1:6, variable.name = 'species', value.name = 'val
 ddata <- ddata[value > 0][order(year, site, species)]
 
 ddata[, ':='(treatment = paste0(
-   ifelse(Fencing == 1, 'Ex', ''),
-   ifelse(Fertilization > 0, paste0('Fe', Fertilization), ''),
-   ifelse(Burning == 1, 'Bu', '')
+   fifelse(Fencing == 1, 'Ex', ''),
+   fifelse(Fertilization > 0, paste0('Fe', Fertilization), ''),
+   fifelse(Burning == 1, 'Bu', '')
 )
 )][,
-   treatment := ifelse(treatment == '', 'control', treatment)
+   treatment := fifelse(treatment == '', 'control', treatment)
    ]
 
 # community
@@ -33,6 +33,17 @@ ddata[, S := vegan::rarefy(value, sample = round(sum(value) / effort), 0), by = 
 # Sn
 ddata[, minN := round(min(N), 0), by = .(site, treatment)] # 0% minN < 6
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, treatment, year)]
+
+ddata[, ':='(
+   singletons = sum(value == 1),
+   doubletons = sum(value == 2)
+), by = .(site, treatment, year)
+][,
+  coverage := fifelse(
+     doubletons > 0,
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
 
 
 ddata[,
@@ -59,6 +70,5 @@ ddata[,
 ddata <- unique(ddata)
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-       row.names=FALSE)
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'), row.names = FALSE)
 

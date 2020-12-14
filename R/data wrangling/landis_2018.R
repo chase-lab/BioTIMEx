@@ -3,7 +3,7 @@ library(data.table)
 
 
 dataset_id <- 'landis_2018'
-load(file='data/raw data/landis_2018/ddata')
+load(file = 'data/raw data/landis_2018/ddata')
 setDT(ddata)
 
 setnames(ddata, old = c('Treatment', 'Replicate', 'Station', 'Species','Adults', 'Year','Sample_Date'),
@@ -36,24 +36,35 @@ ddata[, minN := min(N), by = .(site)]
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, year, date)]
 
+ddata[, ':='(
+   singletons = sum(value == 1),
+   doubletons = sum(value == 2)
+), by = .(site, year, date)
+][,
+  coverage := fifelse(
+     doubletons > 0,
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
+
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, year),
-               .SDcols = c('effort','N','minN','S','ENSPIE','Sn')
+               .SDcols = c('effort','N','minN','S','ENSPIE','Sn','coverage')
                ]
 
 
 ddata[, ':='(
    dataset_id = dataset_id,
-   treatment = ifelse(site == 'CF', 'coniferous forest',
-               ifelse(site == 'DF', 'decideous forest',
-               ifelse(site == 'SF', 'mid-successional',
-               ifelse(site == 'T1', 'conventional',
-               ifelse(site == 'T2', 'no-till',
-               ifelse(site == 'T3', 'reduced input',
-               ifelse(site == 'T4', 'organic',
-               ifelse(site == 'T5', 'poplar',
-               ifelse(site == 'T6', 'alfalfa',
+   treatment = fifelse(site == 'CF', 'coniferous forest',
+               fifelse(site == 'DF', 'decideous forest',
+               fifelse(site == 'SF', 'mid-successional',
+               fifelse(site == 'T1', 'conventional',
+               fifelse(site == 'T2', 'no-till',
+               fifelse(site == 'T3', 'reduced input',
+               fifelse(site == 'T4', 'organic',
+               fifelse(site == 'T5', 'poplar',
+               fifelse(site == 'T6', 'alfalfa',
                      'early-successional'
    ))))))))),
    design = 'AI',
@@ -66,7 +77,5 @@ ddata[, ':='(
 )
 ]
 
-
-
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'), row.names=FALSE)
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, '/', dataset_id, '.csv'), row.names = FALSE)

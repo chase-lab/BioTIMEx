@@ -16,4 +16,5 @@ S	TRUE	Species richness of the community.
 minN	TRUE	Minimal S for this community over the years.
 Sn	TRUE	Rarefied richness.
 ENSPIE	TRUE	Inverse Simpson diversity metric.
+coverage	TRUE	coverage following Anne Chao et al 2014 Ecol Monogr 
 comment	FALSE	A note describing effort, experimental design, treatments or the method used to standardise the community.

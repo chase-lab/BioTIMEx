@@ -3,7 +3,7 @@ library(data.table)
 
 
 dataset_id <- 'joern_2019'
-load(file='data/raw data/joern_2019/ddata')
+load(file = 'data/raw data/joern_2019/ddata')
 setDT(ddata)
 
 setnames(ddata, old = c('RecYear','Watershed','Repsite', 'Species'),
@@ -16,8 +16,8 @@ ddata[, ':='(
       ifelse(substr(site, 2, 3) == '00',
              'noFire',
              paste0('fire', substr(site, 2, 3) )), sep = '_'),
-   date = as.Date(paste(year, RecMonth, RecDay, sep='/'), format = '%Y/%m/%d')
-)][, ':='(treatment = ifelse(treatment == 'noGrazing_noFire', 'control', treatment),
+   date = as.Date(paste(year, RecMonth, RecDay, sep = '/'), format = '%Y/%m/%d')
+)][, ':='(treatment = fifelse(treatment == 'noGrazing_noFire', 'control', treatment),
    daynum = format(date, format = '%j'))
    ]
 
@@ -50,12 +50,23 @@ ddata[, minN := min(N), by = .(site, block, treatment)] # 100% > 5
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, treatment, year)]
 
+ddata[, ':='(
+   singletons = sum(value == 1),
+   doubletons = sum(value == 2)
+), by = .(site, block, treatment, year)
+][,
+  coverage := fifelse(
+     doubletons > 0,
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
+
 
 ddata[, ':='(
    dataset_id = dataset_id,
    treatment_type = "fire and grazing",
-   timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
-   design = paste0('A', ifelse(treatment == 'control', 'C', 'I')),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
+   design = paste0('A', fifelse(treatment == 'control', 'C', 'I')),
 
    species = NULL,
    value = NULL
@@ -73,7 +84,7 @@ replacement <- "\\10\\2\\3"
 fd$Watershed <- gsub(pattern, replacement, fd$Watershed)
 # 1B -> 001B
 fd$Watershed <- toupper( paste0(
-   sapply(max(nchar(fd$Watershed))-nchar(fd$Watershed), function(x) paste(rep(x = 0, times = x), collapse="")),
+   sapply(max(nchar(fd$Watershed)) - nchar(fd$Watershed), function(x) paste(rep(x = 0, times = x), collapse = "")),
    fd$Watershed
 ) )
 
@@ -85,7 +96,7 @@ fd <- fd[fd$Watershed %in% ddata$site, ]
 time_since_disturbance <- rep(NA, nrow(ddata))
 suppressWarnings({
    for (i in 1:nrow(ddata))  {
-      last_fire_date <- max(fd[fd$Watershed == ddata$site[i] & fd$Year <=ddata$year[i], 'Year'])
+      last_fire_date <- max(fd[fd$Watershed == ddata$site[i] & fd$Year <= ddata$year[i], 'Year'])
       time_since_disturbance[i] <- as.numeric( ddata$year[i] - last_fire_date )
    }
 })
@@ -102,6 +113,5 @@ ddata[, ':='(
 
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names=FALSE)
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'), row.names = FALSE)
 

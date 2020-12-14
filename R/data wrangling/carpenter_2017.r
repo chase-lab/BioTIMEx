@@ -41,12 +41,23 @@ ddata[, minN := min(N), by = .(site)] # No minN < 6
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, year, date)]
 
+ddata[, ':='(
+   singletons = sum(value == 1),
+   doubletons = sum(value == 2)
+), by = .(site, year, date)
+][,
+  coverage := fifelse(
+     doubletons > 0,
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
+
 ddata[, effort := length(unique(date)), by = .(site, year)]
 
 ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, year),
-               .SDcols = c('effort','N','minN','S','Sn','ENSPIE')
+               .SDcols = c('effort','N','minN','S','Sn','ENSPIE','coverage')
                ]
 
 ddata[, ':='(

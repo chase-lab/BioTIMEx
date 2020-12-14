@@ -2,7 +2,7 @@
 library(data.table)
 
 dataset_id <- 'fridley_2009'
-load(file='data/raw data/fridley_2009/ddata')
+load(file = 'data/raw data/fridley_2009/ddata')
 setDT(ddata)
 
 setnames(ddata, c('block', 'plot', 'contacts'),
@@ -21,14 +21,25 @@ ddata[, minN := min(N), by = .(site, block)] # No minN < 6
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year)]
 
+ddata[, ':='(
+   singletons = sum(value == 1),
+   doubletons = sum(value == 2)
+), by = .(site, block, year)
+][,
+  coverage := fifelse(
+     doubletons > 0,
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
+
 
 ddata[, ':='(
    dataset_id = dataset_id,
    treatment_type = "manipulated climate",
-   design = paste0('A', ifelse(treatment == 'control', 'C', 'I')),
-   timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
+   design = paste0('A', fifelse(treatment == 'control', 'C', 'I')),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
    time_since_disturbance = ifelse(treatment == 'control', NA,
-                                   ifelse(treatment %like% 'warm', year - 1993, year - 1994)
+                                   fifelse(treatment %like% 'warm', year - 1993, year - 1994)
    ),
 
    realm = 'terrestrial',
@@ -43,9 +54,5 @@ ddata[, ':='(
 ddata <- unique(ddata)
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names=FALSE)
-
-
-
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'), row.names = FALSE)
 

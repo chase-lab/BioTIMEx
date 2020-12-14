@@ -2,7 +2,7 @@
 library(data.table)
 
 dataset_id <- 'knops_2018a'
-load(file='data/raw data/knops_2018a/ddata')
+load(file = 'data/raw data/knops_2018a/ddata')
 setDT(ddata)
 
 setnames(ddata, c('Plot','nSpecimens','Date'), c('site','value','date'))
@@ -10,17 +10,17 @@ setnames(ddata, c('Plot','nSpecimens','Date'), c('site','value','date'))
 ddata[, ':='(year = format(date, '%Y'),
              month = format(date, '%m'),
              treatment = paste0(
-                ifelse(Exclosure == 'y', 'Ex', ''),
-                ifelse(Fertilized == 'y', 'Fe', ''),
-                ifelse(Burned == 'y', 'Bu', '')
+                fifelse(Exclosure == 'y', 'Ex', ''),
+                fifelse(Fertilized == 'y', 'Fe', ''),
+                fifelse(Burned == 'y', 'Bu', '')
              ),
              Genus = gsub('undet', 'Unknown', Genus),
              Specific.epithet = gsub('undet|under', 'sp.', Specific.epithet)
 )
 ][,
   ':='(species = paste(Genus, Specific.epithet),
-       treatment = ifelse(treatment == '', 'control', treatment))
-  ][, block := paste0('B',seq_along(unique(treatment))[match(treatment, unique(treatment))])]
+       treatment = fifelse(treatment == '', 'control', treatment))
+  ][, block := paste0('B', seq_along(unique(treatment))[match(treatment, unique(treatment))])]
 
 # selecting surveys happening in August
 # excluding sub-adults
@@ -41,18 +41,29 @@ ddata[, minN := min(N), by = .(site, block, treatment)] # 0% minN < 6
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, treatment, year, date)]
 
+ddata[, ':='(
+   singletons = sum(value == 1),
+   doubletons = sum(value == 2)
+), by = .(site, block, treatment, year, date)
+][,
+  coverage := fifelse(
+     doubletons > 0,
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
+
 ddata <- ddata[,
                lapply(.SD, unique),
                by = .(site, block, treatment, year),
-               .SDcols = c('N','minN','S','Sn','ENSPIE')
+               .SDcols = c('N','minN','S','Sn','ENSPIE','coverage')
                ]
 
 
 ddata[,
              ':='(dataset_id = dataset_id,
                   treatment_type = 'prairie management',
-                  timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
-                  design = paste0('A', ifelse(treatment == 'control', 'C', "I")),
+                  timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
+                  design = paste0('A', fifelse(treatment == 'control', 'C', "I")),
                   time_since_disturbance = ifelse(treatment == 'control', NA,
                                                   as.numeric(year) - 2000),
                   realm = 'terrestrial',
@@ -63,6 +74,5 @@ ddata[,
 
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names=FALSE)
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'), row.names = FALSE)
 

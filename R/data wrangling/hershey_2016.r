@@ -2,7 +2,7 @@
 library(data.table)
 
 dataset_id <- 'hershey_2016'
-load(file=paste0('data/raw data/',dataset_id, '/ddata'))
+load(file = paste0('data/raw data/',dataset_id, '/ddata'))
 setDT(ddata)
 
 setnames(ddata, c('station.m', 'Trial', 'Date'),
@@ -17,9 +17,9 @@ ddata <- ddata[species != 'SNAILS']
 
 ddata[, ':='(
         year = as.integer(format(as.Date(date, '%d-%b-%y'), '%Y')),
-        site =  ifelse(abs(as.numeric(trimws(gsub(x=site, pattern='K|k', replacement='')))) < 10,
-                       as.numeric(trimws(gsub(x=site, pattern='K|k', replacement=''))) * 1000,
-                       as.numeric(trimws(gsub(x=site, pattern='K|k', replacement=''))))
+        site =  ifelse(abs(as.numeric(trimws(gsub(x = site, pattern = 'K|k', replacement = '')))) < 10,
+                       as.numeric(trimws(gsub(x = site, pattern = 'K|k', replacement = ''))) * 1000,
+                       as.numeric(trimws(gsub(x = site, pattern = 'K|k', replacement = ''))))
 )]
 
 # Community
@@ -35,6 +35,18 @@ ddata[, minN := min(N), by = .(site, block)] # No minN < 6
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, year, date)]
 
+ddata[, ':='(
+  singletons = sum(value == 1),
+  doubletons = sum(value == 2)
+), by = .(site, block, year, date)
+][,
+  coverage := fifelse(
+    doubletons > 0,
+    1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+    1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
+
+
 ddata[, effort := length(unique(date)), by = .(site, block, year)]
 
 ddata <- ddata[,
@@ -47,7 +59,7 @@ ddata <- ddata[,
 ddata[,
       ':='(
         dataset_id = dataset_id,
-        treatment = paste(ifelse(site < 0, 'control', 'impact'), site, sep='_'),
+        treatment = paste(fifelse(site < 0, 'control', 'impact'), site, sep = '_'),
            treatment_type = "eutrophication",
            design = paste0('A', ifelse(site < 0, 'C', 'I')),
            timepoints = paste0('T', seq_along(unique(year))[match(year, unique(year))]),
@@ -63,5 +75,4 @@ ddata[,
         ]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
-fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-       row.names=FALSE)
+fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'), row.names = FALSE)

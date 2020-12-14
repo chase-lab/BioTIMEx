@@ -2,7 +2,7 @@
 library(data.table)
 
 dataset_id <- 'ellison_2018'
-load(file='data/raw data/ellison_2018/ddata')
+load(file = 'data/raw data/ellison_2018/ddata')
 setDT(ddata)
 
 setnames(ddata, old = c('block','plot','subplot','subplot.t', 'count'),
@@ -33,6 +33,17 @@ ddata[, minN := min(N), by = .(site, block, plot)]
 
 ddata[, Sn := vegan::rarefy(value, sample = minN), by = .(site, block, plot, year, date)]
 
+ddata[, ':='(
+   singletons = sum(value == 1),
+   doubletons = sum(value == 2)
+), by = .(site, block, plot, year, date)
+][,
+  coverage := fifelse(
+     doubletons > 0,
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2*doubletons)),
+     1 - (singletons/N) * (((N - 1)*singletons)/((N - 1)*singletons + 2))
+  )][, ':='(singletons = NULL, doubletons = NULL)]
+
 ddata[, effort := length(unique(date)), by = .(site, year, block, plot)]
 
 ddata <- ddata[,
@@ -45,16 +56,16 @@ ddata <- ddata[,
 ddata[, ':='(dataset_id = dataset_id,
              treatment = paste(
                 gsub(' control', '_management', treatment),
-                plot, sep='_')
+                plot, sep = '_')
 )][, ':='(
              treatment_type = "manipulated community",
-             design = paste0('A', ifelse(grepl('control', treatment), 'C', 'I')),
+             design = paste0('A', fifelse(grepl('control', treatment), 'C', 'I')),
              timepoints = paste0('T',seq_along(unique(year))[match(year, unique(year))]),
              time_since_disturbance = ifelse(grepl('control', treatment), NA, year - 2006),
              realm = 'terrestrial',
              taxon = 'invertebrates',
 
-             comment = 'Hierarchical experimental design. Treatment is one of 8 canopy manipulation treatments. Effort is the number of survey peryea, each survey corresponds to traps being open/active for 48 hours (Ellison 2005).'
+             comment = 'Hierarchical experimental design. Treatment is one of 8 canopy manipulation treatments. Effort is the number of survey per year, each survey corresponds to pitfall traps being open/active for 48 hours (Ellison 2005).'
 )
 ]
 
@@ -62,4 +73,4 @@ ddata[, ':='(dataset_id = dataset_id,
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names=FALSE)
+          row.names = FALSE)
