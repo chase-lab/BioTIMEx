@@ -2,7 +2,6 @@
 .Rprofile
 *.csv
 /points
-/supporting litterature
 /data/raw data/
 /data/wrangled data/
 .Rhistory

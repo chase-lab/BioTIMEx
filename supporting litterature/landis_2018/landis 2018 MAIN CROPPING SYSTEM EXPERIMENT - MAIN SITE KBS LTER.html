@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html data-fbscriptallow="true" data-wgscriptallow="true" data-cbscriptallow="true"><script async="" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/async-ads.js"></script><script async="" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/analytics.js"></script><script type="text/javascript" async="" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/cse.js"></script><script>(function () {
+  var rand = {
+    "noise": function () {
+      var SIGN = Math.random() < Math.random() ? -1 : 1;
+      return Math.floor(Math.random() + SIGN * Math.random());
+    },
+    "sign": function () {
+      const tmp = [-1, -1, -1, -1, -1, -1, +1, -1, -1, -1];
+      const index = Math.floor(Math.random() * tmp.length);
+      return tmp[index];
+    }
+  };
+  //
+  Object.defineProperty(HTMLElement.prototype, "offsetHeight", {
+    get () {
+      const height = Math.floor(this.getBoundingClientRect().height);
+      const valid = height && rand.sign() === 1;
+      const result = valid ? height + rand.noise() : height;
+      //
+      if (valid && result !== height) {
+        window.top.postMessage("font-fingerprint-defender-alert", '*');
+      }
+      //
+      return result;
+    }
+  });
+  //
+  Object.defineProperty(HTMLElement.prototype, "offsetWidth", {
+    get () {
+      const width = Math.floor(this.getBoundingClientRect().width);
+      const valid = width && rand.sign() === 1;
+      const result = valid ? width + rand.noise() : width;
+      //
+      if (valid && result !== width) {
+        window.top.postMessage("font-fingerprint-defender-alert", '*');
+      }
+      //
+      return result;
+    }
+  });
+  //
+  document.documentElement.dataset.fbscriptallow = true;
+})()</script><script>(function () {
+  var config = {
+    "random": {
+      "value": function () {return Math.random()},
+      "item": function (e) {
+        var rand = e.length * config.random.value();
+        return e[Math.floor(rand)];
+      },
+      "array": function (e) {
+        var rand = config.random.item(e);
+        return new Int32Array([rand, rand]);
+      },
+      "items": function (e, n) {
+        var length = e.length;
+        var result = new Array(n);
+        var taken = new Array(length);
+        if (n > length) n = length;
+        //
+        while (n--) {
+          var i = Math.floor(config.random.value() * length);
+          result[n] = e[i in taken ? taken[i] : i];
+          taken[i] = --length in taken ? taken[length] : length;
+        }
+        //
+        return result;
+      }
+    },
+    "spoof": {
+      "webgl": {
+        "buffer": function (target) {
+          const bufferData = target.prototype.bufferData;
+          Object.defineProperty(target.prototype, "bufferData", {
+            "value": function () {
+              var index = Math.floor(config.random.value() * 10);
+              var noise = 0.1 * config.random.value() * arguments[1][index];
+              arguments[1][index] = arguments[1][index] + noise;
+              window.top.postMessage("webgl-fingerprint-defender-alert", '*');
+              //
+              return bufferData.apply(this, arguments);
+            }
+          });
+        },
+        "parameter": function (target) {
+          const getParameter = target.prototype.getParameter;
+          Object.defineProperty(target.prototype, "getParameter", {
+            "value": function () {
+              var float32array = new Float32Array([1, 8192]);
+              window.top.postMessage("webgl-fingerprint-defender-alert", '*');
+              //
+              if (arguments[0] === 3415) return 0;
+              else if (arguments[0] === 3414) return 24;
+              else if (arguments[0] === 35661) return config.random.items([128, 192, 256]);
+              else if (arguments[0] === 3386) return config.random.array([8192, 16384, 32768]);
+              else if (arguments[0] === 36349 || arguments[0] === 36347) return config.random.item([4096, 8192]);
+              else if (arguments[0] === 34047 || arguments[0] === 34921) return config.random.items([2, 4, 8, 16]);
+              else if (arguments[0] === 7937 || arguments[0] === 33901 || arguments[0] === 33902) return float32array;
+              else if (arguments[0] === 34930 || arguments[0] === 36348 || arguments[0] === 35660) return config.random.item([16, 32, 64]);
+              else if (arguments[0] === 34076 || arguments[0] === 34024 || arguments[0] === 3379) return config.random.item([16384, 32768]);
+              else if (arguments[0] === 3413 || arguments[0] === 3412 || arguments[0] === 3411 || arguments[0] === 3410 || arguments[0] === 34852) return config.random.item([2, 4, 8, 16]);
+              else return config.random.item([0, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096]);
+              //
+              return getParameter.apply(this, arguments);
+            }
+          });
+        }
+      }
+    }
+  };
+  //
+  config.spoof.webgl.buffer(WebGLRenderingContext);
+  config.spoof.webgl.buffer(WebGL2RenderingContext);
+  config.spoof.webgl.parameter(WebGLRenderingContext);
+  config.spoof.webgl.parameter(WebGL2RenderingContext);
+  //
+  document.documentElement.dataset.wgscriptallow = true;
+})()</script><script>(function () {
+  const toBlob = HTMLCanvasElement.prototype.toBlob;
+  const toDataURL = HTMLCanvasElement.prototype.toDataURL;
+  const getImageData = CanvasRenderingContext2D.prototype.getImageData;
+  //
+  var noisify = function (canvas, context) {
+    const shift = {
+      'r': Math.floor(Math.random() * 10) - 5,
+      'g': Math.floor(Math.random() * 10) - 5,
+      'b': Math.floor(Math.random() * 10) - 5,
+      'a': Math.floor(Math.random() * 10) - 5
+    };
+    //
+    const width = canvas.width, height = canvas.height;
+    const imageData = getImageData.apply(context, [0, 0, width, height]);
+    for (let i = 0; i < height; i++) {
+      for (let j = 0; j < width; j++) {
+        const n = ((i * (width * 4)) + (j * 4));
+        imageData.data[n + 0] = imageData.data[n + 0] + shift.r;
+        imageData.data[n + 1] = imageData.data[n + 1] + shift.g;
+        imageData.data[n + 2] = imageData.data[n + 2] + shift.b;
+        imageData.data[n + 3] = imageData.data[n + 3] + shift.a;
+      }
+    }
+    //
+    window.top.postMessage("canvas-fingerprint-defender-alert", '*');
+    context.putImageData(imageData, 0, 0);
+  };
+  //
+  Object.defineProperty(HTMLCanvasElement.prototype, "toBlob", {
+    "value": function () {
+      noisify(this, this.getContext("2d"));
+      return toBlob.apply(this, arguments);
+    }
+  });
+  //
+  Object.defineProperty(HTMLCanvasElement.prototype, "toDataURL", {
+    "value": function () {
+      noisify(this, this.getContext("2d"));
+      return toDataURL.apply(this, arguments);
+    }
+  });
+  //
+  Object.defineProperty(CanvasRenderingContext2D.prototype, "getImageData", {
+    "value": function () {
+      noisify(this.canvas, this);
+      return getImageData.apply(this, arguments);
+    }
+  });
+  //
+  document.documentElement.dataset.cbscriptallow = true;
+})()</script><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta charset="UTF-8"><!--[if lt IE 9]>
+<script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<link rel="stylesheet" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/normalize.css" type="text/css" media="screen">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>MAIN CROPPING SYSTEM EXPERIMENT - MAIN SITE | KBS LTER</title>
+
+<!-- The SEO Framework by Sybre Waaijer -->
+<meta name="description" content="The Main Cropping System Experiment (MCSE) is the signature KBS LTER long-term experiment to address the impact of cropping system management on the delivery of…">
+<meta property="og:image" content="https://lter.kbs.msu.edu/maps/images/current-kbs-lter-msce-plot-map.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MAIN CROPPING SYSTEM EXPERIMENT - MAIN SITE | KBS LTER">
+<meta property="og:description" content="The Main Cropping System Experiment (MCSE) is the signature KBS LTER long-term experiment to address the impact of cropping system management on the delivery of ecosystem services. It consists of 4…">
+<meta property="og:url" content="https://lter.kbs.msu.edu/research/long-term-experiments/main-cropping-system-experiment/">
+<meta property="og:site_name" content="KBS LTER">
+<link rel="canonical" href="https://lter.kbs.msu.edu/research/long-term-experiments/main-cropping-system-experiment/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https://lter.kbs.msu.edu/","name":"KBS LTER"}},{"@type":"ListItem","position":2,"item":{"@id":"https://lter.kbs.msu.edu/research/","name":"RESEARCH"}},{"@type":"ListItem","position":3,"item":{"@id":"https://lter.kbs.msu.edu/research/long-term-experiments/","name":"LONG-TERM EXPERIMENTS"}},{"@type":"ListItem","position":4,"item":{"@id":"https://lter.kbs.msu.edu/research/long-term-experiments/main-cropping-system-experiment/","name":"MAIN CROPPING SYSTEM EXPERIMENT &#8211; MAIN SITE"}}]}</script>
+<!-- / The SEO Framework by Sybre Waaijer | 4.46ms meta | 1.16ms boot -->
+
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="KBS LTER » Feed" href="https://lter.kbs.msu.edu/feed/">
+<link rel="alternate" type="application/rss+xml" title="KBS LTER » Comments Feed" href="https://lter.kbs.msu.edu/comments/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/lter.kbs.msu.edu\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.4.1"}};
+			/*! This file is auto-generated */
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/wp-emoji-release.js" type="text/javascript" defer="defer"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wgs2-css" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/wgs2.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-library-css" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="digg-digg-css" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/diggdigg-style.css" type="text/css" media="screen">
+<link rel="stylesheet" id="michigan-state-university-kellogg-biological-station-css" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/style_002.css" type="text/css" media="all">
+<link rel="stylesheet" id="tablepress-default-css" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/tablepress-combined.css" type="text/css" media="all">
+<link rel="stylesheet" id="colorbox-css" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/colorbox.css" type="text/css" media="all">
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/jquery.js"></script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/jquery-migrate.js"></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://lter.kbs.msu.edu/wp-content/themes/genesis/lib/js/html5shiv.min.js?ver=3.7.3'></script>
+<![endif]-->
+<link rel="https://api.w.org/" href="https://lter.kbs.msu.edu/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://lter.kbs.msu.edu/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://lter.kbs.msu.edu/wp-includes/wlwmanifest.xml"> 
+<link rel="alternate" type="application/json+oembed" href="https://lter.kbs.msu.edu/wp-json/oembed/1.0/embed?url=https%3A%2F%2Flter.kbs.msu.edu%2Fresearch%2Flong-term-experiments%2Fmain-cropping-system-experiment%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://lter.kbs.msu.edu/wp-json/oembed/1.0/embed?url=https%3A%2F%2Flter.kbs.msu.edu%2Fresearch%2Flong-term-experiments%2Fmain-cropping-system-experiment%2F&amp;format=xml">
+<link rel="stylesheet" type="text/css" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/lightbox-gallery.css">
+<!-- <meta name="NextGEN" version="3.3.5" /> -->
+<link rel="icon" href="https://lter.kbs.msu.edu/wp-content/themes/msu-kbs/images/favicon.ico">
+		<style type="text/css" id="wp-custom-css">
+			h2.covid a { text-decoration: underline; font-size: 32px;}		</style>
+		<script src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/cse_element__en.js" type="text/javascript"></script><link type="text/css" rel="stylesheet" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/default_v2en.css"><link type="text/css" rel="stylesheet" href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/default.css"><style type="text/css">.gsc-control-cse{font-family:arial, sans-serif}.gsc-control-cse .gsc-table-result{font-family:arial, sans-serif}.gsc-refinementsGradient{background:linear-gradient(to left,rgba(255,255,255,1),rgba(255,255,255,0))}.gsc-control-cse{border-color:#FFFFFF;background-color:#FFFFFF}input.gsc-input,.gsc-input-box,.gsc-input-box-hover,.gsc-input-box-focus{border-color:#D9D9D9}.gsc-search-button-v2,.gsc-search-button-v2:hover,.gsc-search-button-v2:focus{border-color:#2F5BB7;background-color:#357AE8;background-image:none;filter:none}.gsc-search-button-v2 svg{fill:#FFFFFF}.gsc-tabHeader.gsc-tabhActive,.gsc-refinementHeader.gsc-refinementhActive{color:#CCCCCC;border-color:#CCCCCC;background-color:#FFFFFF}.gsc-tabHeader.gsc-tabhInactive,.gsc-refinementHeader.gsc-refinementhInactive{color:#CCCCCC;border-color:#CCCCCC;background-color:#FFFFFF}.gsc-webResult.gsc-result,.gsc-results .gsc-imageResult{border-color:#FFFFFF;background-color:#FFFFFF}.gsc-webResult.gsc-result:hover{border-color:#FFFFFF;background-color:#FFFFFF}.gs-webResult.gs-result a.gs-title:link,.gs-webResult.gs-result a.gs-title:link b,.gs-imageResult a.gs-title:link,.gs-imageResult a.gs-title:link b{color:#1155CC}.gs-webResult.gs-result a.gs-title:visited,.gs-webResult.gs-result a.gs-title:visited b,.gs-imageResult a.gs-title:visited,.gs-imageResult a.gs-title:visited b{color:#1155CC}.gs-webResult.gs-result a.gs-title:hover,.gs-webResult.gs-result a.gs-title:hover b,.gs-imageResult a.gs-title:hover,.gs-imageResult a.gs-title:hover b{color:#1155CC}.gs-webResult.gs-result a.gs-title:active,.gs-webResult.gs-result a.gs-title:active b,.gs-imageResult a.gs-title:active,.gs-imageResult a.gs-title:active b{color:#1155CC}.gsc-cursor-page{color:#1155CC}a.gsc-trailing-more-results:link{color:#1155CC}.gs-webResult .gs-snippet,.gs-fileFormatType{color:#333333}.gs-webResult div.gs-visibleUrl{color:#009933}.gs-webResult div.gs-visibleUrl-short{color:#009933}.gs-webResult div.gs-visibleUrl-short{display:none}.gs-webResult div.gs-visibleUrl-long{display:block}.gs-promotion div.gs-visibleUrl-short{display:none}.gs-promotion div.gs-visibleUrl-long{display:block}.gsc-cursor-box{border-color:#FFFFFF}.gsc-results .gsc-cursor-box .gsc-cursor-page{border-color:#CCCCCC;background-color:#FFFFFF;color:#CCCCCC}.gsc-results .gsc-cursor-box .gsc-cursor-current-page{border-color:#CCCCCC;background-color:#FFFFFF;color:#CCCCCC}.gsc-webResult.gsc-result.gsc-promotion{border-color:#F6F6F6;background-color:#F6F6F6}.gsc-completion-title{color:#1155CC}.gsc-completion-snippet{color:#333333}.gs-promotion a.gs-title:link,.gs-promotion a.gs-title:link *,.gs-promotion .gs-snippet a:link{color:#1155CC}.gs-promotion a.gs-title:visited,.gs-promotion a.gs-title:visited *,.gs-promotion .gs-snippet a:visited{color:#1155CC}.gs-promotion a.gs-title:hover,.gs-promotion a.gs-title:hover *,.gs-promotion .gs-snippet a:hover{color:#1155CC}.gs-promotion a.gs-title:active,.gs-promotion a.gs-title:active *,.gs-promotion .gs-snippet a:active{color:#1155CC}.gs-promotion .gs-snippet,.gs-promotion .gs-title .gs-promotion-title-right,.gs-promotion .gs-title .gs-promotion-title-right *{color:#333333}.gs-promotion .gs-visibleUrl,.gs-promotion .gs-visibleUrl-short{color:#009933}.gcsc-find-more-on-google{color:#1155CC}.gcsc-find-more-on-google-magnifier{fill:#1155CC}</style><style type="text/css">.gscb_a{display:inline-block;font:27px/13px arial,sans-serif}.gsst_a .gscb_a{color:#a1b9ed;cursor:pointer}.gsst_a:hover .gscb_a,.gsst_a:focus .gscb_a{color:#36c}.gsst_a{display:inline-block}.gsst_a{cursor:pointer;padding:0 4px}.gsst_a:hover{text-decoration:none!important}.gsst_b{font-size:16px;padding:0 2px;position:relative;user-select:none;-moz-user-select:none;white-space:nowrap}.gsst_e{vertical-align:middle;opacity:0.55;}.gsst_a:hover .gsst_e,.gsst_a:focus .gsst_e{opacity:0.72;}.gsst_a:active .gsst_e{opacity:1;}.gsst_f{background:white;text-align:left}.gsst_g{background-color:white;border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);margin:-1px -3px;padding:0 6px}.gsst_h{background-color:white;height:1px;margin-bottom:-1px;position:relative;top:-1px}.gsib_a{width:100%;padding:4px 6px 0}.gsib_a,.gsib_b{vertical-align:top}.gssb_c{border:0;position:absolute;z-index:989}.gssb_e{border:1px solid #ccc;border-top-color:#d9d9d9;box-shadow:0 2px 4px rgba(0,0,0,0.2);-moz-box-shadow:0 2px 4px rgba(0,0,0,0.2);cursor:default}.gssb_f{visibility:hidden;white-space:nowrap}.gssb_k{border:0;display:block;position:absolute;top:0;z-index:988}.gsdd_a{border:none!important}.gsq_a{padding:0}.gssb_a{padding:0 7px}.gssb_a,.gssb_a td{white-space:nowrap;overflow:hidden;line-height:22px}#gssb_b{font-size:11px;color:#36c;text-decoration:none}#gssb_b:hover{font-size:11px;color:#36c;text-decoration:underline}.gssb_g{text-align:center;padding:8px 0 7px;position:relative}.gssb_h{font-size:15px;height:28px;margin:0.2em}.gssb_i{background:#eee}.gss_ifl{visibility:hidden;padding-left:5px}.gssb_i .gss_ifl{visibility:visible}a.gssb_j{font-size:13px;color:#36c;text-decoration:none;line-height:100%}a.gssb_j:hover{text-decoration:underline}.gssb_l{height:1px;background-color:#e5e5e5}.gssb_m{color:#000;background:#fff}.gssb_a{padding:0 9px}.gsib_a{padding:5px 9px 4px 9px}.gscb_a{line-height:27px}.gssb_e{border:0}.gssb_l{margin:5px 0}input.gsc-input::-webkit-input-placeholder{font-size:14px}input.gsc-input:-moz-placeholder{font-size:14px}input.gsc-input::-moz-placeholder{font-size:14px}input.gsc-input:-ms-input-placeholder{font-size:14px}input.gsc-input:focus::-webkit-input-placeholder{color:transparent}input.gsc-input:focus:-moz-placeholder{color:transparent}input.gsc-input:focus::-moz-placeholder{color:transparent}input.gsc-input:focus:-ms-input-placeholder{color:transparent}.gssb_c .gsc-completion-container{position:static}.gssb_c{z-index:5000}.gsc-completion-container table{background:transparent;font-size:inherit;font-family:inherit}.gssb_c > tbody > tr,.gssb_c > tbody > tr > td,.gssb_d,.gssb_d > tbody > tr,.gssb_d > tbody > tr > td,.gssb_e,.gssb_e > tbody > tr,.gssb_e > tbody > tr > td{padding:0;margin:0;border:0}.gssb_a table,.gssb_a table tr,.gssb_a table tr td{padding:0;margin:0;border:0}</style></head>
+<body class="page-template-default page page-id-292 page-child parent-pageid-296 header-image content-sidebar"><div id="wrap"><header id="header"><div class="wrap"><div id="title-area"><p id="title"><a href="https://lter.kbs.msu.edu/">KBS LTER</a></p><p id="description">Kellogg Biological Station | Long-Term Ecological Research</p></div><div class="widget-area header-widget-area"><div id="wgs_widget-2" class="widget widget_wgs_widget"><div class="widget-wrap"><div class="wgs_wrapper"><div id="___gcse_0"><div class="gsc-control-searchbox-only gsc-control-searchbox-only-en" dir="ltr"><form class="gsc-search-box gsc-search-box-tools" accept-charset="utf-8"><table class="gsc-search-box" cellspacing="0" cellpadding="0"><tbody><tr><td class="gsc-input"><div class="gsc-input-box" id="gsc-iw-id1"><table style="width: 100%; padding: 0px;" id="gs_id50" class="gstl_50 gsc-input" cellspacing="0" cellpadding="0"><tbody><tr><td id="gs_tti50" class="gsib_a"><input autocomplete="off" type="text" size="10" class="gsc-input" name="search" title="search" style="width: 100%; padding: 0px; border: medium none; margin: 0px; height: auto; background: rgb(255, 255, 255) url(&quot;https://www.google.com/cse/static/images/1x/en/branding.png&quot;) no-repeat scroll left center; outline: currentcolor none medium;" id="gsc-i-id1" dir="ltr" spellcheck="false"></td><td class="gsib_b"><div class="gsst_b" id="gs_st50" dir="ltr"><a class="gsst_a" href="javascript:void(0)" style="display: none;" title="Clear search box" role="button"><span class="gscb_a" id="gs_cb50" aria-hidden="true">×</span></a></div></td></tr></tbody></table></div></td><td class="gsc-search-button"><button class="gsc-search-button gsc-search-button-v2"><svg width="13" height="13" viewBox="0 0 13 13"><title>search</title><path d="m4.8495 7.8226c0.82666 0 1.5262-0.29146 2.0985-0.87438 0.57232-0.58292 0.86378-1.2877 0.87438-2.1144 0.010599-0.82666-0.28086-1.5262-0.87438-2.0985-0.59352-0.57232-1.293-0.86378-2.0985-0.87438-0.8055-0.010599-1.5103 0.28086-2.1144 0.87438-0.60414 0.59352-0.8956 1.293-0.87438 2.0985 0.021197 0.8055 0.31266 1.5103 0.87438 2.1144 0.56172 0.60414 1.2665 0.8956 2.1144 0.87438zm4.4695 0.2115 3.681 3.6819-1.259 1.284-3.6817-3.7 0.0019784-0.69479-0.090043-0.098846c-0.87973 0.76087-1.92 1.1413-3.1207 1.1413-1.3553 0-2.5025-0.46363-3.4417-1.3909s-1.4088-2.0686-1.4088-3.4239c0-1.3553 0.4696-2.4966 1.4088-3.4239 0.9392-0.92727 2.0864-1.3969 3.4417-1.4088 1.3553-0.011889 2.4906 0.45771 3.406 1.4088 0.9154 0.95107 1.379 2.0924 1.3909 3.4239 0 1.2126-0.38043 2.2588-1.1413 3.1385l0.098834 0.090049z"></path></svg></button></td><td class="gsc-clear-button"><div class="gsc-clear-button" title="clear results">&nbsp;</div></td></tr></tbody></table></form></div></div></div></div></div>
+<div id="social-widget-2" class="widget widget-social"><div class="widget-wrap"><a href="http://www.facebook.com/pages/Michigan-State-University-KBS-LTER-Program/235984083174798" class="btn-fb" target="_blank"><img src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/icon-facebook.png" alt="Facebook"></a><a href="http://twitter.com/KBSLTER" class="btn-tw" target="_blank"><img src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/icon-twitter.png" alt="Twitter"></a><a href="https://lter.kbs.msu.edu/feed/" class="btn-rss" target="_blank"><img src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/icon-rss.png" alt="RSS"></a><a href="mailto:kbs.lter@kbs.msu.edu" class="btn-em" target="_blank"><img src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/icon-email.png" alt="email"></a><a href="https://lter.kbs.msu.edu/current-weather" class="btn-wx"><img src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/icon-weather.png" alt="weather"></a></div></div>
+</div></div></header><nav id="nav"><div class="wrap"><ul id="menu-main-nav" class="menu menu-primary"><li id="menu-item-6" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-6"><a href="http://lter.kbs.msu.edu/">Home</a></li>
+<li id="menu-item-70" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-70"><a href="https://lter.kbs.msu.edu/who-we-are/">WHO WE ARE</a>
+<ul class="sub-menu">
+	<li id="menu-item-97" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-97"><a href="https://lter.kbs.msu.edu/who-we-are/kbs-lter-program/">KBS LTER PROGRAM</a></li>
+	<li id="menu-item-201" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-201"><a href="https://lter.kbs.msu.edu/who-we-are/outreach-and-education/">OUTREACH AND EDUCATION</a></li>
+	<li id="menu-item-195" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-195"><a href="https://lter.kbs.msu.edu/who-we-are/research-highlights/">RESEARCH HIGHLIGHTS</a>
+	<ul class="sub-menu">
+		<li id="menu-item-196" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-196"><a href="https://lter.kbs.msu.edu/who-we-are/research-highlights/climate-change/">CLIMATE CHANGE</a></li>
+		<li id="menu-item-197" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-197"><a href="https://lter.kbs.msu.edu/who-we-are/research-highlights/landscape-diversity/">LANDSCAPE DIVERSITY</a></li>
+		<li id="menu-item-198" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-198"><a href="https://lter.kbs.msu.edu/who-we-are/research-highlights/soil-microbes/">SOIL MICROBES</a></li>
+		<li id="menu-item-199" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-199"><a href="https://lter.kbs.msu.edu/who-we-are/research-highlights/clean-water/">CLEAN WATER</a></li>
+	</ul>
+</li>
+	<li id="menu-item-205" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-205"><a href="https://lter.kbs.msu.edu/people">PEOPLE</a></li>
+	<li id="menu-item-203" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-203"><a href="https://lter.kbs.msu.edu/who-we-are/in-the-news/">IN THE NEWS: RECENT HIGHLIGHTS</a></li>
+	<li id="menu-item-204" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-204"><a href="https://lter.kbs.msu.edu/who-we-are/project-history/">PROJECT HISTORY</a></li>
+	<li id="menu-item-978" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-978"><a href="https://lter.kbs.msu.edu/who-we-are/lter-network/">LTER NETWORK</a></li>
+</ul>
+</li>
+<li id="menu-item-107" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-107"><a href="https://lter.kbs.msu.edu/who-we-help/">WHO WE HELP</a>
+<ul class="sub-menu">
+	<li id="menu-item-140" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-140"><a href="https://lter.kbs.msu.edu/who-we-help/current-researchers/">CURRENT RESEARCHERS</a></li>
+	<li id="menu-item-142" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-142"><a href="https://lter.kbs.msu.edu/who-we-help/prospective-researchers-and-students/">NEW RESEARCHERS AND STUDENTS</a></li>
+	<li id="menu-item-138" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-138"><a href="https://lter.kbs.msu.edu/who-we-help/k-12-educators/">K-12 EDUCATORS</a></li>
+	<li id="menu-item-137" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-137"><a href="https://lter.kbs.msu.edu/who-we-help/ag-professionals/">AG PROFESSIONALS</a></li>
+	<li id="menu-item-136" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-136"><a href="https://lter.kbs.msu.edu/who-we-help/the-media-and-public/">THE MEDIA</a></li>
+</ul>
+</li>
+<li id="menu-item-76" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor menu-item-has-children menu-item-76"><a href="https://lter.kbs.msu.edu/research/">RESEARCH</a>
+<ul class="sub-menu">
+	<li id="menu-item-333" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-333"><a href="https://lter.kbs.msu.edu/research/areas-of-research/">AREAS OF RESEARCH</a>
+	<ul class="sub-menu">
+		<li id="menu-item-77" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-77"><a href="https://lter.kbs.msu.edu/research/areas-of-research/agronomy/">AGRONOMY</a></li>
+		<li id="menu-item-334" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-334"><a href="https://lter.kbs.msu.edu/research/areas-of-research/microbial-ecology/">MICROBIAL ECOLOGY</a></li>
+		<li id="menu-item-335" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-335"><a href="https://lter.kbs.msu.edu/research/areas-of-research/plant-dynamics/">PLANT DYNAMICS</a></li>
+		<li id="menu-item-336" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-336"><a href="https://lter.kbs.msu.edu/research/areas-of-research/insect-dynamics/">INSECT DYNAMICS</a></li>
+		<li id="menu-item-337" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-337"><a href="https://lter.kbs.msu.edu/research/areas-of-research/biogeochemistry/">BIOGEOCHEMISTRY</a></li>
+		<li id="menu-item-338" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-338"><a href="https://lter.kbs.msu.edu/research/areas-of-research/regionalization/">REGIONALIZATION</a></li>
+		<li id="menu-item-339" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-339"><a href="https://lter.kbs.msu.edu/research/areas-of-research/ecosystem-services/">ECOSYSTEM SERVICES</a></li>
+		<li id="menu-item-340" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-340"><a href="https://lter.kbs.msu.edu/research/areas-of-research/biofuels/">BIOFUELS</a></li>
+	</ul>
+</li>
+	<li id="menu-item-868" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-868"><a href="https://lter.kbs.msu.edu/research/site-description-and-maps/">SITE DESCRIPTION AND MAPS</a>
+	<ul class="sub-menu">
+		<li id="menu-item-563" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-563"><a href="https://lter.kbs.msu.edu/research/site-description-and-maps/general-description/">SITE DESCRIPTION</a></li>
+		<li id="menu-item-1464" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1464"><a href="https://lter.kbs.msu.edu/research/site-description-and-maps/land-use-history/">SITE HISTORY</a></li>
+		<li id="menu-item-562" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-562"><a href="https://lter.kbs.msu.edu/research/site-description-and-maps/soil-description/">SOIL DESCRIPTION</a></li>
+		<li id="menu-item-567" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-567"><a href="https://lter.kbs.msu.edu/research/site-description-and-maps/experimental-layouts/">PLOT LAYOUTS</a></li>
+		<li id="menu-item-566" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-566"><a href="https://lter.kbs.msu.edu/research/site-description-and-maps/thematic-maps/">THEMATIC MAPS</a></li>
+	</ul>
+</li>
+	<li id="menu-item-341" class="menu-item menu-item-type-post_type menu-item-object-page current-page-ancestor menu-item-341"><a href="https://lter.kbs.msu.edu/research/long-term-experiments/">LONG-TERM EXPERIMENTS</a></li>
+	<li id="menu-item-1108" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1108"><a href="https://lter.kbs.msu.edu/protocols">RESEARCH PROTOCOLS</a></li>
+	<li id="menu-item-575" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-575"><a href="https://lter.kbs.msu.edu/citations">PUBLICATIONS</a>
+	<ul class="sub-menu">
+		<li id="menu-item-6064" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6064"><a href="http://lter.kbs.msu.edu/citations">ALL PUBLICATIONS</a></li>
+		<li id="menu-item-578" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-578"><a href="https://lter.kbs.msu.edu/citations/index_by_treatment">PUBLICATIONS BY EXPERIMENT</a></li>
+		<li id="menu-item-580" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-580"><a href="https://lter.kbs.msu.edu/citations?type=thesis">DISSERTATIONS only</a></li>
+		<li id="menu-item-4366" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4366"><a href="https://lter.kbs.msu.edu/synthesisbook/">SYNTHESIS BOOK only</a></li>
+		<li id="menu-item-581" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-581"><a href="https://lter.kbs.msu.edu/citations?type=bulletin">EXTENSION BULLETINS only</a></li>
+		<li id="menu-item-7822" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-7822"><a href="https://lter.kbs.msu.edu/citations?type=data">PUBLICATION DATASETS</a></li>
+		<li id="menu-item-4476" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4476"><a href="http://lter.kbs.msu.edu/meetings">LTER MEETING ABSTRACTS</a></li>
+	</ul>
+</li>
+	<li id="menu-item-878" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-878"><a href="https://lter.kbs.msu.edu/research/conducting-research/">CONDUCTING RESEARCH</a>
+	<ul class="sub-menu">
+		<li id="menu-item-564" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-564"><a href="https://lter.kbs.msu.edu/research/conducting-research/research-facilities/">RESEARCH FACILITIES</a></li>
+		<li id="menu-item-9236" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9236"><a href="https://lter.kbs.msu.edu/research/conducting-research/">SITE USE POLICY/FORMS</a></li>
+		<li id="menu-item-4736" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4736"><a href="https://lter.kbs.msu.edu/research/conducting-research/associated-projects/">ASSOCIATED PROJECTS</a></li>
+	</ul>
+</li>
+	<li id="menu-item-568" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-568"><a href="https://lter.kbs.msu.edu/research/conducting-research/acknowledgements/">ACKNOWLEDGEMENTS</a></li>
+</ul>
+</li>
+<li id="menu-item-106" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-106"><a href="https://lter.kbs.msu.edu/data/">DATA</a>
+<ul class="sub-menu">
+	<li id="menu-item-890" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-890"><a href="https://lter.kbs.msu.edu/datatables">DATA CATALOG</a></li>
+	<li id="menu-item-7996" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7996"><a href="https://lter.kbs.msu.edu/data/data-nuggets/">DATA NUGGETS</a></li>
+	<li id="menu-item-6156" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6156"><a href="https://lter.kbs.msu.edu/protocols">RESEARCH PROTOCOLS</a></li>
+	<li id="menu-item-2135" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2135"><a href="https://lter.kbs.msu.edu/airphotos/">AIRPHOTOS</a></li>
+	<li id="menu-item-572" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-572"><a href="https://lter.kbs.msu.edu/data/satellite-imagery/">SATELLITE IMAGERY</a></li>
+	<li id="menu-item-570" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-570"><a href="https://lter.kbs.msu.edu/data/gis-data/">GIS DATA</a></li>
+	<li id="menu-item-569" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-569"><a href="https://lter.kbs.msu.edu/data/terms-of-use/">TERMS OF USE</a></li>
+	<li id="menu-item-560" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-560"><a href="https://lter.kbs.msu.edu/data/data-submission-guidelines/">DATA SUBMISSION GUIDELINES</a></li>
+</ul>
+</li>
+<li id="menu-item-112" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-112"><a href="https://lter.kbs.msu.edu/gallery/">PHOTOS</a></li>
+<li id="menu-item-105" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-105"><a href="https://lter.kbs.msu.edu/get-involved/">GET INVOLVED</a>
+<ul class="sub-menu">
+	<li id="menu-item-847" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-847"><a href="https://lter.kbs.msu.edu/get-involved/tour-our-research/">TOUR OUR RESEARCH</a></li>
+	<li id="menu-item-960" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-960"><a href="https://lter.kbs.msu.edu/get-involved/educational-resources/">EDUCATIONAL RESOURCES</a></li>
+	<li id="menu-item-849" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-849"><a href="https://lter.kbs.msu.edu/get-involved/collaborate-on-research/">COLLABORATE ON RESEARCH</a></li>
+	<li id="menu-item-852" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-852"><a href="https://lter.kbs.msu.edu/get-involved/graduate-opportunities/">GRADUATE OPPORTUNITIES</a></li>
+	<li id="menu-item-9370" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9370"><a href="https://lter.kbs.msu.edu/get-involved/artists-in-residence/">ARTISTS-IN-RESIDENCE</a></li>
+	<li id="menu-item-850" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-850"><a href="https://lter.kbs.msu.edu/get-involved/grants-and-fellowships/">GRANTS AND FELLOWSHIPS</a>
+	<ul class="sub-menu">
+		<li id="menu-item-9302" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9302"><a href="https://lter.kbs.msu.edu/awards-for-fellowships-for-long-term-ecological-research/">Awards for Fellowships for Long-term Ecological Research</a></li>
+		<li id="menu-item-935" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-935"><a href="https://lter.kbs.msu.edu/get-involved/grants-and-fellowships/previous-awards-of-the-small-grants/">Awards for Small Graduate Grants</a></li>
+	</ul>
+</li>
+	<li id="menu-item-851" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-851"><a href="https://lter.kbs.msu.edu/get-involved/job-openings/">JOB OPENINGS</a></li>
+</ul>
+</li>
+<li id="menu-item-28" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-28"><a href="https://lter.kbs.msu.edu/blog/">BLOG</a></li>
+<li id="menu-item-75" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-75"><a href="https://lter.kbs.msu.edu/contact-us/">CONTACT US</a></li>
+</ul></div><!-- end .wrap --></nav><div id="inner"><div class="wrap">	<div id="content-sidebar-wrap">
+				<article id="content" class="hfeed">
+			<div class="breadcrumb"><a href="https://lter.kbs.msu.edu/"><span class="breadcrumb-link-text-wrap" itemprop="name">HOME</span></a> &gt; <a href="https://lter.kbs.msu.edu/research/"><span class="breadcrumb-link-text-wrap" itemprop="name">RESEARCH</span></a> &gt; <a href="https://lter.kbs.msu.edu/research/long-term-experiments/"><span class="breadcrumb-link-text-wrap" itemprop="name">LONG-TERM EXPERIMENTS</span></a> &gt; MAIN CROPPING SYSTEM EXPERIMENT – MAIN SITE</div><div class="post-292 page type-page status-publish hentry entry"><h1 class="entry-title">MAIN CROPPING SYSTEM EXPERIMENT – MAIN SITE</h1>
+<div class="entry-content"><p><a href="https://lter.kbs.msu.edu/maps/images/current-kbs-lter-msce-plot-map.pdf"><img class="alignleft size-full wp-image-412" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/current-kbs-lter-msce-plot-map.png" alt="KBS LTER Plot Map" width="228" height="299"></a>The
+ Main Cropping System Experiment (MCSE) is the signature KBS LTER 
+long-term experiment to address the impact of cropping system management
+ on the delivery of ecosystem services. It consists of 4 annual and 3 
+perennial crop treatments and 4 successional communities; these 11 
+systems represent a gradient of decreasing chemical and management 
+inputs. Seven systems (T1-T7) were established at the LTER Main Site in 
+1989 and assigned to 1 ha plots (87 x 105 m) in each of 6 replicate 
+blocks. The remaining systems were added in 1993 and are replicated in 
+the KBS landscape. All systems are on the same soil series.</p>
+<p>The four annual crop treatments are a corn – soybean – winter wheat 
+rotation that is managed differently. The Conventional (T1) and No-till 
+(T2) treatments receive conventional levels of chemical inputs, but with
+ chisel plow and no-till management, respectively. The Reduced Input 
+(T3) and Biologically Based (T4) treatments are 
+low-chemical/biologically-based input systems with a winter leguminous 
+cover crop; T3 receives banded herbicide and starter N at planting and 
+T4 (certified organic) receives no chemical inputs nor compost or 
+manure. Both T3 and T4 receive additional post-planting cultivation and 
+T4 is rotary-hoed to control weeds.</p>
+<p>The three perennial crop treatments include continuous alfalfa (T6) 
+and short (~10 years) rotation poplars (T5), both at the LTER Main Site,
+ and long-rotation <a title="SUCCESSIONAL AND FOREST SITES" href="https://lter.kbs.msu.edu/research/long-term-experiments/successional-and-forest-sites/">Coniferous Forest (CF)</a> established on KBS property in 1965. Continuous alfalfa in T6 was replaced by switchgrass in 2018.</p>
+<p>Two of the four successional communities are at the LTER Main Site. A
+ native Early Successional (T7) community was established by abandonment
+ after a 1989 spring plowing and has been maintained since 1997 by an 
+annual spring burn. A Mown Grassland (never-tilled) community (T8), 
+located 200 meters south of the main plot, has never been tilled or in 
+agriculture and thus provides a historical reference for soil organic 
+matter studies. This system is mown annually in the fall to control 
+woody growth and is replicated in four 15 x 40 m plots randomly 
+distributed within a 10-ha former woodlot that was cleared in ~1959. <a title="SUCCESSIONAL AND FOREST SITES" href="https://lter.kbs.msu.edu/research/long-term-experiments/successional-and-forest-sites/">Mid-successional (SF)</a> and <a title="SUCCESSIONAL AND FOREST SITES" href="https://lter.kbs.msu.edu/research/long-term-experiments/successional-and-forest-sites/">Deciduous Forest (DF)</a> communities comprise the remaining two successional communities and are replicated in the KBS landscape.</p>
+<p>Subplots established within MCSE treatment plots address specific process level hypotheses:</p>
+<ul>
+<li>T1 and T2 subplots examine long-term effects of weed populations without herbicide applications (since 1989)</li>
+<li>T3 and T4 subplots examined the influence of weed populations and nitrogen availability on crop yield (2006-2014)</li>
+<li>T5 subplots examine the effect of nitrogen fertilizer rates and timing on tree biomass (since 2011)</li>
+<li>T7 subplots determine how succession is influenced by chisel plowing and nitrogen fertilization (since 1989)</li>
+<li>T8 has been shared with the <a title="INTERACTIONS EXPERIMENT" href="https://lter.kbs.msu.edu/research/long-term-experiments/interaction-site-plots/">Interactions Experiment</a> (since 1985)</li>
+</ul>
+<p>Each MCSE plot also contains a permanent set of 5 <a title="PLOT LAYOUTS" href="https://lter.kbs.msu.edu/research/site-description-and-maps/experimental-layouts/">sampling stations</a> at which most within-plot sampling is performed.</p>
+<p><span style="color: #000000;">Maps:</span></p>
+<ul>
+<li><a title="CURRENT PLOT" href="https://lter.kbs.msu.edu/maps/images/current-kbs-lter-msce-plot-map.pdf">Current Main Site</a></li>
+<li><a title="PAST PLOTS" href="https://lter.kbs.msu.edu/research/annual-plot-maps/">Archived Main Site (1989 onward)</a></li>
+<li><a title="SUCCESSIONAL AND FOREST SITES (SF, CF, and DF)" href="https://lter.kbs.msu.edu/maps/images/current-lter-forest-successional-sites.pdf">Current Successional and Forested Sites</a></li>
+<li>Sampling Stations
+<ul>
+<li><a href="https://lter.kbs.msu.edu/maps/images/current-sampling-stations-t1-t2-t6-t7.pdf">Treatments 1, 2, 6, and 7</a></li>
+<li><a href="http://lter.kbs.msu.edu/maps/images/current-sampling-stations-t3-t4.pdf">Treatments 3 and 4</a></li>
+<li><a href="https://lter.kbs.msu.edu/maps/images/pmtrt5.pdf">Treatment 5</a></li>
+<li><a href="https://lter.kbs.msu.edu/maps/images/pmtrt8.pdf">Treatment 8</a></li>
+</ul>
+</li>
+<li><a href="https://lter.kbs.msu.edu/research/archived-plot-maps/">Archived Sampling Station maps</a></li>
+<li><a title="ELEVATION" href="https://lter.kbs.msu.edu/maps/images/LTER%20elevation%20mainsite%20300dpi.jpg">Elevation</a></li>
+</ul>
+<p>Information:</p>
+<ul>
+<li><a href="https://lter.kbs.msu.edu/citations/index_by_treatment" target="_blank" rel="noopener noreferrer">Publications</a> (search under Main Cropping System Experiment)</li>
+<li><a href="https://lter.kbs.msu.edu/datatables" target="_blank" rel="noopener noreferrer">Data</a> (search under Main Cropping System Experiment)</li>
+<li><a href="https://lter.kbs.msu.edu/research/site-description-and-maps/land-use-history/">Site History</a> (<a href="http://doi.org/10.5281/zenodo.2579176">Tomecek and Robertson 1996</a>)</li>
+<li><a href="https://lter.kbs.msu.edu/research/site-description-and-maps/soil-description/">Soils Description</a> (<a href="http://doi.org/10.5281/zenodo.2581504">Crum and Collins 1995</a>)</li>
+</ul>
+<p>Major changes in management of treatments:</p>
+<p>2019 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T6. Planted to switchgrass.</p>
+<p>2018 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T5 Poplars harvested in February-April. Plots mowed.</p>
+<p>2016 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T1-T3 Switched 
+to stream bar nozzle application system for N application in wheat.</p>
+<p>2014 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T1-T3 Switched to low pressure injection system for N application.</p>
+<p>2011 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T1-T3 Corn varieties 
+changed from conventional to transgenic (glyphosate, European corn 
+borer, and root worm resistant); T4 variety remains conventional.</p>
+<p>2009 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T5 Poplars replanted 
+as stem cuttings of Populus nigra x P. maximowiczii (‘NM6’). T1-T3 
+Soybean varieties changed from conventional to transgenic (glyphosate 
+resistant); T4 variety remains conventional. T3 Soybean weed control 
+changed from mechanical + banded herbicides to broadcast application of 
+glyphosate (same as T1).</p>
+<p>2008 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T5 Poplars 
+harvested in January and allowed to go fallow for field season in order 
+to suppress weeds.</p>
+<p>2002 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T7 Annual spring burning first implemented.</p>
+<p>1999 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T5 Poplars harvested in February and allowed to coppice (stem sprout)</p>
+<p>1997 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T7 Biannual spring burning implemented to prevent tree colonization.</p>
+<p>1994 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T1 cultivation 
+changed from moldboard plow to chisel plow. T2, Replicate 5 was 
+accidentally plowed and renamed T21.</p>
+<p>1993 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T1-T2 rotation 
+changed from corn-soybean to corn-soybean-wheat to match T3 and T4 
+rotations.</p>
+<p>1989 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; T5 Poplars 
+planted as stem cuttings (Populus × canadensis Moench ‘Eugenei’ 
+([Populus deltoides × P. nigra], also known as Populus × euramericana 
+‘Eugenei’).</p>
+</div></div>		</article><!-- end #content -->
+		<aside id="sidebar" class="sidebar widget-area">
+<div id="call-to-action-3" class="widget call-to-action"><div class="widget-wrap"><div class="cta-main"><ul class="cta">				<a href="https://lter.kbs.msu.edu/who-we-help/current-researchers/"><li class="cta1">For Current Researchers</li></a>
+							<a href="https://lter.kbs.msu.edu/who-we-help/prospective-researchers-and-students//"><li class="cta2">For New Researchers &amp; Students</li></a>
+							<a href="https://lter.kbs.msu.edu/who-we-help/k-12-educators/"><li class="cta3">For K-12 Educators</li></a>
+							<a href="https://lter.kbs.msu.edu/who-we-help/ag-professionals/"><li class="cta4">For AG Professionals</li></a>
+							<a href="https://lter.kbs.msu.edu/who-we-help/the-media-and-public/"><li class="cta6">For the Media</li></a>
+			</ul></div><!-- end .cta-main --></div></div><div id="text-7" class="widget widget_text"><div class="widget-wrap"><h4 class="widget-title widgettitle">CONTACT US</h4>
+			<div class="textwidget">Have a question or want more information?
+
+<a title="Learn More" href="http://lter.kbs.msu.edu/contact-us/">Learn More &gt;&gt;</a></div>
+		</div></div></aside>
+	</div><!-- end #content-sidebar-wrap -->
+	</div></div><footer id="footer"><div class="wrap">
+<div class="footer-left">
+
+	<div class="creds">
+	
+		<p><span class="copyright">Copyright © 2020 Michigan State University Board of Trustees  |  East Lansing, MI  |  48824</span>
+	
+	</p></div><!-- end .creds -->
+ 
+<nav id="footer-nav"><div class="wrap"><ul id="menu-footer-links" class="nav"><li id="menu-item-940" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-940"><a href="https://lter.kbs.msu.edu/copyright-and-legal-information/">LEGAL</a></li>
+<li id="menu-item-16" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-16"><a href="http://www.msu.edu/">MSU HOME</a></li>
+<li id="menu-item-78" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-78"><a href="https://lter.kbs.msu.edu/sitemap/">SITEMAP</a></li>
+</ul></div><!-- end .wrap --></nav>    
+
+</div><!-- end .footer-left -->
+
+<div class="footer-right">
+	
+	<a href="http://www.nsf.gov/" target="_blank"><div class="nsf"></div></a><a href="http://www.msu.edu/" target="_blank"><div class="msu"></div></a><a href="http://www.kbs.msu.edu/" target="_blank"><div class="kbs"></div></a>
+	
+	
+</div><!-- end .footer-right -->
+</div></footer></div><!-- ngg_resource_manager_marker --><script type="text/javascript">
+/* <![CDATA[ */
+var scriptParams = {"google_search_engine_id":"003683915414719684546:geq-m8zdi9w"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/google_cse_v2.js"></script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/hoverIntent.js"></script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/superfish_003.js"></script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/superfish_002.js"></script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/superfish.js"></script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/jquery_003.js"></script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/jquery_002.js"></script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/lightbox-gallery.js"></script>
+<script type="text/javascript" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/wp-embed.js"></script>
+<script type="text/javascript">
+// <![CDATA[
+// ]]>
+</script>
+<link href="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/video-js.css" rel="stylesheet">
+<script async="" src="landis%202018%20MAIN%20CROPPING%20SYSTEM%20EXPERIMENT%20-%20MAIN%20SITE%20KBS%20LTER_files/video.js"></script>
+ 
+        <!-- Google Analytics -->
+        <script>
+          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+          ga('create', 'UA-379552-5', 'auto');  // Replace with your property ID.
+          ga('send', 'pageview');
+
+        </script>
+        <!-- End Google Analytics -->
+<div id="cboxOverlay" style="display: none;"></div><div id="colorbox" class="" role="dialog" tabindex="-1" style="display: none;"><div id="cboxWrapper"><div><div id="cboxTopLeft" style="float: left;"></div><div id="cboxTopCenter" style="float: left;"></div><div id="cboxTopRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxMiddleLeft" style="float: left;"></div><div id="cboxContent" style="float: left;"><div id="cboxTitle" style="float: left;"></div><div id="cboxCurrent" style="float: left;"></div><button type="button" id="cboxPrevious"></button><button type="button" id="cboxNext"></button><button type="button" id="cboxSlideshow"></button><div id="cboxLoadingOverlay" style="float: left;"></div><div id="cboxLoadingGraphic" style="float: left;"></div></div><div id="cboxMiddleRight" style="float: left;"></div></div><div style="clear: left;"><div id="cboxBottomLeft" style="float: left;"></div><div id="cboxBottomCenter" style="float: left;"></div><div id="cboxBottomRight" style="float: left;"></div></div></div><div style="position: absolute; width: 9999px; visibility: hidden; display: none; max-width: none;"></div></div><div id="tooltip" style="display: none;"><h3></h3><div class="body"></div><div class="url"></div></div><table style="width: 350px; display: none; top: 59px; position: absolute; left: 899px;" class="gstl_50 gssb_c" cellspacing="0" cellpadding="0"><tbody><tr><td class="gssb_f"></td><td class="gssb_e" style="width: 100%;"></td></tr></tbody></table></body></html>
