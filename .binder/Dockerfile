@@ -1,4 +1,4 @@
-FROM rocker/binder:4.0.3
+FROM rocker/binder:4.0.1
 LABEL maintainer='AlbanSagouis'
 USER root
 COPY . ${HOME}
@@ -7,5 +7,5 @@ USER ${NB_USER}
 
 
 
-RUN R -e "install.packages('https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.13.1.tar.gz', type = 'source', repos = NULL)"
+RUN R -e "install.packages(c('vegan','data.table'))"
 
