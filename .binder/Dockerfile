@@ -1,4 +1,4 @@
-FROM rocker/binder:4.0.3
+FROM rocker/binder:4.0.2
 LABEL maintainer='AlbanSagouis'
 USER root
 COPY . ${HOME}
@@ -7,6 +7,6 @@ USER ${NB_USER}
 
 
 
-RUN wget https://github.com/chase-lab/BioTimeX/raw/master/DESCRIPTION && R -e "options(repos = list(CRAN = 'http://mran.revolutionanalytics.com/snapshot/2021-01-15/')); devtools::install_deps()"
+RUN wget https://github.com/chase-lab/BioTimeX/raw/master/DESCRIPTION && R -e "renv::restore(repos = c(CRAN='https://packagemanager.rstudio.com/cran/2020-12-21'))"
 
 RUN rm DESCRIPTION.1; exit 0
