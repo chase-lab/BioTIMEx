@@ -8,11 +8,11 @@ output: md_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+## BioTIMEx
 <!-- badges: start -->
 [![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/chase-lab/BioTimeX/master?urlpath=rstudio)
 <!-- badges: end -->
-
-## BioTIMEx
 
 ### Description
 This research compendium regroups scripts used to download, re-structure and aggregate data sets to constitute a large meta-analysis of communities in experimental setups sampled several times.
