@@ -9,4 +9,3 @@ USER ${NB_USER}
 
 RUN R -e "install.packages(c('data.table'), repos = c(CRAN='https://packagemanager.rstudio.com/cran/2020-12-21'))"
 
-exit 0
