@@ -57,10 +57,4 @@ dataset_id <- 'battles_2015'
       # write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
       #           row.names=FALSE)
 
-}
-aset_id, '.csv'),
-      #           row.names=FALSE)
-
-}
-
-}
+      }

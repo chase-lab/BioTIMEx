@@ -1,5 +1,5 @@
 ## mcMurdo_2018
-if(FALSE) {
+if (FALSE) {
 
    dataset_id <- 'mcMurdo_2018'
    load(file=paste0('data/raw data/', dataset_id, '/ddata'))
@@ -43,11 +43,5 @@ if(FALSE) {
    # dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
    # write.csv(dat, paste0('data/wrangled data/', dataset_id, "/", dataset_id, 'a.csv'),
    #           row.names=FALSE)
-
-}
-.csv'),
-   #           row.names=FALSE)
-
-}
 
 }
