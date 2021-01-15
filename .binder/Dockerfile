@@ -7,6 +7,6 @@ USER ${NB_USER}
 
 
 
-RUN wget https://github.com/chase-lab/BioTimeX/raw/master/DESCRIPTION && R -e "install.packages('renv');renv::restore(repos = c(CRAN='https://packagemanager.rstudio.com/cran/2020-12-21'))"
+RUN R -e "install.packages(c('data.table'), repos = c(CRAN='https://packagemanager.rstudio.com/cran/2020-12-21'))"
 
-RUN rm DESCRIPTION.1; exit 0
+exit 0
