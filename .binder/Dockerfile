@@ -1,4 +1,4 @@
-FROM rocker/binder:4.0.1
+FROM rocker/binder:4.0.2
 LABEL maintainer='AlbanSagouis'
 USER root
 COPY . ${HOME}
@@ -7,5 +7,6 @@ USER ${NB_USER}
 
 
 
-RUN R -e "install.packages(c('vegan','data.table'))"
+RUN wget https://github.com/chase-lab/BioTimeX/raw/master/DESCRIPTION && R -e "options(repos = list(CRAN = 'http://mran.revolutionanalytics.com/snapshot/2021-01-15/')); devtools::install_deps()"
 
+RUN rm DESCRIPTION.1; exit 0

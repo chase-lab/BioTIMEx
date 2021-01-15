@@ -16,9 +16,6 @@ Description: Code downloading, wrangling and aggregating data
 License: MIT
 Depends: 
     data.table,
-    knitr,
-    renv,
-    rmarkdown,
     vegan
 Encoding: UTF-8
 LazyData: true
