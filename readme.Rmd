@@ -8,6 +8,10 @@ output: md_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+<!-- badges: start -->
+[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/chase-lab/BioTimeX/master?urlpath=rstudio)
+<!-- badges: end -->
+
 ## BioTIMEx
 
 ### Description

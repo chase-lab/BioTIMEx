@@ -1,0 +1,24 @@
+Type: Compendium
+Package: BioTIMEx
+Title: Aggregating long-term ecological communities data
+Version: 1.0.1
+Authors@R: 
+    person(given = "Shane",
+           family = "Blowes",
+           role = "aut",
+           email = "shane.blowes@idiv.de"),
+    person(given = "Alban",
+           family = "Sagouis",
+           role = c("aut", "cre"),
+           email = "alban.sagouis@idiv.de")
+Description: Code downloading, wrangling and aggregating data
+    sets for synthesis analyses on diversity though time.
+License: MIT
+Depends: 
+    data.table,
+    knitr,
+    renv,
+    rmarkdown,
+    vegan
+Encoding: UTF-8
+LazyData: true

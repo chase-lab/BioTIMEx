@@ -1,3 +1,9 @@
+<!-- badges: start -->
+
+[![Launch Rstudio
+Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/chase-lab/BioTimeX/master?urlpath=rstudio)
+<!-- badges: end -->
+
 BioTIMEx
 --------
 
@@ -15,10 +21,9 @@ the article: XXXXX.
 To ensure that the working environment (R version and package version)
 are documented and isolated, the package renv
 (<a href="https://rstudio.github.io/renv/index.html" class="uri">https://rstudio.github.io/renv/index.html</a>)
-was used. If you run into issues while trying to reproduce this research
-compendium, please try restoring the same working environment using
-`renv::init()`. This function will use the `renv.lock` file to download
-the same versions of packages that we used.
+was used. By running `renv::restore()`, renv will install all missing
+packages at once. This function will use the `renv.lock` file to
+download the same versions of packages that we used.
 
 ### Methods
 
