@@ -7,5 +7,5 @@ USER ${NB_USER}
 
 
 
-RUN R -e "install.packages(c('data.table'), repos = c(CRAN='https://packagemanager.rstudio.com/cran/2020-12-21'))"
+RUN R -e "install.packages("https://cran.r-project.org/src/contrib/Archive/data.table/data.table_1.13.1.tar.gz", type = 'source', repos = NULL)"
 
