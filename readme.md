@@ -1,9 +1,3 @@
-<!-- badges: start -->
-
-[![Launch Rstudio
-Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/chase-lab/BioTimeX/master?urlpath=rstudio)
-<!-- badges: end -->
-
 BioTIMEx
 --------
 
