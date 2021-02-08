@@ -4,6 +4,8 @@ year	TRUE	Year during which the sampling was made.
 site	TRUE	Name of the location in which samples were made.
 block	FALSE	Nested location within a site.
 plot	FALSE	Nested location within a block.
+grain_m2	TRUE	alpha grain area in square meter.
+grain_comment	TRUE	Information on alpha_grain.
 treatment	TRUE	Name or code describing the treatment applied to this particular site/block/plot.
 treatment_type	TRUE	General description of the treatments applied in this study.
 design	TRUE	Code following the BACI: Before-After, Control-Impact design.
@@ -16,5 +18,5 @@ S	TRUE	Species richness of the community.
 minN	TRUE	Minimal S for this community over the years.
 Sn	TRUE	Rarefied richness.
 ENSPIE	TRUE	Inverse Simpson diversity metric.
-coverage	TRUE	coverage following Anne Chao et al 2014 Ecol Monogr 
+coverage	TRUE	coverage following Anne Chao et al 2014 Ecol Monogr
 comment	FALSE	A note describing effort, experimental design, treatments or the method used to standardise the community.

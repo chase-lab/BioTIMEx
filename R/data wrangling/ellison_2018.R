@@ -6,14 +6,14 @@ load(file = 'data/raw data/ellison_2018/ddata')
 setDT(ddata)
 
 setnames(ddata, old = c('block','plot','subplot','subplot.t', 'count'),
-                new = c('site','block','plot','subplot', 'value'))
+         new = c('site','block','plot','subplot', 'value'))
 
 ddata[, ':='( year = as.integer(format(date, '%Y')),
               species = paste(genus, species))]
 ddata <- ddata[!is.na(value) & value > 0 &
-               !(date > '2006-08-31' & date < '2006-12-31') &
-               !(site == 'Ridge' & block == 4 & year == 2006) & # Only one block
-               !(site == 'Valley' & block == 3 & year == 2006)] # Only one block
+                  !(date > '2006-08-31' & date < '2006-12-31') &
+                  !(site == 'Ridge' & block == 4 & year == 2006) & # Only one block
+                  !(site == 'Valley' & block == 3 & year == 2006)] # Only one block
 
 
 
@@ -50,7 +50,7 @@ ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, plot, treatment, year),
                .SDcols = c('effort','N','minN','S','Sn','ENSPIE')
-               ]
+]
 
 
 ddata[, ':='(dataset_id = dataset_id,
@@ -58,14 +58,16 @@ ddata[, ':='(dataset_id = dataset_id,
                 gsub(' control', '_management', treatment),
                 plot, sep = '_')
 )][, ':='(
-             treatment_type = "manipulated community",
-             design = paste0('A', fifelse(grepl('control', treatment), 'C', 'I')),
-             timepoints = paste0('T',seq_along(unique(year))[match(year, sort(unique(year)))]),
-             time_since_disturbance = ifelse(grepl('control', treatment), NA, year - 2006),
-             realm = 'terrestrial',
-             taxon = 'invertebrates',
+   treatment_type = "manipulated community",
+   grain_m2 = pi*0.0475^2,
+   grain_comment = "'Each pitfall trap consisted of a 95mm-diameter plastic cup'",
+   design = paste0('A', fifelse(grepl('control', treatment), 'C', 'I')),
+   timepoints = paste0('T',seq_along(unique(year))[match(year, sort(unique(year)))]),
+   time_since_disturbance = fifelse(grepl('control', treatment), NA_integer_, year - 2006),
+   realm = 'terrestrial',
+   taxon = 'invertebrates',
 
-             comment = 'Hierarchical experimental design. Treatment is one of 8 canopy manipulation treatments. Effort is the number of survey per year, each survey corresponds to pitfall traps being open/active for 48 hours (Ellison 2005).'
+   comment = 'Hierarchical experimental design. Treatment is one of 8 canopy manipulation treatments. Effort is the number of survey per year, each survey corresponds to pitfall traps being open/active for 48 hours (Ellison 2005).'
 )
 ]
 
@@ -73,4 +75,4 @@ ddata[, ':='(dataset_id = dataset_id,
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names = FALSE)
+       row.names = FALSE)

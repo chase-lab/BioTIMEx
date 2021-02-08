@@ -51,24 +51,17 @@ ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, year),
                .SDcols = c('effort','N','minN','S','ENSPIE','Sn','coverage')
-               ]
+]
 
 
 ddata[, ':='(
    dataset_id = dataset_id,
-   treatment = fifelse(site == 'CF', 'coniferous forest',
-               fifelse(site == 'DF', 'decideous forest',
-               fifelse(site == 'SF', 'mid-successional',
-               fifelse(site == 'T1', 'conventional',
-               fifelse(site == 'T2', 'no-till',
-               fifelse(site == 'T3', 'reduced input',
-               fifelse(site == 'T4', 'organic',
-               fifelse(site == 'T5', 'poplar',
-               fifelse(site == 'T6', 'alfalfa',
-                     'early-successional'
-   ))))))))),
+   treatment = c('coniferous forest', 'decideous forest', 'mid-successional', 'conventional', 'no-till', 'reduced input', 'organic', 'poplar', 'alfalfa', 'early-successional')[match(site, c('CF', 'DF', 'SF', 'T1', 'T2', 'T3', 'T4', 'T5', 'T6'))],
+   treatment_type = "vegetation management",
+   grain_m2 = 0.229*0.178*2,
+   grain_comment = "'Double sided sticky traps with 22.9 × 17.8 cm (9 × 7”) of sticky surface per side, “Corn rootworm trap”, Great Lakes IPM Vestaburg MI.' One per site",
    design = 'AI',
-   timepoints = paste0('T',seq_along(unique(year))[match(year, sort(unique(year)))]),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
    time_since_disturbance = year - 1989,
    realm = 'terrestrial',
    taxon = 'invertebrates',

@@ -48,30 +48,32 @@ ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, year),
                .SDcols = c('effort','N','minN','S','Sn','ENSPIE','coverage')
-               ]
+]
 
 
-beforeafter <- ifelse(ddata$site %in% c("Paul Lake", 'Crampton Lake'), '',
-                      ifelse(
-                         (ddata$site %in% c('East Long Lake', 'West Long Lake') & ddata$year < 1991)  |
-                            (ddata$site %in% c('Peter Lake','Tuesday Lake') & ddata$year < 1985), 'B', 'A')
+beforeafter <- fifelse(ddata$site %in% c("Paul Lake", 'Crampton Lake'), '',
+                       fifelse(
+                          (ddata$site %in% c('East Long Lake', 'West Long Lake') & ddata$year < 1991)  |
+                             (ddata$site %in% c('Peter Lake','Tuesday Lake') & ddata$year < 1985), 'B', 'A')
 )
 
 ddata[, ':='(
    dataset_id = dataset_id,
-   treatment = ifelse(site %in% c("Paul Lake", 'Crampton Lake'), 'control',
-                      ifelse(site %in% c('East Long Lake', 'West Long Lake'), 'eutrophication',
-                             ifelse(site %in% c('Peter Lake','Tuesday Lake'), 'community manipulation', NA)
-                      )
+   treatment = fifelse(site %in% c("Paul Lake", 'Crampton Lake'), 'control',
+                       fifelse(site %in% c('East Long Lake', 'West Long Lake'), 'eutrophication',
+                               fifelse(site %in% c('Peter Lake','Tuesday Lake'), 'community manipulation', NA_character_)
+                       )
    ),
    treatment_type = 'eutrophication + fish community manipulation',
-   design = paste0(beforeafter, ifelse(site %in% c("Paul Lake", 'Crampton Lake'), 'C', 'I')),
+   grain_m2 = pi*0.15^2,
+   grain_comment = "'We sampled for zooplankton by taking two vertical hauls of a conical net (30 cm diameter, 80-mm mesh) from 2.5 m to the surface in Monday Bog and from 4.0 m in Wednesday Bog.'",
+   design = paste0(beforeafter, fifelse(site %in% c("Paul Lake", 'Crampton Lake'), 'C', 'I')),
    timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
-   time_since_disturbance = ifelse(site %in% c('East Long Lake', 'West Long Lake') & beforeafter == 'A',
-                                   year - 1991,
-                                   ifelse(site %in% c('Peter Lake','Tuesday Lake') & beforeafter == 'A',
-                                          year - 1985,
-                                          NA)
+   time_since_disturbance = fifelse(site %in% c('East Long Lake', 'West Long Lake') & beforeafter == 'A',
+                                    year - 1991,
+                                    fifelse(site %in% c('Peter Lake','Tuesday Lake') & beforeafter == 'A',
+                                            year - 1985,
+                                            NA_integer_)
    ),
    realm = 'freshwater',
    taxon = 'zooplankton',
@@ -82,4 +84,4 @@ ddata[, ':='(
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names=FALSE)
+       row.names=FALSE)

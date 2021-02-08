@@ -53,22 +53,24 @@ warming_table <- na.omit(unique(ddata[, c('site','block','warming','target.delta
 
 warming_table[, ':='(warming = gsub(warming, pattern = ' c| C', replacement = '_c'),
                      treatment = paste(warming, target.delta, sep = '_'))
-              ][,':='(warming = NULL,
-                     target.delta = NULL)]
+][,':='(warming = NULL,
+        target.delta = NULL)]
 
 ddata <- merge(ddata, warming_table, by = c('site', 'block'), all.x = TRUE)
 
 ddata[, ':='(dataset_id = dataset_id,
              treatment_type = 'warming',
+             grain_m2 = pi*0.025^2,
+             grain_comment = "'each plot has four pitfall traps (5 cm diameter)'",
              design = paste0(fifelse(treat == 'Pre-treat', 'B', "A"),
                              fifelse(grepl(treatment, pattern = 'control'), 'C', "I")),
 
              timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
-             time_since_disturbance = ifelse(treat == 'Pre-treat' | grepl(treatment, pattern = 'control'),
-                                             NA,
-                                             fifelse(site == 'HF',
-                                                    year - 2009, year - 2010
-                                             )
+             time_since_disturbance = fifelse(treat == 'Pre-treat' | grepl(treatment, pattern = 'control'),
+                                              NA_integer_,
+                                              fifelse(site == 'HF',
+                                                      year - 2009, year - 2010
+                                              )
              ),
              realm = 'terrestrial',
              taxon = 'invertebrates',
@@ -78,9 +80,9 @@ ddata[, ':='(dataset_id = dataset_id,
              treat = NULL,
              target.delta = NULL,
              warming = NULL
-             )]
+)]
 
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names = FALSE)
+       row.names = FALSE)

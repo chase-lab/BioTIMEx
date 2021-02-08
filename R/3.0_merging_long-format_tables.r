@@ -18,12 +18,12 @@ data.table::setcolorder(dt, column_names_template)
 indispensable_variables <- column_names_template[as.logical(template[,2])]
 
 if (any(is.na(dt$site) & !is.na(dt$block)) ||
-   any(is.na(dt$block) & !is.na(dt$plot)) ||
-   any(is.na(dt$plot) & !is.na(dt$subplot))
+    any(is.na(dt$block) & !is.na(dt$plot)) ||
+    any(is.na(dt$plot) & !is.na(dt$subplot))
 ) {
    problematic_datasets <- unique(dt[is.na(dt$site) & !is.na(dt$block) |
-                 is.na(dt$block) & !is.na(dt$plot) |
-                 is.na(dt$plot) & !is.na(dt$subplot), "dataset_id"])
+                                        is.na(dt$block) & !is.na(dt$plot) |
+                                        is.na(dt$plot) & !is.na(dt$subplot), "dataset_id"])
    warning(paste0('Review hierarchical structure in: ', paste(problematic_datasets, collapse = ", ")))
 }
 
@@ -53,6 +53,6 @@ sort(table(study_cases$dataset_id), decreasing = T)
 
 # Saving
 
-data.table::fwrite(dt, 'data/long_table.csv', row.names = F)
+data.table::fwrite(dt, 'data/long_table.csv', row.names = F, quote = TRUE)
 # data.table::fwrite(dt, 'C:/Users/as80fywe/Dropbox/BioTIMEx/long_table.csv', row.names = F)
 

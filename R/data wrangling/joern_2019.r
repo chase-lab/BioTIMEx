@@ -12,25 +12,25 @@ setnames(ddata, old = c('RecYear','Watershed','Repsite', 'Species'),
 ddata[, ':='(
    site = toupper(site),
    treatment = paste(
-      ifelse(substr(site, 1, 1) %in% c('n','N'), 'Grazing', 'noGrazing'),
-      ifelse(substr(site, 2, 3) == '00',
-             'noFire',
-             paste0('fire', substr(site, 2, 3) )), sep = '_'),
+      fifelse(substr(site, 1, 1) %in% c('n','N'), 'Grazing', 'noGrazing'),
+      fifelse(substr(site, 2, 3) == '00',
+              'noFire',
+              paste0('fire', substr(site, 2, 3) )), sep = '_'),
    date = as.Date(paste(year, RecMonth, RecDay, sep = '/'), format = '%Y/%m/%d')
 )][, ':='(treatment = fifelse(treatment == 'noGrazing_noFire', 'control', treatment),
-   daynum = format(date, format = '%j'))
-   ]
+          daynum = format(date, format = '%j'))
+]
 
 # Keeping only samples between July and August
 ddata <- ddata[daynum >= 182  & daynum <= 243]
 
 # melting sites and selecting columns
 ddata <- melt(ddata,
-            id.vars = c('site', 'block', 'treatment', 'year','date','species'),
-            measure.vars = paste0('S', 1:10),
-            variable.name = 'plot',
-            value.name = 'value'
-            )
+              id.vars = c('site', 'block', 'treatment', 'year','date','species'),
+              measure.vars = paste0('S', 1:10),
+              variable.name = 'plot',
+              value.name = 'value'
+)
 
 ## wrong value correction
 ddata[value == 0, value := NA]
@@ -65,8 +65,10 @@ ddata[, ':='(
 ddata[, ':='(
    dataset_id = dataset_id,
    treatment_type = "fire and grazing",
-   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
+   grain_m2 =  pi*0.38^2,
+   grain_comment = "'Sampling is done by sweeping with canvas beating nets 38 cm in diameter. A sample of 200 sweeps (ten sets of 20 sweeps each) is taken at each site on each occasion. A sweep is taken at each step by traversing an arc of 180o with the net through the top layer of vegetation.'",
    design = paste0('A', fifelse(treatment == 'control', 'C', 'I')),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
 
    species = NULL,
    value = NULL
@@ -108,7 +110,7 @@ ddata[, ':='(
    taxon = 'invertebrates',
    effort = 1,
 
-   comment = 'Grasshopper sampling in fields burnt at various frequencies (the number in the site names indicates the theoretical frequency of fire). Some fields are also grazed and the site name indicates N for natural grazing by bison. Most of the time, there were several samplings in a year and each site was sampled in two ares(block) each in 10 transects. The 10 transects and several surveys per year were pooled together and diversity metrics were computed on these aggregated communities. Effort is the same everywhere every year.'
+   comment = 'Grasshopper sampling in fields burnt at various frequencies (the number in the site names indicates the theoretical frequency of fire). Some fields are also grazed and the site name indicates N for natural grazing by bison. Most of the time, there were several samplings in a year and each site was sampled in two areas (block) each in 10 transects. The 10 transects and several surveys per year were pooled together and diversity metrics were computed on these aggregated communities. Effort is the same everywhere every year.'
 )]
 
 

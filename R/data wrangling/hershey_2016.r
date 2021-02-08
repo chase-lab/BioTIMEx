@@ -16,17 +16,17 @@ ddata <- melt(ddata,
 ddata <- ddata[species != 'SNAILS']
 
 ddata[, ':='(
-        year = as.integer(format(as.Date(date, '%d-%b-%y'), '%Y')),
-        site =  ifelse(abs(as.numeric(trimws(gsub(x = site, pattern = 'K|k', replacement = '')))) < 10,
-                       as.numeric(trimws(gsub(x = site, pattern = 'K|k', replacement = ''))) * 1000,
-                       as.numeric(trimws(gsub(x = site, pattern = 'K|k', replacement = ''))))
+  year = as.integer(format(as.Date(date, '%d-%b-%y'), '%Y')),
+  site =  fifelse(abs(as.numeric(trimws(gsub(x = site, pattern = 'K|k', replacement = '')))) < 10,
+                  as.numeric(trimws(gsub(x = site, pattern = 'K|k', replacement = ''))) * 1000,
+                  as.numeric(trimws(gsub(x = site, pattern = 'K|k', replacement = ''))))
 )]
 
 # Community
 ddata[, ':='(
-        N = sum(value),
-        S = length(unique(species)),
-        ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
+  N = sum(value),
+  S = length(unique(species)),
+  ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
 ),
 by = .(site, block, year, date)
 ]
@@ -53,26 +53,28 @@ ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, year),
                .SDcols = c('effort','N','minN','S','Sn','ENSPIE')
-               ]
+]
 
 
 ddata[,
       ':='(
         dataset_id = dataset_id,
         treatment = paste(fifelse(site < 0, 'control', 'impact'), site, sep = '_'),
-           treatment_type = "eutrophication",
-           design = paste0('A', ifelse(site < 0, 'C', 'I')),
-           timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
-           time_since_disturbance = ifelse(site < 0, NA, year - 1984),
+        treatment_type = "eutrophication",
+        grain_m2 = 1,
+        grain_comment = "'A rock-scrubbing technique was used to collect bottom samples at several different stations with three replicates at each station in the Kuparuk River.' - estimated",
+        design = paste0('A', fifelse(site < 0, 'C', 'I')),
+        timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
+        time_since_disturbance = fifelse(site < 0, NA_integer_, year - 1984),
 
-           realm = 'freshwater',
-           taxon = 'invertebrates',
+        realm = 'freshwater',
+        taxon = 'invertebrates',
 
-           comment = 'Treatment variable shows the distance above (negative values) and downstream (positive values) of a nutrient source.'
+        comment = 'Treatment variable shows the distance above (negative values) and downstream (positive values) of a nutrient source.'
       )
-      ][,
-        site := paste0('site_', site)
-        ]
+][,
+  site := paste0('site_', site)
+]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'), row.names = FALSE)

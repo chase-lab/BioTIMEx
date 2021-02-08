@@ -16,8 +16,8 @@ ddata[, month := as.numeric(format(date, '%m'))]
 
 # exclusion of 2020, IVE 2011
 ddata <- ddata[ year != 2020 &
-                month >= 2 & month <= 11 &
-                !(site == 'IVEE' & year == 2011)]
+                   month >= 2 & month <= 11 &
+                   !(site == 'IVEE' & year == 2011)]
 
 
 # Community
@@ -54,7 +54,7 @@ ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, treatment, year),
                .SDcols = c('effort','N','minN','S','Sn','ENSPIE','coverage')
-               ]
+]
 
 
 
@@ -65,13 +65,15 @@ ddata[, ':='(
    dataset_id = dataset_id,
    treatment = tolower( treatment),
    treatment_type = 'kelp removal',
-   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
+   grain_m2 = 80,
+   grain_comment = 'Each block is a 40m long, 2m wide transect',
    design = fifelse(treatment == 'control', 'AC', 'AI'),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
 
    realm = 'marine',
    taxon = 'fish',
 
-   comment = 'Cryptic and Mobile surveys pooled. Diversity metrics computed for multiple surveys per year and then averaged together. Two transects per site, each with a different treatment. Effort for Cryptic fish is significantly lower than for swiming fish. Only surveys made between February and November are kept. 2020 is excluded because only the beginning of the year is covered.'
+   comment = 'Cryptic and Mobile surveys pooled. Diversity metrics computed for multiple surveys per year and then averaged together. Two transects per site, each with a different treatment. Effort for Cryptic fish is significantly lower than for swimming fish. Only surveys made between February and November are kept. 2020 is excluded because only the beginning of the year is covered.'
 )]
 
 ddata[treatment != 'control', "time_since_disturbance" := year - min(year), by = site]

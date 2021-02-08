@@ -17,7 +17,7 @@ ddata[, ':='(treatment = paste0(
 )
 )][,
    treatment := fifelse(treatment == '', 'control', treatment)
-   ]
+]
 
 # community
 ddata[, effort := Trapnights / min(Trapnights)]
@@ -26,7 +26,7 @@ ddata[,
            ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
       ),
       by = .(year, site)
-      ]
+]
 
 ddata[, S := vegan::rarefy(value, sample = round(sum(value) / effort), 0), by = .(year, site)]
 
@@ -49,10 +49,12 @@ ddata[, ':='(
 ddata[,
       ':='(   dataset_id = dataset_id,
               treatment_type = 'prairie management',
-              timepoints = paste0('T',seq_along(unique(year))[match(year, sort(unique(year)))]),
+              grain_m2 = 1,
+              grain_comment = "'4 traps were set in each plot, one per side of the inner 10 x 10 m sampling area.' - estimated",
               design = paste0('A', fifelse(treatment == 'control', 'C', "I")),
-              time_since_disturbance = ifelse(treatment == 'control', NA,
-                                              as.numeric(year) - 2000),
+              timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
+              time_since_disturbance = fifelse(treatment == 'control', NA_integer_,
+                                               as.integer(year) - 2000),
               realm = 'terrestrial',
               taxon = 'mammals',
 

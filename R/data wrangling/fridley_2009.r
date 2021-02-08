@@ -36,10 +36,12 @@ ddata[, ':='(
 ddata[, ':='(
    dataset_id = dataset_id,
    treatment_type = "manipulated climate",
+   grain_m2 = 2.5^2,
+   grain_comment = "'Each year we record the number of contacts with living shoots of each vascular plant species when 25 steel pins of diameter 2.5 mm are lowered vertically into the vegetation occupying the central (2.5*2.5 m) area of each plot.'",
    design = paste0('A', fifelse(treatment == 'control', 'C', 'I')),
    timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
-   time_since_disturbance = ifelse(treatment == 'control', NA,
-                                   fifelse(treatment %like% 'warm', year - 1993, year - 1994)
+   time_since_disturbance = fifelse(treatment == 'control', NA_integer_,
+                                    fifelse(treatment %like% 'warm', year - 1993, year - 1994)
    ),
 
    realm = 'terrestrial',

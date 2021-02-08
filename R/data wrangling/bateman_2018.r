@@ -48,14 +48,16 @@ ddata <- ddata[,
 
 ddata[, ':='(
    dataset_id = dataset_id,
-   treatment = ifelse(site %in% c('Ave35','Ave67','Price','Priest'), 'urban_notRestored',
-                      ifelse(site %in% c('BM','Rio'), 'urban_restored',
-                             'notUrban_notRestored')
+   treatment = fifelse(site %in% c('Ave35','Ave67','Price','Priest'), 'urban_notRestored',
+                       fifelse(site %in% c('BM','Rio'), 'urban_restored',
+                               'notUrban_notRestored')
    ),
    treatment_type = 'riverbank vegetation restoration',
+   grain_m2 = pi*30^2,
+   grain_comment = "listening point of 30m radius - estimated",
    timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
-   time_since_disturbance = ifelse(site == 'BM', year - 2012,
-                                   ifelse(site == 'Rio', year - 2005, NA)
+   time_since_disturbance = fifelse(site == 'BM', year - 2012,
+                                    fifelse(site == 'Rio', year - 2005, NA_integer_)
    ),
    realm = 'terrestrial',
    taxon = 'birds',

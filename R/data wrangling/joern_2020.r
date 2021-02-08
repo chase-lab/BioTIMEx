@@ -18,19 +18,19 @@ ddata[, ':='(
 )
 ][site %in% c("0C1A", "0C3A", "0C3B", "0C3C"),
   site := c('C01A','C03A','C03B','C03C')[match(site, c("0C1A", "0C3A", "0C3B", "0C3C"))]
-  ]
+]
 
 # Excluding surveys happening in August or September, exclusion of July samplings
 # exclusion of 2012 survey for one block bcause N = 5
 ddata <- ddata[Recmonth > 7 &
-               !(site == 'C03A' & year == 2012 & block == 'C')]
+                  !(site == 'C03A' & year == 2012 & block == 'C')]
 
 
 ddata[, treatment := paste(
-      ifelse(substr(site, 1, 1) %in% c('n','N'), 'Grazing', 'noGrazing'),
-      ifelse(substr(site, 2, 3) == '00',
-             'noFire',
-             paste0('fire', substr(site, 2, 3) )), sep = '_')
+   fifelse(substr(site, 1, 1) %in% c('n','N'), 'Grazing', 'noGrazing'),
+   fifelse(substr(site, 2, 3) == '00',
+           'noFire',
+           paste0('fire', substr(site, 2, 3) )), sep = '_')
 ][, treatment := fifelse(treatment == 'noGrazing_noFire', 'control', treatment)]
 
 
@@ -81,7 +81,7 @@ ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, block, treatment, year),
                .SDcols = c('effort','N','minN','S','Sn','ENSPIE')
-               ]
+]
 
 
 
@@ -89,8 +89,10 @@ ddata <- ddata[,
 ddata[, ':='(
    dataset_id = dataset_id,
    treatment_type = "fire and grazing",
-   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
-   design = paste0('A', fifelse(treatment == 'control', 'C', 'I'))
+   grain_m2 =  pi*0.38^2,
+   grain_comment = "'Sampling is done by sweeping with canvas beating nets 38 cm in diameter. A sample of 200 sweeps (ten sets of 20 sweeps each) is taken at each site on each occasion. A sweep is taken at each step by traversing an arc of 180o with the net through the top layer of vegetation.'",
+   design = paste0('A', fifelse(treatment == 'control', 'C', 'I')),
+   timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))])
 )]
 
 # Disturbance calendar

@@ -20,7 +20,7 @@ ddata[, ':='(year = format(date, '%Y'),
 ][,
   ':='(species = paste(Genus, Specific.epithet),
        treatment = fifelse(treatment == '', 'control', treatment))
-  ][, block := paste0('B', seq_along(unique(treatment))[match(treatment, unique(treatment))])]
+][, block := paste0('B', seq_along(unique(treatment))[match(treatment, unique(treatment))])]
 
 # selecting surveys happening in August
 # excluding sub-adults
@@ -56,21 +56,23 @@ ddata <- ddata[,
                lapply(.SD, unique),
                by = .(site, block, treatment, year),
                .SDcols = c('N','minN','S','Sn','ENSPIE','coverage')
-               ]
+]
 
 
 ddata[,
-             ':='(dataset_id = dataset_id,
-                  treatment_type = 'prairie management',
-                  timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
-                  design = paste0('A', fifelse(treatment == 'control', 'C', "I")),
-                  time_since_disturbance = ifelse(treatment == 'control', NA,
-                                                  as.numeric(year) - 2000),
-                  realm = 'terrestrial',
-                  taxon = 'invertebrates',
+      ':='(dataset_id = dataset_id,
+           treatment_type = 'prairie management',
+           grain_m2 = pi*0.38^2,
+           grain_comment = "'All 32 plots were sampled for arthropods in 2003-2006 using a 38 cm diameter muslin sweep net to take 50 sweeps per plot. A ?sweep? consisted of a quick, approximately 2-meter-long horizontal swing of the net.'",
+           design = paste0('A', fifelse(treatment == 'control', 'C', "I")),
+           timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
+           time_since_disturbance = fifelse(treatment == 'control', NA_integer_,
+                                            as.numeric(year) - 2000),
+           realm = 'terrestrial',
+           taxon = 'invertebrates',
 
-                  comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Subadults are excluded which diminishes greatly the number of undeterminate species. Only surveys from August are kept, that is one survey per year.'
-                  )]
+           comment = 'Block design with treatments being Ex (Exclosure meaning no grazing), Fe (fertilization) and Bu (burning every other year). Subadults are excluded which diminishes greatly the number of undeterminate species. Only surveys from August are kept, that is one survey per year.'
+      )]
 
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)

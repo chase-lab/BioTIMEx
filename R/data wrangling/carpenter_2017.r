@@ -9,11 +9,11 @@ setnames(ddata, old = c( 'lakename','year4','sampledate', 'concentration'),
          new = c('site', 'year','date', 'value'))
 
 ddata[, species := gsub( trimws( paste(
-      ifelse(is.na(genus), '', as.character(genus)),
-      ifelse(is.na(species), '', as.character(species)),
-      ifelse(is.na(genus) & is.na(species), 'Unkown', ''),
-      ifelse(is.na(genus) & is.na(species) & !is.na(description), as.character(description), ''),
-      sep=' ') ), pattern = ' {2,3}', replacement = ' ')
+   fifelse(is.na(genus), '', as.character(genus)),
+   fifelse(is.na(species), '', as.character(species)),
+   fifelse(is.na(genus) & is.na(species), 'Unkown', ''),
+   fifelse(is.na(genus) & is.na(species) & !is.na(description), as.character(description), ''),
+   sep=' ') ), pattern = ' {2,3}', replacement = ' ')
 ]
 
 ddata[, daynumber := format(date, '%j')]
@@ -27,11 +27,11 @@ ddata[, value := ifelse(value > 0 & value <= 1, 1, round(value, 0))]
 
 # Community
 ddata[, ':='(
-            N = sum(value),
-            S = length(unique(species)),
-            ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
-         ),
-         by = .(site, year, date)
+   N = sum(value),
+   S = length(unique(species)),
+   ENSPIE = vegan::diversity(x = value, index = 'invsimpson')
+),
+by = .(site, year, date)
 ]
 
 # One site with only one individual sampled. Considered an outlier and excluded
@@ -58,23 +58,25 @@ ddata <- ddata[,
                lapply(.SD, mean),
                by = .(site, year),
                .SDcols = c('effort','N','minN','S','Sn','ENSPIE','coverage')
-               ]
+]
 
 ddata[, ':='(
    dataset_id = dataset_id,
    treatment = fifelse(site == "Paul Lake", 'control',
-                      fifelse(site %in% c('East Long Lake', 'West Long Lake'), 'eutrophication',
-                             ifelse(site %in% c('Peter Lake','Tuesday Lake'), 'community manipulation', NA)
-                      )
+                       fifelse(site %in% c('East Long Lake', 'West Long Lake'), 'eutrophication',
+                               ifelse(site %in% c('Peter Lake','Tuesday Lake'), 'community manipulation', NA)
+                       )
    ),
 
    treatment_type = 'eutrophication and community manipulation',
+   grain_m2 = .5,
+   grain_comment = "water column was sampled with 'an integrated depth sampler; we took samples from the surface to 1.25 m in Monday Bog and to 1.75 m in Wednesday Bog.'",
    design = paste0(fifelse(site == "Paul Lake", '',
-                          fifelse(
-                             (site %in% c('East Long Lake', 'West Long Lake') & year < 1991)  |
-                                (site %in% c('Peter Lake','Tuesday Lake') & year < 1985), 'B', 'A')
+                           fifelse(
+                              (site %in% c('East Long Lake', 'West Long Lake') & year < 1991)  |
+                                 (site %in% c('Peter Lake','Tuesday Lake') & year < 1985), 'B', 'A')
    ),
-   ifelse(site == "Paul Lake", 'C', 'I')),
+   fifelse(site == "Paul Lake", 'C', 'I')),
 
    timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
    realm = 'freshwater',
@@ -83,11 +85,11 @@ ddata[, ':='(
    comment =  'One survey detecting only one individual was excluded. Effort is the number of surveys per year. Samples from 1991 to 1995 were counted by the same person hence ensuring comparable counts. 2013 to 2015 should have consistent sampling and counting too. Time since disturbance is the difference between sampledate and the FIRST disturbance. Most manipulations are reported in ./supporting litterature/Carpenter - Table 1 - Synthesis of a 33 year-series of whole lake experiments - lol2.10094.pdf.'
 )][,
    time_since_disturbance := fifelse(site %in% c('East Long Lake', 'West Long Lake') & substr(design, 1, 1) == 'A',
-                                    year - 1991,
-                                    ifelse(site %in% c('Peter Lake','Tuesday Lake') & substr(design, 1, 1) == 'A',
-                                           year - 1985, NA)
+                                     year - 1991,
+                                     fifelse(site %in% c('Peter Lake','Tuesday Lake') & substr(design, 1, 1) == 'A',
+                                             year - 1985, NA_integer_)
    )]
 
 dir.create(paste0('data/wrangled data/', dataset_id), showWarnings = FALSE)
 fwrite(ddata, paste0('data/wrangled data/', dataset_id, "/", dataset_id, '.csv'),
-          row.names=FALSE)
+       row.names = FALSE)
