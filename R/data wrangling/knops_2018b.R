@@ -49,7 +49,7 @@ ddata[, ':='(
 ddata[,
       ':='(   dataset_id = dataset_id,
               treatment_type = 'prairie management',
-              grain_m2 = 1,
+              grain_m2 = NA,
               grain_comment = "'4 traps were set in each plot, one per side of the inner 10 x 10 m sampling area.' - estimated",
               design = paste0('A', fifelse(treatment == 'control', 'C', "I")),
               timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),

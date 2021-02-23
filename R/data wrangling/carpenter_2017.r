@@ -69,7 +69,7 @@ ddata[, ':='(
    ),
 
    treatment_type = 'eutrophication and community manipulation',
-   grain_m2 = .5,
+   grain_m2 = NA,
    grain_comment = "water column was sampled with 'an integrated depth sampler; we took samples from the surface to 1.25 m in Monday Bog and to 1.75 m in Wednesday Bog.'",
    design = paste0(fifelse(site == "Paul Lake", '',
                            fifelse(
