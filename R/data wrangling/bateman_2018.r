@@ -62,7 +62,7 @@ ddata[, ':='(
    realm = 'terrestrial',
    taxon = 'birds',
 
-   comment = 'Some restored and some unrestored sites along the Salt river. Each station was surveyed several times a year (2 to 9). Abundances are summed per year and divided by the number of sampling events.'
+   comment = 'Some restored and some unrestored sites along the Salt river. Each station was surveyed several times a year (2 to 9). Abundances are summed per year and divided by the number of sampling events. One listening point per site per survey.'
 )
 ][, design := paste0('A', fifelse(treatment == "urban_restored", 'I', 'C'))]
 

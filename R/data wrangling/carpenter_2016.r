@@ -65,8 +65,8 @@ ddata[, ':='(
                        )
    ),
    treatment_type = 'eutrophication + fish community manipulation',
-   grain_m2 = pi*0.15^2,
-   grain_comment = "'We sampled for zooplankton by taking two vertical hauls of a conical net (30 cm diameter, 80-mm mesh) from 2.5 m to the surface in Monday Bog and from 4.0 m in Wednesday Bog.'",
+   grain_m2 = pi*0.15^2 * 2,
+   grain_comment = "'We sampled for zooplankton by taking two vertical hauls of a conical net (30 cm diameter, 80-mm mesh) from 2.5 m to the surface in Monday Bog and from 4.0 m in Wednesday Bog.'. Two hauls per survey",
    design = paste0(beforeafter, fifelse(site %in% c("Paul Lake", 'Crampton Lake'), 'C', 'I')),
    timepoints = paste0('T', seq_along(unique(year))[match(year, sort(unique(year)))]),
    time_since_disturbance = fifelse(site %in% c('East Long Lake', 'West Long Lake') & beforeafter == 'A',
