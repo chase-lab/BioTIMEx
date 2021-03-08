@@ -65,7 +65,7 @@ ddata <- merge(ddata, warming_table, by = c('site', 'block'), all.x = TRUE)
 ddata[, ':='(dataset_id = dataset_id,
              treatment_type = 'warming',
              grain_m2 = pi*0.025^2 * trap_days,
-             grain_comment = "'each plot has [1-5] pitfall traps (5 cm diameter)' individual area times number of pifalls times number of survey per year",
+             grain_comment = "'each plot has [1-5] pitfall traps (5 cm diameter)' trap area * number of pifalls * number of survey per year",
              design = paste0(fifelse(treat == 'Pre-treat', 'B', "A"),
                              fifelse(grepl(treatment, pattern = 'control'), 'C', "I")),
 
