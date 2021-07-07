@@ -1,6 +1,7 @@
 .Rproj.user
 .Rprofile
 *.csv
+!/data/long_table.csv
 /points
 /data/raw data/
 /data/wrangled data/
